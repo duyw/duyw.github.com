@@ -6,7 +6,7 @@ comments: true
 categories: 其他
 ---
 
-## 简单记录Octopress的搭建过程：
+Octopress的搭建过程如下：
 
 ### 1 配置本地Octopress
 
@@ -27,6 +27,7 @@ rake setup_github_pages
 # 命令执行之后 会生成一个 _deploy 目录，该目录本身也是一个git的仓库
 ```
 
+<!-- more -->
 
 ### 3 修改配置文件
 
