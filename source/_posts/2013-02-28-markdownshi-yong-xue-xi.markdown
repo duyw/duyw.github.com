@@ -138,6 +138,24 @@ def update
 end
 `` `
 ```
+
+
+Octopress中可以为代码着色，写法：
+
+{% codeblock 代码说明： lang:ruby http://www.baidu.com 链接到百度 %}
+def update
+  respond_to do |format|
+    if @comment.update_attributes(params[:comment])
+      format.js
+    else
+      fromat.html
+    end
+  end
+end
+{% endcodeblock %}
+
+
+
 * 单行代码
 
 用反引号包围要显示的`单行`代码片段:
@@ -167,6 +185,16 @@ end
 [id2]: http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif  "Optional title attribute2"
 
 
+在octopress中图片写法：
+	{% img [left|right] [class names] /path/to/image [width] [height] [title text [alt text]] %}
+
+
+效果
+
+{% img http://placekitten.com/890/280 %}
+{% img left http://placekitten.com/320/250 Place Kitten #2 %}
+{% img right http://placekitten.com/300/500 150 250 Place Kitten #3 %}
+{% img right http://placekitten.com/300/500 150 250 'Place Kitten #4' 'An image of a very cute kitten' %}
 
 ### 链接
 

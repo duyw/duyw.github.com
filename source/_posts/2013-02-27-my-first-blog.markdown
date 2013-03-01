@@ -2,7 +2,7 @@
 layout: post
 title: "My first blog"
 date: 2013-02-27 10:59
-comments: true
+comments: false
 categories: 其他
 ---
 
