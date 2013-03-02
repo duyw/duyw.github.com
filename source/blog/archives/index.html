@@ -1,7 +1,14 @@
 ---
 layout: default
-title: Blog Archives
+title: Archives
 ---
+<br>
+<section>
+  <h1>Categories</h1><br>
+  <span id="tag-cloud">{% tag_cloud counter:true %}</span>
+</section>
+
+<br>
 
 {% for post in site.posts reverse %}
 	{% include archive_post.html %}
