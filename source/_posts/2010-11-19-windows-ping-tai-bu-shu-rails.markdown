@@ -53,7 +53,7 @@ mongrel_rails service::install -N zc1 -c d:\svn\zc_hn\code\zc -p 3001 –e produ
 ……
 ```
 
-###　4. 安装、配置 apache
+### 4. 安装、配置 apache
 
 从Apache网站下载Windows版本的Apache2.2，运行安装。
 

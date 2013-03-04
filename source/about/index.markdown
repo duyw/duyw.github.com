@@ -25,7 +25,7 @@ Name：杜永文（Ivan）
 
 City: BeiJing | ShanXi,XinZhou,PianGuan
 
-Email: yongwendu@gmail.com     railser@vip.qq.com
+Email: [yongwendu@gmail.com](mailto:yongwendu@gmail.com) 　[railser@vip.qq.com](mailto:railser@vip.qq.com)
 
 QQ: 275266625
 
