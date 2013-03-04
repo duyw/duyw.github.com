@@ -3,7 +3,8 @@ layout: post
 title: "My first blog"
 date: 2013-02-27 10:59
 comments: false
-categories: 其他
+categories: 
+- 其他{others}
 ---
 
 　　这是搭建Octopress后写的第一篇 blog，另外为博客添加了gogle Analytics 和 DISQUS，小小的激动了一下，  哈哈。

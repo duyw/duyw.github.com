@@ -3,7 +3,10 @@ layout: post
 title: "windows 平台部署rails"
 date: 2010-11-19 18:33
 comments: true
-categories: [Rails,部署,Mongrel]
+categories: 
+- Rails{rails}
+- 部署{deploy}
+- Mongrel{mongrel}
 ---
 
 　　公司一个现有项目是用 ruby 1.8.6 + rails1.2.6 做的，之前的客户服务器都是linux系统，这次客户服务器用的是windows，所以研究了一下部署方案，从网上各方搜集资料，最后配置成功，整理在此：

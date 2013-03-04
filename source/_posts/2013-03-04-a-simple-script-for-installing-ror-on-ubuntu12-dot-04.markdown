@@ -3,8 +3,16 @@ layout: post
 title: "A simple Script for installing ROR on ubuntu12.04"
 date: 2013-03-04 11:48
 comments: true
-categories: [Rails,Ruby,安装,Ubuntu]
+categories: 
+- Rails{rails}
+- Ruby{ruby}
+- 安装{install}
+- Ubuntu{ubuntu}
 ---
+
+
+
+
 
 This is a usful script,I found it here: [Sudobits 博客](http://blog.sudobits.com/2012/05/02/how-to-install-ruby-on-rails-in-ubuntu-12-04-lts/)
 

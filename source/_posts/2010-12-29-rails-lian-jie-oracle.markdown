@@ -3,7 +3,8 @@ layout: post
 title: "rails 连接 Oracle"
 date: 2010-12-29 14:06
 comments: true
-categories: Rails
+categories:
+- Rails{rails}
 ---
 
 

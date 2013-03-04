@@ -3,7 +3,8 @@ layout: post
 title: "Octopress simple guide"
 date: 2013-02-28 18:15
 comments: true
-categories: 其他
+categories: 
+- 其他{others}
 ---
 
 Octopress的搭建过程如下：

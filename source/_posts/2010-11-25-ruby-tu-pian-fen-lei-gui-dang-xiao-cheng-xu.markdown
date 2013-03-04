@@ -3,7 +3,8 @@ layout: post
 title: "ruby 图片分类归档小程序"
 date: 2010-11-25 10:50
 comments: true
-categories: Ruby
+categories: 
+- Ruby{ruby}
 ---
 
 需求简述：

@@ -3,7 +3,10 @@ layout: post
 title: "MySQL 数据库自动备份脚本"
 date: 2010-11-19 00:19
 comments: true
-categories: [数据库,备份,MySQL]
+categories: 
+- 数据库{database}
+- 备份{backup}
+- MySQL{mysql}
 ---
 
 

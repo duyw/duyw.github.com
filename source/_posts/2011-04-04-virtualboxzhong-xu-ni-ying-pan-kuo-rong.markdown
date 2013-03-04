@@ -3,7 +3,8 @@ layout: post
 title: "virtualbox中虚拟硬盘扩容"
 date: 2011-04-04 17:17
 comments: true
-categories: 其他
+categories:
+- 其他{others}
 ---
 
 

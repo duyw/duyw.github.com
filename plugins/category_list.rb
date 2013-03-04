@@ -61,6 +61,7 @@ module Jekyll
       config = context.registers[:site].config
       category_dir = config['root'] + config['category_dir'] + '/'
       categories = context.registers[:site].categories
+
       categories.keys.sort_by{ |str| str.downcase }.each do |category|
         count = categories[category].count
         lists[category] = count
@@ -69,11 +70,14 @@ module Jekyll
 
       html = ''
       lists.each do | category, counter |
-        url = category_dir + category.gsub(/_|\P{Word}/, '-').gsub(/-{2,}/, '-').downcase
+
+        #url = category_dir + category.gsub(/_|\P{Word}/, '-').gsub(/-{2,}/, '-').downcase
+        url = category_dir + category[/(?<={)[^}]*/]        
         style = "font-size: #{100 + (60 * Float(counter)/max)}% ;"
-        html << "<a href='#{url}' style='#{style}'>#{category}"
+        html << "<a href='#{url}' style='#{style}'>#{category[/[^{]*/]}"
         if @opts['counter']
-          html << "(#{categories[category].count})"
+          # html << "(#{categories[category].count})"
+          html << "(#{counter})"
         end
         html << "</a>　　"
       end
