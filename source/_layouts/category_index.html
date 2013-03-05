@@ -2,6 +2,13 @@
 layout: default
 ---
 
+<br>
+<section>
+  <h1>Categories</h1><br>
+  <span id="tag-cloud">{% tag_cloud counter:true %}</span>
+</section>
+<br>
+
 {% for post in site.categories[page.category] %}
 	{% include archive_post.html %}
 {% endfor %}
