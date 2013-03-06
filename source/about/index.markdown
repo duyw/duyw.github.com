@@ -9,7 +9,7 @@ footer: true
 
 {% img left http://img14.poco.cn/mypoco/myphoto/20130301/18/1735728802013030118220907.jpg %}
 
-I am a web application development and very interest in programming.
+I am a web application developer and very interested in programming.
 I believe `Coding Changes the World` ！！！
 
 </br>
