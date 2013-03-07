@@ -5,6 +5,9 @@ date: 2010-12-29 14:06
 comments: true
 categories:
 - Rails{rails}
+- Oracle{oracle}
+- 数据库{database}
+
 ---
 
 
