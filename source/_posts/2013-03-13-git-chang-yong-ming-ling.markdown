@@ -8,7 +8,7 @@ categories:
 ---
 
 
-## Git 常用命令
+## Git 指令结构图
 
 ![Git 指令结构图](/images/post/git-transport.png "Git 指令结构图")
 
