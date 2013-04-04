@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ubuntu | 杜永文 博客]]></title>
   <link href="http://duyw.github.com/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://duyw.github.com/"/>
-  <updated>2013-04-04T23:18:34+08:00</updated>
+  <updated>2013-04-04T23:20:30+08:00</updated>
   <id>http://duyw.github.com/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -358,7 +358,7 @@ host all all 0.0.0.0 0.0.0.0 md5
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[A simple Script for installing ROR on ubuntu12.04]]></title>
+    <title type="html"><![CDATA[A simple Script for installing RoR on Ubuntu12.04]]></title>
     <link href="http://duyw.github.com/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04/"/>
     <updated>2013-03-04T11:48:00+08:00</updated>
     <id>http://duyw.github.com/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04</id>
