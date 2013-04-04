@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: GEM | 杜永文 博客]]></title>
+  <link href="http://duyw.github.com/blog/categories/gem/atom.xml" rel="self"/>
+  <link href="http://duyw.github.com/"/>
+  <updated>2013-04-04T23:18:34+08:00</updated>
+  <id>http://duyw.github.com/</id>
+  <author>
+    <name><![CDATA[Du Yongwen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GEM 更新]]></title>
+    <link href="http://duyw.github.com/blog/2013/04/04/gem-geng-xin/"/>
+    <updated>2013-04-04T21:56:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/04/04/gem-geng-xin</id>
+    <content type="html"><![CDATA[<p>更新方法：</p>
+
+<ol>
+<li><p>从低版本升级到高版本</p>
+
+<p><code>gem update –system</code></p></li>
+<li><p>从高版本降到低版本</p></li>
+</ol>
+
+
+<p>  从 <a href="http://rubyforge.org/frs/?group_id=126">RubyForge</a> 下载需要的版本,以tgz格式为例:</p>
+
+<p>  先解压  <code>tar zxf gem_name_xxxxx</code></p>
+
+<p>  cd 进去 <code>ruby setup.rb</code></p>
+
+<p>  查看帮助: <code>ruby setup.rb --help</code></p>
+
+<p>参考：<a href="https://rubygems.org/pages/download">https://rubygems.org/pages/download</a></p>
+]]></content>
+  </entry>
+  
+</feed>

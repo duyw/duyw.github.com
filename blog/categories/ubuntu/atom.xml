@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ubuntu | 杜永文 博客]]></title>
   <link href="http://duyw.github.com/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://duyw.github.com/"/>
-  <updated>2013-04-04T21:54:23+08:00</updated>
+  <updated>2013-04-04T23:18:34+08:00</updated>
   <id>http://duyw.github.com/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -14,7 +14,134 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Ubuntu12.04 安装PostgreSQL和PgAdmin3]]></title>
+    <title type="html"><![CDATA[Ubuntu12.04 安装 Sublime Text 2 ]]></title>
+    <link href="http://duyw.github.com/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2/"/>
+    <updated>2013-04-04T22:41:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2</id>
+    <content type="html"><![CDATA[<p>Sublime Text 2 是一款非常优秀的编辑器，可以媲美苹果系统下的TextMate，用Sublime Text 2 进行RoR开发是一件很惬意的事，在Ubuntu12.04系统下安装步骤如下：</p>
+
+<ol>
+<li><p>到<a href="http://www.sublimetext.com/2">官网</a>下载软件包： “Sublime Text 2.0.1.tar.bz2”。</p></li>
+<li><p>复制到安装目录。</p></li>
+<li><p>解压缩。</p></li>
+<li><p>进入目录，创建desktop文件（sublime-text.desktop），并赋予可执行权限，启动sublime text 2 就直接运行该文件，这样就可以锁定在启动器，内容如下：</p>
+
+<pre><code> #!/usr/bin/env xdg-open
+
+ [Desktop Entry]
+ Name=Sublime Text 2
+ Comment=Sublime Text 2
+ Exec=/home/ivan/apps/"Sublime Text 2"/sublime_text
+ Icon=/home/ivan/apps/Sublime Text 2/Icon/256x256/sublime_text.png
+ Terminal=false
+ Type=Application
+ Categories=Application;Development;
+ StartupNotify=true
+ Name[zh_CN]=sublime-text
+</code></pre>
+
+<p> 如果将文件复制到<code>/usr/share/applications/</code>目录下，就可以在Dash中被搜索到。</p></li>
+<li><p>破解：</p>
+
+<p> 首先备份安装目录下的sublime_text文件<code>cp sublime_text sublime_text.bak</code></p>
+
+<p> 使用vim打开：<code>vim sublime_text</code> (如果没有安装vim，可以通过命令<code>sudo apt-get install vim</code>安装。)</p>
+
+<p> 将文件转化成16进制,在vim中输入：<code>:%!xxd</code></p>
+
+<p> 查找要修改的地方,在vim中输入： <code>/4333 3342</code></p>
+
+<p> 将3342修改为3242</p>
+
+<p> 将文件转换回去,在vim中输入： <code>:%!xxd -r</code></p>
+
+<p> 保存文件、退出,在vim中输入： <code>:wq</code></p>
+
+<p> 打开sublime text 2 编辑器，将下面的Licence填入即可大功告成：</p>
+
+<pre><code> —–BEGIN LICENSE—–
+ China
+ Unlimited User License
+ EA7E-2861
+ BE67D2175D3569FDAB9EB5340FAD2822
+ E7B56B3397A76AA9FBE8AC3D3C65918B
+ DFC28F2EA158140D9E07853D594818EB
+ 3A237B2E8E98ED257C269548F50EDA34
+ EF0C7F72D8917DB538A0245E46BFD6B1
+ 85F4EDE331F253530ED67A5C19E92399
+ 04C5F4A1AF4AF3DB5EC49C1FEE17CA76
+ 7E369F8AAE4AC6C6E756B5882E1608B9
+ —–END LICENSE—–
+</code></pre></li>
+<li><p>创建链接，这样就可以直接在命令行中通过 sub 命令启动</p>
+
+<p> <code>sudo ln -s /home/ivan/apps/Sublime\ Text\ 2/sublime_text /usr/bin/sub</code></p></li>
+<li><p>安装插件安装管理工具“package control”</p>
+
+<p> 打开 Sublime Text 2，按下 Control + ` 调出 Console，输入以下内容，回车执行：</p>
+
+<pre><code> import urllib2,os;pf='Package Control.sublime-package';ipp=sublime.installed_packages_path();os.makedirs(ipp) if not os.path.exists(ipp) else None;open(os.path.join(ipp,pf),'wb').write(urllib2.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read())
+</code></pre></li>
+<li><p>解决ubuntu12.04系统下中文输入问题：</p>
+
+<p> 需要通过安装InputHelper插件来实现中文输入：</p>
+
+<p> <code>cd ~/.config/sublime-text-2/Packages/</code></p>
+
+<p> <code>git clone https://github.com/xgenvn/InputHelper.git</code></p>
+
+<p> 也可以通过 package control 来安装.</p>
+
+<p> 使用方法：重启 Sublime Text 2 ,通过快捷键 Shift ＋ Ctrl ＋ Z 来呼出输入窗口，可在其中输入汉字，输入完成直接回车即可。</p></li>
+<li><p>相关插件介绍</p>
+
+<p> 待续...</p></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu12.04 安装 JDK]]></title>
+    <link href="http://duyw.github.com/blog/2013/04/04/ubuntu12-dot-04an-zhuang-jdk/"/>
+    <updated>2013-04-04T22:30:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/04/04/ubuntu12-dot-04an-zhuang-jdk</id>
+    <content type="html"><![CDATA[<p>很多软件运行需要JRE环境，下面的方法用于在Ubuntu中安装JDK：</p>
+
+<ol>
+<li><p>首先下载java，点击<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6downloads-1902814.html">这里</a>下载
+（这里以“jdk-6u26-linux-i586.bin”为例）下载好以后放到安装位置（这里以 ~/apps 目录为例）。</p></li>
+<li><p>设置安装文件权限： <code>chmod u+x ./jdk-6u26-linux-i586.bin</code></p></li>
+<li><p>安装：<code>sudo -s ./jdk-6u26-linux-i586.bin</code></p></li>
+<li><p>配置环境变量：</p></li>
+</ol>
+
+
+<p>  <code>sudo gedit /etc/profile</code></p>
+
+<p>   在文件末尾写入以下内容：</p>
+
+<pre><code>    #set java environment    
+
+    JAVA_HOME=/home/ivan/apps/jdk1.6.0_26   
+
+    export JRE_HOME=/home/ivan/apps/jdk1.6.0_26/jre   
+
+    export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH   
+
+    export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH 
+
+    #set java environment
+</code></pre>
+
+<p>5 测试：</p>
+
+<p>  重启terminal,执行： <code>java -version</code> ，输出版本信息，说明安装成功。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu12.04 安装 PostgreSQL 和 PgAdmin3]]></title>
     <link href="http://duyw.github.com/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-postgresqlhe-pgadmin3/"/>
     <updated>2013-04-04T19:33:00+08:00</updated>
     <id>http://duyw.github.com/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-postgresqlhe-pgadmin3</id>

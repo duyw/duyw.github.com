@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Markdown | 杜永文 博客]]></title>
+  <link href="http://duyw.github.com/blog/categories/markdown/atom.xml" rel="self"/>
+  <link href="http://duyw.github.com/"/>
+  <updated>2013-04-04T23:18:34+08:00</updated>
+  <id>http://duyw.github.com/</id>
+  <author>
+    <name><![CDATA[Du Yongwen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[markdown使用学习]]></title>
+    <link href="http://duyw.github.com/blog/2013/02/28/markdownshi-yong-xue-xi/"/>
+    <updated>2013-02-28T15:13:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/02/28/markdownshi-yong-xue-xi</id>
+    <content type="html"><![CDATA[<h3>Markdown简介</h3>
+
+<hr />
+
+<p>　　Markdown 是一种轻量级的标记语言，由John Gruber和Aaron Swartz创建，使其成为可读性最大并可再发行的可输入输出的格式。这种语言创建灵感来自于已经存在的带标记的电子邮件文本。Markdown 允许 HTML 语法，所以使用者如果需要可以直接用 HTML来表示是可以的。Markdown最初由Gruber应用在Perl语言中，但现在已经有多种编程语言应用了。它是开源项目，并以BSD-style许可证的许可方式以插件形式或内容管理系统形式发布。</p>
+
+<!-- more -->
+
+
+<h3>快速上手</h3>
+
+<hr />
+
+<h3>标题</h3>
+
+<p>```</p>
+
+<h1>这是 H1</h1>
+
+<h2>这是 H2</h2>
+
+<h6>这是 H6</h6>
+
+<p>```</p>
+
+<h3>文字样式</h3>
+
+<p>粗体用“<em>*”或者“__”包围，斜体用“</em>”或者“_”</p>
+
+<p>粗体： <strong>粗体</strong>      写法：<code>**粗体**</code>或者<code>__粗体__</code></p>
+
+<p>斜体： <em>斜体</em>      写法： <code>_斜体_</code>或者<code>*斜体*</code></p>
+
+<h3>分隔符</h3>
+
+<p>在一行中使用三个或三个以上的*、-或_可以添加分隔线，其中可以有空白，但是不能有其他字符。</p>
+
+<h3>段落</h3>
+
+<p>　　由一个或多个连续的文本行组成，它的前后要有一个以上的空行。</p>
+
+<h3>引用</h3>
+
+<p>```</p>
+
+<blockquote><p>这是一个引用，
+这里木有换行， <br/>
+在这里换行了。</p>
+
+<blockquote><p>内部嵌套
+```</p></blockquote></blockquote>
+
+<p>效果：</p>
+
+<blockquote><p>这是一个引用，
+这里木有换行， <br/>
+在这里换行了。</p>
+
+<blockquote><p>内部嵌套</p></blockquote></blockquote>
+
+<h3>列表</h3>
+
+<p>　　Markdown 支持有序列表和无序列表。</p>
+
+<ul>
+<li>无序列表使用星号、加号或是减号作为列表标记：</li>
+</ul>
+
+
+<p><code>
+*   Red
+*   Green
+*   Blue
+</code></p>
+
+<p>等同于：
+<code>
++   Red
++   Green
++   Blue
+</code></p>
+
+<p>也等同于：
+<code>
+-   Red
+-   Green
+-   Blue
+</code>
+* 有序列表则使用数字（任意数字即可，相同数字也ok）接着一个英文句点：</p>
+
+<p><code>
+1.  Bird
+2.  McHale
+3.  Parish
+</code></p>
+
+<p><code>
+1.  Bird
+1.  McHale
+1.  Parish
+</code></p>
+
+<h3>内容区块</h3>
+
+<p>用一个缩进或者反单引号来将需要突出显示内容区块
+例如：</p>
+
+<p>```</p>
+
+<pre><code>以热爱祖国为荣，以危害祖国为耻；
+以服务人民为荣，以背离人民为耻；
+以崇尚科学为荣，以愚昧无知为耻；
+以辛勤劳动为荣，以好逸恶劳为耻；
+以团结互助为荣，以损人利己为耻；
+以诚实守信为荣，以见利忘义为耻；
+以遵纪守法为荣，以违法乱纪为耻；
+以艰苦奋斗为荣，以骄奢淫逸为耻。
+</code></pre>
+
+<p>```</p>
+
+<pre><code>以热爱祖国为荣，以危害祖国为耻；
+以服务人民为荣，以背离人民为耻；
+以崇尚科学为荣，以愚昧无知为耻；
+以辛勤劳动为荣，以好逸恶劳为耻；
+以团结互助为荣，以损人利己为耻；
+以诚实守信为荣，以见利忘义为耻；
+以遵纪守法为荣，以违法乱纪为耻；
+以艰苦奋斗为荣，以骄奢淫逸为耻。
+</code></pre>
+
+<h3>代码区块</h3>
+
+<ul>
+<li>用三个 “`”符号包围代码：</li>
+</ul>
+
+
+<p><code>
+</code>
+def update
+  respond_to do |format|</p>
+
+<pre><code>if @comment.update_attributes(params[:comment])
+  format.js
+else
+  render :json =&gt; :error
+end
+</code></pre>
+
+<p>  end
+end
+<code>`</code>
+```</p>
+
+<p>Octopress中可以为代码着色，写法：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>代码说明： </span><a href='http://www.baidu.com'>链接到百度 </a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">update</span>
+</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;if @comment.update_attributes(params[:comment])</span>
+</span><span class='line'><span class="sr">  format.js</span>
+</span><span class='line'><span class="sr">else</span>
+</span><span class='line'><span class="sr">  fromat.html</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
+</span><span class='line'><span class="sr">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>单行代码</li>
+</ul>
+
+
+<p>用反引号包围要显示的<code>单行</code>代码片段:
+<code>&lt;img src="http://duyw.github.com/path/to/img.jpg" alt="alt text" title="Title" /&gt;</code></p>
+
+<h3>图片</h3>
+
+<p><img src="http://l.ruby-china.org/assets/text_logo-e616f2a05abc2e0ebea1f8c6cac685d7.png" title="Ruby China的logo" alt="Ruby China的logo" />
+写法：
+<code>
+![Ruby China的logo](http://l.ruby-china.org/assets/text_logo-e616f2a05abc2e0ebea1f8c6cac685d7.png "Ruby China的logo")
+</code>
+图片的另一种写法：
+```
+<img src="http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif" title="Optional title attribute1" alt="第一张百度logo图" />
+<img src="http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif" title="Optional title attribute2" alt="第二张百度logo图" /></p>
+
+<p>```
+效果：</p>
+
+<p><img src="http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif" title="Optional title attribute1" alt="第一张百度logo图" />
+<img src="http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif" title="Optional title attribute2" alt="第二张百度logo图" />
+在octopress中图片写法：</p>
+
+<pre><code><img class="[left|right] [class names]" src="/path/to/image" title="[width] [height] [title text [alt text]]" >
+</code></pre>
+
+<p>效果</p>
+
+<p><img src="http://placekitten.com/890/280">
+<img class="left" src="http://placekitten.com/320/250" title="Place Kitten #2" >
+<img class="right" src="http://placekitten.com/300/500" width="150" height="250" title="Place Kitten #3" >
+<img class="right" src="http://placekitten.com/300/500" width="150" height="250" title="Place Kitten #4" alt="An image of a very cute kitten"></p>
+
+<h3>链接</h3>
+
+<p>这是一个无title链接： <a href="http://www.baidu.com/">百度</a>
+写法：
+<code>
+[百度](http://www.baidu.com/)
+</code>
+这是一个有title链接： <a href="http://www.baidu.com/" title="点击打开百度首页">百度</a>
+<code>
+[百度](http://www.baidu.com/ "点击打开百度首页")
+</code></p>
+
+<p>I get 10 times more traffic from <a href="http://google.com/" title="Google">Google</a> than from
+<a href="http://search.yahoo.com/" title="Yahoo Search">Yahoo</a> or <a href="http://search.msn.com/" title="MSN Search">MSN</a>.
+<code>
+I get 10 times more traffic from [Google][aaaa] than from
+[Yahoo][bbbb] or [MSN][cccc].
+</code></p>
+
+<p>最后贴一张儿子的照片 ～～～</p>
+
+<p><img src="http://p13.freep.cn/p.aspx?u=v20_p13_photo_1302281746571604_0.jpg" title="儿子照片" alt="儿子照片" /></p>
+]]></content>
+  </entry>
+  
+</feed>

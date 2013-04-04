@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Java | 杜永文 博客]]></title>
+  <link href="http://duyw.github.com/blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://duyw.github.com/"/>
+  <updated>2013-04-04T23:18:34+08:00</updated>
+  <id>http://duyw.github.com/</id>
+  <author>
+    <name><![CDATA[Du Yongwen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu12.04 安装 JDK]]></title>
+    <link href="http://duyw.github.com/blog/2013/04/04/ubuntu12-dot-04an-zhuang-jdk/"/>
+    <updated>2013-04-04T22:30:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/04/04/ubuntu12-dot-04an-zhuang-jdk</id>
+    <content type="html"><![CDATA[<p>很多软件运行需要JRE环境，下面的方法用于在Ubuntu中安装JDK：</p>
+
+<ol>
+<li><p>首先下载java，点击<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6downloads-1902814.html">这里</a>下载
+（这里以“jdk-6u26-linux-i586.bin”为例）下载好以后放到安装位置（这里以 ~/apps 目录为例）。</p></li>
+<li><p>设置安装文件权限： <code>chmod u+x ./jdk-6u26-linux-i586.bin</code></p></li>
+<li><p>安装：<code>sudo -s ./jdk-6u26-linux-i586.bin</code></p></li>
+<li><p>配置环境变量：</p></li>
+</ol>
+
+
+<p>  <code>sudo gedit /etc/profile</code></p>
+
+<p>   在文件末尾写入以下内容：</p>
+
+<pre><code>    #set java environment    
+
+    JAVA_HOME=/home/ivan/apps/jdk1.6.0_26   
+
+    export JRE_HOME=/home/ivan/apps/jdk1.6.0_26/jre   
+
+    export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH   
+
+    export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH 
+
+    #set java environment
+</code></pre>
+
+<p>5 测试：</p>
+
+<p>  重启terminal,执行： <code>java -version</code> ，输出版本信息，说明安装成功。</p>
+]]></content>
+  </entry>
+  
+</feed>
