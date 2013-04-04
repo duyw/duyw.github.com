@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 数据库 | 杜永文 博客]]></title>
+  <link href="http://duyw.github.com/blog/categories/database/atom.xml" rel="self"/>
+  <link href="http://duyw.github.com/"/>
+  <updated>2013-04-04T21:48:40+08:00</updated>
+  <id>http://duyw.github.com/</id>
+  <author>
+    <name><![CDATA[Du Yongwen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu12.04 安装PostgreSQL和PgAdmin3]]></title>
+    <link href="http://duyw.github.com/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-postgresqlhe-pgadmin3/"/>
+    <updated>2013-04-04T19:33:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-postgresqlhe-pgadmin3</id>
+    <content type="html"><![CDATA[<h3>1.安装</h3>
+
+<p>安装：</p>
+
+<p><code>sudo apt-get install postgresql postgresql-client \
+postgresql-server-dev-all</code></p>
+
+<p>或者指定版本号：</p>
+
+<pre><code>sudo apt-get install -y postgresql-9.1 postgresql-client-9.1 postgresql-contrib-9.1 \
+postgresql-server-dev-9.1
+</code></pre>
+
+<p>启动：<code>sudo /etc/init.d/postgresql start</code></p>
+
+<p>停止：<code>sudo /etc/init.d/postgresql stop</code></p>
+
+<p>重启：<code>sudo /etc/init.d/postgresql restart</code></p>
+
+<p>察看状态：<code>sudo /etc/init.d/postgresql status</code></p>
+
+<p>另外，也可以使用命令：<code>sudo service postgresql  [start/stop/restart/status]</code></p>
+
+<p>以上命令将把PostgreSQL安装到以下目录：</p>
+
+<pre><code>/usr/lib/postgresql/9.1/        存放postgresql相关的二进制文件
+/usr/lib/postgresql/9.1/bin/    可执行文件 
+/usr/lib/postgresql/9.1/lib/    共享库文件 
+/etc/postgres/9.1/main/         存放postgresql配置文文件 
+/var/lib/postgresql/            postgres用户的主文件夹
+</code></pre>
+
+<h3>2.配置管理员“postgres”，使用psql</h3>
+
+<p>PostgreSQL数据默认会创建一个linux用户postgres，需要修改操作系统“postgres”用户的密码为“postgres”：</p>
+
+<ol>
+<li><p>删除密码：<code>sudo passwd -d postgres  //passwd -d 是清空指定用户密码的意思</code></p></li>
+<li><p>设置密码：<code>sudo -u postgres passwd  //或者 sudo su postgres -c passwd</code></p></li>
+</ol>
+
+
+<p>用sudo权限以用户postgres身份登陆PostgreSQL:</p>
+
+<pre><code>sudo -u postgres psql [ -U postgres -h 127.0.0.1]   
+// 运行psql,后面[]中的内容可选，用于登录服务器，默认会登录本机；
+</code></pre>
+
+<p>或者：</p>
+
+<p><code>sudo su postgres -c psql template1（PostgreSQL的默认数据库是template1）</code></p>
+
+<p>运行 PostgreSQL 交互的终端程序， 叫 psql，它允许你交互地输入，编辑，和执行 SQL 命令。</p>
+
+<p>启动 psql：<code>psql mydb</code>（以用户postgres登陆psql：<code>sudo su postgres -c psql</code>）</p>
+
+<p>在 psql 里输入help命令，你会看到下面的提示信息：</p>
+
+<pre><code>You are using psql, the command-line interface to PostgreSQL.
+Type:  \copyright for distribution terms
+          \h for help with SQL commands
+          \? for help with psql commands
+          \g or terminate with semicolon to execute query
+          \q to quit
+</code></pre>
+
+<p>修改PostgreSQL的管理员用户postgres的密码为“postgres”（同操作系统用户postgres的密码一样）：</p>
+
+<p><code>postgres=# ALTER USER postgres WITH PASSWORD 'postgres';</code></p>
+
+<p>查询当前使用的postgresql版本：<code>SELECT version()；</code></p>
+
+<p>查询大概年前日期：            <code>SELECT current_date;</code></p>
+
+<p>现在，我们就可以在数据库服务器上用 postgres帐号通过psql或者pgAdmin等等客户端操作数据库了
+（暂时还不能远程访问）。</p>
+
+<h3>3.管理PostgreSQL用户</h3>
+
+<p>1 创建新用户pgsql，但不给建数据库的权限，有两中创建方式：</p>
+
+<p><strong>一种是在外部命令行直接创建：</strong></p>
+
+<p>  命令：<code>createuser [-a] [-A] [-d] [-D] [-e] [-P] [-h 主机名] [-p port] 用户名</code></p>
+
+<pre><code>参数说明：
+[-a]：允许创建其他用户，相当于创建一个超级用户；
+[-A]：不允许此用户创建其他用户；
+[-d]：允许此用户创建数据库；
+[-D]：不允许此用户创建数据库；
+[-e]：将执行过程显示到Shell上；
+[-P]：创建用户时，同时设置密码；
+[-h 主机名]：为某个主机上的Postgres创建用户；
+[-p port]：与-h参数一同使用，指定主机的端口。
+</code></pre>
+
+<p>例如：</p>
+
+<p><code>ivan@ubuntu:~$ sudo -u postgres createuser -D -P pgsql</code></p>
+
+<p>执行以后会看到如下提示：</p>
+
+<pre><code>Enter password for new role: 
+Enter it again: 
+Shall the new role be a superuser? (y/n) n
+Shall the new role be allowed to create more new roles? (y/n) n
+</code></pre>
+
+<p><strong>另一种方式是登陆psql，通过SQL语句创建：</strong></p>
+
+<p>首先登陆：</p>
+
+<p><code>ivan@ubuntu:~$ psql -U postgres -h 127.0.0.1</code></p>
+
+<p>然后创建：</p>
+
+<pre><code>postgres=# create user “pgsql” with password ‘123456’ nocreatedb; 
+//用户名和数据库名称加上引号后才区分大小写，否则会自动转换成小写
+</code></pre>
+
+<p>2 删除用户：</p>
+
+<p>外部：<code>sudo -u postgres dropuser pgsql</code></p>
+
+<p>内部：``</p>
+
+<h3>4.创建和删除数据库</h3>
+
+<p>同样有外部命令行和psql的SQL语句这两种创建方式。</p>
+
+<p>创建数据库 mydb, 其拥有者是pgsql用户：</p>
+
+<p>1  通过命令行创建（shell命令）：</p>
+
+<p>创建数据库：<code>sudo -u postgres createdb mydb -O pgsql   // -O 设定所有者pgsql；</code></p>
+
+<p>删除数据库：<code>sudo -u postgres dropdb   mydb</code></p>
+
+<p>2  通过psql来创建(sql命令)：</p>
+
+<p>首先利用psql登录PostgreSQL服务器:</p>
+
+<pre><code>sudo -u postgres psql [ -U postgres -h 127.0.0.1]  
+//运行psql,后面[]中的内容可选，用于登录服务器，默认会登录本机；`
+</code></pre>
+
+<p>然后在psql程序中创建数据库（需要先创建好pgsql用户）:</p>
+
+<p><code>create database “mydatabase” with owner=pgsql;</code></p>
+
+<h3>5.数据库导入导出</h3>
+
+<p><strong>导出：</strong>取得服务器 192.168.1.1 上 PostgreSQL中pgsql用户的mydb数据库，导出到当前目录下的 mydb.dump 文件：</p>
+
+<p><code>pg_dump -h 192.168.1.1 -U pgsql -Fc mydb &gt; mydb.dump</code></p>
+
+<p><strong>导入：</strong>将导出的文件 mydb.dump 导入到本地PostgreSQL数据库中pgsql用户下(需要提前创建pgsql用户），要求导入后的数据库名称为“mydb”</p>
+
+<p><code>pg_restore ./mydb.dump | psql -Upgsql -d mydb</code></p>
+
+<h3>6.修改PostgresSQL数据库配置实现远程访问</h3>
+
+<p><code>ivan@ubuntu:~$ sudo vim /etc/postgresql/9.1/main/postgresql.conf</code></p>
+
+<p>1.监听任何地址访问，修改连接权限</p>
+
+<p><code>#listen_addresses = ‘localhost’  改为 listen_addresses = ‘*’</code></p>
+
+<p>2.启用密码验证</p>
+
+<p><code>#password_encryption = on      改为   password_encryption = on</code></p>
+
+<p>3.可访问的用户ip段</p>
+
+<p><code>ivan@ubuntu:~$ sudo vim /etc/postgresql/9.1/main/pg_hba.conf</code></p>
+
+<p>并在文档末尾加上以下内容</p>
+
+<pre><code># to allow your client visiting postgresql server
+host all all 0.0.0.0 0.0.0.0 md5
+</code></pre>
+
+<p>解释一下最后一行：</p>
+
+<pre><code>host表示允许的类型是主机； 
+第一个all是允许的数据库名字； 
+第二个all是允许的用户； 
+第一个0.0.0.0是允许访问的ip address； 
+第二个0.0.0.0是允许访问的subnet mask； 
+最后的md5表示密码的加密方式，如果将md5改成trust则可以让指定范围的主机数据库的时候不需要提供密码。
+关于 ip address 和 subnet mask ，你也可以修改为你的机器IP地址(如10.13.19.53)和子网掩码(如 255.255.255.255)，
+这样就只有你自己的主机可以远程访问数据库了。 如果要使用一个IP地址范围，只需要把子网掩码设置成合适的值，
+如果子网掩码设置成0.0.0.0，则所有主机均可以访问数据库（IP可以任意设定），
+如果将md5改成trust则可以让指定范围的主机访问指定的数据库的时候不需要提供密码。
+</code></pre>
+
+<p>4.重启PostgreSQL数据库</p>
+
+<p><code>ivan@ubuntu:~$ sudo /etc/init.d/postgresql restart</code></p>
+
+<h3>7.安装postgresql数据库pgAdmin3客户端管理程序</h3>
+
+<p><code>ivan@ubuntu:~$ sudo apt-get install -y pgadmin3</code></p>
+
+<p>遇到问题：</p>
+
+<p>1 安装过程中总是下载不了要安装的文件，更新源添加163源都无法解决，最后通过vpn翻墙以后可以正常安装。</p>
+
+<p>2 安装以后pgAdmin3固定到启动器后不显示图标，解决方法，修改/usr/share/applications目录下的 pgAdmin III.desktop文件，将其中的 Icon值改为“/usr/share/pixmaps/pgadmin3.svg”，搞定。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[rails 连接 Oracle]]></title>
+    <link href="http://duyw.github.com/blog/2010/12/29/rails-lian-jie-oracle/"/>
+    <updated>2010-12-29T14:06:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2010/12/29/rails-lian-jie-oracle</id>
+    <content type="html"><![CDATA[<p>我的环境如下：</p>
+
+<pre><code>ruby 1.8.7
+
+rails 2.3.8 
+
+本机安装 Oracle 11g客户端
+
+另一台电脑安装 Oracle 11g的服务器端
+</code></pre>
+
+<p>需要用到的gem包：</p>
+
+<pre><code>ruby-oci8
+
+activerecord-oracle-adapter
+</code></pre>
+
+<h3>操作步骤：</h3>
+
+<p> activerecord-oracle-adapter插件的使用说明：<a href="http://github.com/rsim/oracle-enhanced/wiki/Usage">跳转</a></p>
+
+<h4>1.首先将oracle客户端添加到系统环境变量中。</h4>
+
+<pre><code>注意：
+
+* Oracle 的密码不能为纯数字，否则报错。
+
+* 安装好客户端后要确保安装无误，可以访问到服务器。
+</code></pre>
+
+<h4>2.安装需要的gem包</h4>
+
+<p><code>
+gem install ruby-oci8-2.0.4-x86-mingw32.gem
+gem install activerecord-oracle-adapter --source http://gems.rubyonrails.org
+</code></p>
+
+<p>注意：安装好 oci8 后要测试 是否安装正确 方法是打开 irb 输入 require ‘oci8’ 如果不报错说明安装成功。</p>
+
+<p>另外可以用oci8测试 查询：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">OCI8</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;dyw1&#39;</span><span class="p">,</span><span class="s1">&#39;123456&#39;</span><span class="p">,</span><span class="s1">&#39;192.168.23.162/orcl&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s1">&#39;select * from journals&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">r</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<!-- more -->
+
+
+<h4>3.在rails项目中，进入config目录，修改 environment.rb 文件，添加如下内容：</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">gem</span> <span class="s2">&quot;activerecord-oracle_enhanced-adapter&quot;</span><span class="p">,</span> <span class="ss">:lib</span> <span class="o">=&gt;</span> <span class="s2">&quot;active_record/connection_adapters/oracle_enhanced_adapter&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>4.修改config目录下的 database.yml 文件，配置数据库的格式：</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>YAML代码:  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">adapter</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">oracle_enhanced</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">host</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">192.168.23.162/ORCL</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">username</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">OPAC</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">password</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">opac</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>5.在config/initializers 目录下创建文件 oracle.rb，当rails启动会自动执行，内容：</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:ConnectionAdapters</span><span class="o">::</span><span class="no">OracleEnhancedAdapter</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">emulate_integers_by_column_name</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">emulate_dates_by_column_name</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">emulate_booleans_from_strings</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">string_to_date_format</span> <span class="o">=</span> <span class="s2">&quot;%d.%m.%Y&quot;</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">string_to_time_format</span> <span class="o">=</span> <span class="s2">&quot;%d.%m.%Y %H:%M:%S&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<br>
+
+
+<hr />
+
+<h5>下面是网上找的一些资料：</h5>
+
+<p>rails开发中的Oracle问题</p>
+
+<p>1.关联查询时的条件字段要明确指定</p>
+
+<p>碰到的问题为mysql下order by id正常, Oracle报错：OCIError: ORA-00918: column ambiguously defined</p>
+
+<p>2.`表名`问题</p>
+
+<p>mysql会给表名外加 `` (注意不是单引号), 手工加条件(如排序: order by `departments`.id)时,mysql正常，Oracle报错： OCIError: ORA-00911: invalid character</p>
+
+<p>3.级联更新问题</p>
+
+<p>has_one、has_many如未设置:dependent=>:delete/:delete_all，解除子项关联时，默认会去更新子项的外键为NULL，mysql下没问题，Oracle报错：OCIError: ORA-01407: cannot update</p>
+
+<p>4.日期问题</p>
+
+<p>2个短格式(yyyy-mm-dd)日期(一个从数据库取)直接相减求时间差得到相差天数, mysql下正常，oracle下出错, 可以采取date.to_s(:db).to_date的办法解决</p>
+
+<p>5.修改字段</p>
+
+<p>如果字段值不为空，oracle下不可修改字段类型，mysql下可以，可以用增加临时字段的方式解决。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[MySQL 数据库自动备份脚本]]></title>
+    <link href="http://duyw.github.com/blog/2010/11/19/mysql-shu-ju-ku-zi-dong-bei-fen-jiao-ben/"/>
+    <updated>2010-11-19T00:19:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2010/11/19/mysql-shu-ju-ku-zi-dong-bei-fen-jiao-ben</id>
+    <content type="html"><![CDATA[<p>功能及说明：</p>
+
+<ol>
+<li><p>利用Linux的计划任务功能实现mysql数据库的定时备份，也可以手动执行 mysql_backup.sh</p></li>
+<li><p>备份文件名称按照日期存储</p></li>
+<li><p>可以删除旧的备份文件，只保留最近n天的备份数据源。</p></li>
+<li><p>备份过程都将记录到日志文件中，便于查看。</p></li>
+<li><p>提供三种备份方式，</p>
+
+<ul>
+<li><p>mysqldump：将数据导出为sql文件</p></li>
+<li><p>mysqlhotcopy：参看最后面的介绍</p></li>
+<li><p>tar：先停止mysql服务然后将数据库文件打包</p></li>
+</ul>
+</li>
+<li><p>如果已经做了当天的备份，重复执行不会覆盖原有备份，需要手动删除旧备份才可以重新生成备份文件</p></li>
+</ol>
+
+
+<!-- more -->
+
+
+<br>
+
+
+<p>操作步骤：</p>
+
+<h3>第1步  编写定时备份脚本mysql_backup.sh，内容如下：</h3>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>shell脚本: mysql_backup.sh  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;This is a ShellScript For Auto DB Backup&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;2010 -11&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Setting&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;设置数据库名，数据库登录名，密码，备份路径，日志路径，数据文件位置，&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;以及备份方式&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;默认情况下备份方式是tar，还可以是mysqldump,mysqldotcopy&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;默认情况下，用root<span class="o">(</span>空<span class="o">)</span>登录mysql数据库，备份至/root/namexxxxx.tgz&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;DBName <span class="o">=</span> zc
+</span><span class='line'><span class="nv">DBUser</span> <span class="o">=</span> root
+</span><span class='line'><span class="nv">DBPasswd</span> <span class="o">=</span> root
+</span><span class='line'><span class="nv">BackupPath</span> <span class="o">=</span> /root/zc_db_back/
+</span><span class='line'><span class="nv">LogFile</span> <span class="o">=</span> /root/zc_db_back/db.log
+</span><span class='line'><span class="nv">DBPath</span> <span class="o">=</span> /var/lib/mysql/&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;BackupMethod<span class="o">=</span>mysqldump&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;BackupMethod<span class="o">=</span>mysqlhotcopy&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;BackupMethod <span class="o">=</span> tar&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Setting End&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;NewFile <span class="o">=</span> <span class="s2">&quot;$BackupPath&quot;&quot;$DBName&quot;</span> _ <span class="k">$(</span> date +%Y%m%d <span class="k">)</span>.tgz
+</span><span class='line'><span class="nv">DumpFile</span> <span class="o">=</span> <span class="s2">&quot;$BackupPath&quot;&quot;$DBName&quot;</span> _ <span class="k">$(</span> date +%Y%m%d <span class="k">)</span>
+</span><span class='line'><span class="nv">OldFile</span> <span class="o">=</span> <span class="s2">&quot;$BackupPath&quot;&quot;$DBName&quot;</span> _ <span class="k">$(</span> date +%Y%m%d --date <span class="o">=</span> <span class="s1">&#39;3 days ago&#39;</span> <span class="k">)</span>.tgz&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;-------------------------------------------&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>
+</span><span class='line'><span class="nb">echo</span> <span class="k">$(</span> date + <span class="s2">&quot;%Y-%m-%d %H:%M:%S&quot;</span> <span class="k">)</span> &gt;&gt; <span class="nv">$LogFile</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;--------------------------&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Delete Old File&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;if <span class="o">[</span> -f <span class="nv">$OldFile</span> <span class="o">]</span>
+</span><span class='line'><span class="k">then</span>
+</span><span class='line'><span class="k">   </span>rm -f <span class="nv">$OldFile</span> &gt;&gt; <span class="nv">$LogFile</span> 2&gt;&amp;amp;1
+</span><span class='line'>   <span class="nb">echo</span> <span class="s2">&quot;[$OldFile]Delete Old File Success!&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'><span class="k">   </span><span class="nb">echo</span> <span class="s2">&quot;[$OldFile]No Old Backup File!&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>
+</span><span class='line'><span class="k">fi</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;if <span class="o">[</span> -f <span class="nv">$NewFile</span> <span class="o">]</span>
+</span><span class='line'><span class="k">then</span>
+</span><span class='line'><span class="k">   </span><span class="nb">echo</span> <span class="s2">&quot;[$NewFile]The Backup File is exists,Can&#39;t Backup!&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'><span class="k">   case</span> <span class="nv">$BackupMethod</span> in
+</span><span class='line'>   mysqldump <span class="o">)</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;  <span class="k">if</span> <span class="o">[</span> -z <span class="nv">$DBPasswd</span> <span class="o">]</span>
+</span><span class='line'>  <span class="k">then </span>
+</span><span class='line'><span class="k">     </span>mysqldump -u <span class="nv">$DBUser</span> --opt <span class="nv">$DBName</span> &amp;gt; <span class="nv">$DumpFile</span>
+</span><span class='line'>  <span class="k">else </span>
+</span><span class='line'><span class="k">     </span>mysqldump -u <span class="nv">$DBUser</span> -p <span class="nv">$DBPasswd</span> --opt <span class="nv">$DBName</span> &amp;gt; <span class="nv">$DumpFile</span>
+</span><span class='line'>  <span class="k">fi </span>
+</span><span class='line'><span class="k">  </span>tar czvf <span class="nv">$NewFile</span> <span class="nv">$DumpFile</span> &amp;gt;&amp;gt; <span class="nv">$LogFile</span> 2&amp;gt;&amp;amp;1
+</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;[$NewFile]Backup Success!&quot;</span> &amp;gt;&amp;gt; <span class="nv">$LogFile</span>
+</span><span class='line'>  rm -rf <span class="nv">$DumpFile</span>
+</span><span class='line'>  ;;
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;   mysqlhotcopy <span class="o">)</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;  rm -rf <span class="nv">$DumpFile</span>
+</span><span class='line'>  mkdir <span class="nv">$DumpFile</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> -z <span class="nv">$DBPasswd</span> <span class="o">]</span>
+</span><span class='line'>  <span class="k">then </span>
+</span><span class='line'><span class="k">     </span>mysqlhotcopy -u <span class="nv">$DBUser</span> <span class="nv">$DBName</span> <span class="nv">$DumpFile</span> &amp;gt;&amp;gt; <span class="nv">$LogFile</span> 2&amp;gt;&amp;amp;1
+</span><span class='line'>  <span class="k">else </span>
+</span><span class='line'><span class="k">     </span>mysqlhotcopy -u <span class="nv">$DBUser</span> -p <span class="nv">$DBPasswd</span> <span class="nv">$DBName</span> <span class="nv">$DumpFile</span> &amp;gt;&amp;gt; <span class="nv">$LogFile</span> 2&amp;gt;&amp;amp;1
+</span><span class='line'>  <span class="k">fi </span>
+</span><span class='line'><span class="k">  </span>tar czvf <span class="nv">$NewFile</span> <span class="nv">$DumpFile</span> &amp;gt;&amp;gt; <span class="nv">$LogFile</span> 2&amp;gt;&amp;amp;1
+</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;[$NewFile]Backup Success!&quot;</span> &amp;gt;&amp;gt; <span class="nv">$LogFile</span>
+</span><span class='line'>  rm -rf <span class="nv">$DumpFile</span>
+</span><span class='line'>  ;;
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;ul&gt;
+</span><span class='line'>&lt;li&gt; <span class="o">)</span>
+</span><span class='line'>  service mysql stop &gt;&gt; <span class="nv">$LogFile</span> 2&gt;&amp;amp;1
+</span><span class='line'>  tar czvf <span class="nv">$NewFile</span> <span class="nv">$DBPath$DBName</span> &gt;&gt; <span class="nv">$LogFile</span> 2&gt;&amp;amp;1
+</span><span class='line'>  service mysql start &gt;&gt; <span class="nv">$LogFile</span> 2&gt;&amp;amp;1
+</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;[$NewFile]Backup Success!&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>
+</span><span class='line'>  ;;
+</span><span class='line'><span class="k">esac</span>
+</span><span class='line'><span class="k">fi</span>&lt;/li&gt;
+</span><span class='line'>&lt;/ul&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;-------------------------------------------&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>第2步 修改参数</h3>
+
+<p>参数包括：“设置数据库名，数据库登录名，密码，备份路径，日志路径，数据文件位置，备份方式”</p>
+
+<blockquote><p>注意：备份路径必须是存在的路径</p></blockquote>
+
+<h3>第3步  将脚本 mysql_backup.sh 设置为可执行</h3>
+
+<p><code>chmod 755 mysql_backup.sh</code></p>
+
+<h3>第4步 编辑定时任务，在root的crontab中，设置脚本执行周期(每天凌晨3点)</h3>
+
+<p>关闭服务：<code>service crond stop</code></p>
+
+<p>编辑任务列表： <code>crontab -e</code></p>
+
+<p>添加内容： <code>0 3 * * * /root/Desktop/mysql_backup.sh</code></p>
+
+<p>启动服务： <code>service crond start</code></p>
+
+<p>重建加载： <code>service crond reload</code></p>
+
+<h3>5 数据恢复：</h3>
+
+<p>备份文件均为tar包，需要用tar解包，如果要恢复备份的数据，请先关闭mysql服务，</p>
+
+<p>打包 ： <code>tar cvf + 打包后文件名 + 需打包文件夹名</code></p>
+
+<p>解包 ： <code>tar xvf + 包名</code></p>
+
+<p>将解出来的文件复制到mysql 数据库位置然后重新启动mysql服务即可。</p>
+
+<br>
+
+
+<hr />
+
+<br>
+
+
+<p>　　mysqlhotcopy是一个Perl脚本，最初由Tim Bunce编写并提供。它使用LOCK TABLES、FLUSH TABLES和cp或scp来快速备份数据库。它是备份数据库或单个表的最快的途径，但它只能运行在数据库目录所在的机器上。mysqlhotcopy只用于备份MyISAM。它运行在Unix和NetWare中。</p>
+
+<p>mysqlhotcopy与mysqldump比较：</p>
+
+<ol>
+<li><p>前者是一个快速文件意义上的COPY，后者是一个数据库端的SQL语句集合。</p></li>
+<li><p>前者只能运行在数据库目录所在的机器上，后者可以用在远程客户端，不过备份的文件还是保存在服务器上。</p></li>
+<li><p>相同的地方都是在线执行 LOCK TABLES 以及 UNLOCK TABLES</p></li>
+<li><p>前者恢复只需要COPY备份文件到源目录覆盖即可，后者需要导入SQL文件到原库中。(source 或 mysql &lt; bakfile.sql)</p></li>
+<li><p>前者只适用于 MyISAM 引擎，而后则则可同时使用于MyISAM引擎和InodDB引擎.</p></li>
+<li><p>前者在使用前必须安装perl-DBD-mysql包,而后者则不需要.</p></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Windows MySQL 服务自动管理脚本]]></title>
+    <link href="http://duyw.github.com/blog/2010/06/20/windows-mysql-fu-wu-zi-dong-guan-li-jiao-ben/"/>
+    <updated>2010-06-20T00:09:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2010/06/20/windows-mysql-fu-wu-zi-dong-guan-li-jiao-ben</id>
+    <content type="html"><![CDATA[<p>脚本说明：在开发过程中由于经常需要启动或停止MySQL服务，非常麻烦，于是编写了这个简单的批处理脚本，自动判断MySQL服务如果是启动状态则停止该服务，如果未启动，则启动。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>脚本名称：mysql server.bat  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='bat'><span class='line'><span class="p">@</span><span class="k">echo</span> <span class="k">off</span>
+</span><span class='line'>color b<span class="m">0</span>
+</span><span class='line'>title 启动<span class="n">/关闭</span> MySQL服务
+</span><span class='line'>tasklist <span class="n">/nh|</span> @findstr <span class="n">/i</span> <span class="s2">&quot;mysqld-nt.exe&quot;</span>
+</span><span class='line'><span class="k">set</span>  <span class="nv">dyw</span><span class="o">=</span><span class="nv">%ERRORLEVEL%</span>&lt;<span class="n">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="n">if</span> <span class="nv">%dyw%</span> <span class="o">==</span> <span class="m">1</span> (
+</span><span class='line'>  net start mysql
+</span><span class='line'>) <span class="k">else</span> (
+</span><span class='line'>  net stop mysql
+</span><span class='line'>)
+</span><span class='line'>ping -n <span class="m">3</span> <span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">1</span><span class="p">&gt;</span><span class="n">nul</span>
+</span><span class='line'>exit
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+</feed>

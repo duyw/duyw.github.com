@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby | 杜永文 博客]]></title>
+  <link href="http://duyw.github.com/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://duyw.github.com/"/>
+  <updated>2013-04-04T21:48:40+08:00</updated>
+  <id>http://duyw.github.com/</id>
+  <author>
+    <name><![CDATA[Du Yongwen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[A simple Script for installing ROR on ubuntu12.04]]></title>
+    <link href="http://duyw.github.com/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04/"/>
+    <updated>2013-03-04T11:48:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04</id>
+    <content type="html"><![CDATA[<p>This is a usful script,I found it here: <a href="http://blog.sudobits.com/2012/05/02/how-to-install-ruby-on-rails-in-ubuntu-12-04-lts/">Sudobits 博客</a></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>rails-installer.sh </span><a href='https://github.com/rkjha/RailsOnUbuntu/blob/master/rails-installer.sh'>链接到github </a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;A simple Script <span class="k">for </span>installing Rails on Ubuntu 12.04 LTS / 12.10&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;It will also install the dependencies required as well as the RVM&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Author: Ramesh Jha <span class="o">(</span>ramesh@rameshjha.com<span class="o">)</span>,<span class="o">(</span>http://blog.sudobits.com<span class="o">)</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;License: MIT&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;RUBY_VERSION<span class="o">=</span><span class="s2">&quot;1.9.3&quot;</span>
+</span><span class='line'><span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&quot;$HOME/install.log&quot;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;Rails Installer started&quot;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Installing Dependencies&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;.......Updating package cache.....&quot;</span>
+</span><span class='line'>sudo apt-get update &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;......Done..........&quot;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;..........Installing git..........&quot;</span>
+</span><span class='line'>sudo apt-get -y install git &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;..........Done....................&quot;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;Installing Curl&quot;</span>
+</span><span class='line'>sudo apt-get -y install curl &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;...........Done...................&quot;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Install RVM <span class="o">(</span>Ruby Version Manager<span class="o">)</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;.....Installing RVM..............&quot;</span>
+</span><span class='line'>curl -L get.rvm.io | bash -s stable &gt;&gt;<span class="nv">$LOG_FILE</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;fallback <span class="k">for </span>the above <span class="nb">command</span> <span class="o">(</span>in <span class="k">case </span>of certificates errors<span class="o">)</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;if <span class="o">(</span><span class="nv">$?</span> !<span class="o">=</span>0<span class="o">)</span>&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;then&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;curl -kL get.rvm.io | bash -s stable&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;fi&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;............DONE..........&quot;</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;......Loading RVM..........&quot;</span>
+</span><span class='line'><span class="nb">source</span> ~/.rvm/scripts/rvm &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;...........Done...........&quot;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Install Additional Dependencies&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;sudo apt-get -y install build-essential openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Install nodejs from the PPA&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;sudo apt-add-repository -y ppa:chris-lea/node.js
+</span><span class='line'>sudo apt-get update
+</span><span class='line'>sudo apt-get -y install nodejs&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Install Latest version of Ruby&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;........Installing Ruby v $RUBY_VERSION ...&quot;</span>
+</span><span class='line'>rvm install <span class="nv">$RUBY_VERSION</span> &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;==&gt; Done.........&quot;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;If you want to install another version of ruby e.g 1.8.7&quot;</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Then use the command &#39;rvm install 1.8.7&#39; &quot;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Select and Set latest version of ruby as the default so that&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;You won<span class="s1">&#39;t have to select each time you start a terminal&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;echo &quot;.......Setting the default version of Ruby...&quot;</span>
+</span><span class='line'><span class="s1">rvm --default use $RUBY_VERSION &gt;&gt;$LOG_FILE</span>
+</span><span class='line'><span class="s1">echo &quot;==&gt; Done.........&quot;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;echo &quot;Now, You are using Ruby $RUBY_VERSION by default&quot;</span>
+</span><span class='line'><span class="s1">echo &quot;if you want to change that then use &#39;</span>rvm --default &lt;ruby_version&gt;<span class="err">&#39;</span> <span class="s2">&quot;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;h1&gt;Install Latest version of Rails&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;echo &quot;</span>..........Installing Rails gem................<span class="s2">&quot;</span>
+</span><span class='line'><span class="s2">gem install rails &gt;&gt;$LOG_FILE</span>
+</span><span class='line'><span class="s2">echo &quot;</span>.........Done<span class="s2">&quot;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;echo &quot;</span><span class="c">######################################&quot;</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;###### Installation Completed ########&quot;</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;######################################&quot;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;if something went wrong then checkout the log file $LOG_FILE&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ruby 图片分类归档小程序]]></title>
+    <link href="http://duyw.github.com/blog/2010/11/25/ruby-tu-pian-fen-lei-gui-dang-xiao-cheng-xu/"/>
+    <updated>2010-11-25T10:50:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2010/11/25/ruby-tu-pian-fen-lei-gui-dang-xiao-cheng-xu</id>
+    <content type="html"><![CDATA[<p>需求简述：</p>
+
+<p>1 处理某个目录下EMS快递单扫描图片，文件名格式：“20100702111538015-EF000000000CS.jpg”。</p>
+
+<p>2 连接SQL Server 数据库，表中已有EMS编号，将匹配的图片移动到指定目录。重复扫描的图片只保留最新一张，其余错误文件移动到指定目录。</p>
+
+<p>3 将匹配正确的图片名称存储到数据库。</p>
+
+<p>4 程序定时执行，并记录日志。</p>
+
+<p>程序代码如下：</p>
+
+<!-- more -->
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: ems.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;mssql.rb&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;FileUtils&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;yaml&#39;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;puts &quot;-----------------------------------------------------------------&quot;</span>
+</span><span class='line'><span class="sr">puts Time.now.strftime(&quot;%Y-%m-%d  %H:%M:%S&quot;) + &quot;  程序运行&quot;&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="n">error_count</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1">#处理失败总数&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">config</span> <span class="o">=</span> <span class="no">YAML</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;config.yml&quot;</span><span class="p">))</span>  <span class="c1">#加载配置文件 config.yml&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="err">获取配置文件中的值</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;host = config[&quot;db&quot;][&quot;host&quot;]</span>
+</span><span class='line'><span class="sr">dbname = config[&quot;db&quot;][&quot;dbname&quot;]</span>
+</span><span class='line'><span class="sr">username = config[&quot;db&quot;][&quot;username&quot;]</span>
+</span><span class='line'><span class="sr">password = config[&quot;db&quot;][&quot;password&quot;]&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">path</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="s2">&quot;path&quot;</span><span class="o">]&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;db = MssqlDb.new(host,dbname,username,password)   #数据库连接，四个参数分别为主机名、数据库名称、用户名、密码</span>
+</span><span class='line'><span class="sr">picture_names = []</span>
+</span><span class='line'><span class="sr">if db.open  #判断如果数据库连接成功才执行下面的操作</span>
+</span><span class='line'><span class="sr">  FileUtils.mkdir_p &quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="sr">/</span><span class="n">pictures</span><span class="s2">&quot;  #在该目录下创建文件夹</span>
+</span><span class='line'><span class="s2">  FileUtils.mkdir_p &quot;</span><span class="c1">#{path}/files&quot;  #在该目录下创建文件夹</span>
+</span><span class='line'>  <span class="no">FileUtils</span><span class="o">.</span><span class="n">mkdir_p</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="s2">/error_files&quot;</span>  <span class="c1">#在该目录下创建文件夹</span>
+</span><span class='line'>  <span class="no">FileUtils</span><span class="o">.</span><span class="n">cd</span>        <span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="s2">/pictures&quot;</span>
+</span><span class='line'>  <span class="c1">#Dir.chdir(&quot;#{path}/pictures&quot;)#将当前目录改为 d:\ems\pictures&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="n">picture_names1</span> <span class="o">=</span> <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.jpg&#39;</span><span class="p">)</span> <span class="c1">#获取所有后缀为 .jpg 的文件的文件名</span>
+</span><span class='line'>  <span class="n">count</span> <span class="o">=</span> <span class="n">picture_names1</span><span class="o">.</span><span class="n">length</span>
+</span><span class='line'>  <span class="n">picture_names3</span> <span class="o">=</span> <span class="o">[]&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  picture_names1.each do |p|&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">if</span> <span class="nb">p</span><span class="o">.</span><span class="n">length</span> <span class="o">!=</span> <span class="mi">35</span>
+</span><span class='line'>  <span class="n">error_count</span> <span class="o">+=</span><span class="mi">1</span>
+</span><span class='line'>  <span class="no">FileUtils</span><span class="o">.</span><span class="n">mv</span> <span class="nb">p</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">error_files&quot;</span>   <span class="c1">#将图片移到 path 目录下的 error_files 中</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">p</span><span class="si">}</span><span class="s2"> 名称错误&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  picture_names1 = Dir.glob(&#39;&lt;em&gt;.jpg&#39;) #获取所有后缀为 .jpg 的文件的文件名</span>
+</span><span class='line'><span class="sr">  picture_names2 = Dir.glob(&#39;&lt;/em</span><span class="o">&gt;.</span><span class="n">jpg</span><span class="s1">&#39;)&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;  picture_names1.each do |p1|&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;picture_names2.each do |p2|</span>
+</span><span class='line'><span class="s1">  if(p1 != p2 and p1[18,13] == p2[18,13])</span>
+</span><span class='line'><span class="s1">    picture_names2.delete(p1)</span>
+</span><span class='line'><span class="s1">  end</span>
+</span><span class='line'><span class="s1">end</span>
+</span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;  end&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;  picture_names3 = picture_names1 - picture_names2&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;  picture_names3.each do |p3|&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;error_count +=1</span>
+</span><span class='line'><span class="s1">FileUtils.mv p3,&quot;#{path}\\error_files&quot;   #将图片移到 path 目录下的 error_files 中</span>
+</span><span class='line'><span class="s1">puts &quot;#{p3} 重复&quot;</span>
+</span><span class='line'><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;  end&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;  picture_names = picture_names2&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;p&gt;  if picture_names.length != 0 #如果names不为空&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s1">&lt;pre&gt;&lt;code&gt;picture_names.each do |n|</span>
+</span><span class='line'><span class="s1">  db.query(&quot;select CONVERT(VARCHAR(6), SendDate, 112) AS senddate from tb_ems where emscode= &#39;</span><span class="c1">#{n[18,17].delete(&#39;.jpg&#39;)}&#39; &quot;)  </span>
+</span><span class='line'>  <span class="n">rows</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">data</span>  <span class="c1">#获取查询结果</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1">#如果未找到相应的记录</span>
+</span><span class='line'>    <span class="no">FileUtils</span><span class="o">.</span><span class="n">mv</span> <span class="n">n</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">error_files&quot;</span>   <span class="c1">#将图片移到 path 目录下的 error_files 中</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">n</span><span class="si">}</span><span class="s2"> 数据库中未找到相应记录&quot;</span>
+</span><span class='line'>    <span class="n">error_count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">elsif</span><span class="p">(</span> <span class="n">rows</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">rows</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">[</span><span class="mi">0</span><span class="o">]!=</span> <span class="kp">nil</span> <span class="p">)</span>  <span class="c1">#如果找到相应的记录，并且 senddate 字段不为空</span>
+</span><span class='line'>    <span class="n">sendtime</span> <span class="o">=</span> <span class="n">rows</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'>    <span class="no">FileUtils</span><span class="o">.</span><span class="n">mkdir_p</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">files</span><span class="se">\\</span><span class="s2">&quot;</span><span class="o">+</span><span class="n">sendtime</span> <span class="c1">#创建目录</span>
+</span><span class='line'>    <span class="no">FileUtils</span><span class="o">.</span><span class="n">mv</span> <span class="n">n</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">files</span><span class="se">\\</span><span class="si">#{</span><span class="n">sendtime</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1">#将图片移到新创建的目录下 </span>
+</span><span class='line'>    <span class="c1">#puts &quot;#{n} 已经移动到 #{path}\\files\\#{sendtime}&quot;</span>
+</span><span class='line'>    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;update tb_ems set filename = &#39;</span><span class="si">#{</span><span class="n">sendtime</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">n</span><span class="si">}</span><span class="s2">&#39; where emscode= &#39;</span><span class="si">#{</span><span class="n">n</span><span class="o">[</span><span class="mi">18</span><span class="p">,</span><span class="mi">17</span><span class="o">].</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; &quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">elsif</span><span class="p">(</span> <span class="n">rows</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">rows</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">[</span><span class="mi">0</span><span class="o">]==</span> <span class="kp">nil</span> <span class="p">)</span>  <span class="c1">#如果找到相应的记录，但是 senddate 字段为空</span>
+</span><span class='line'>    <span class="no">FileUtils</span><span class="o">.</span><span class="n">mv</span> <span class="n">n</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">error_files&quot;</span>   <span class="c1">#将图片移到 path 目录下的 error_files 中</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">n</span><span class="si">}</span><span class="s2"> 数据库中SendDate（发送时间）字段为空&quot;</span>
+</span><span class='line'>    <span class="n">error_count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="no">FileUtils</span><span class="o">.</span><span class="n">mv</span> <span class="n">n</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">error_files&quot;</span>   <span class="c1">#将图片移到 path 目录下的 error_files 中</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">n</span><span class="si">}</span><span class="s2"> 数据库中存在多条记录&quot;</span>
+</span><span class='line'>    <span class="n">error_count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;db.close #关闭数据库连接&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="nb">puts</span>  <span class="s2">&quot;共有</span><span class="si">#{</span><span class="n">count</span><span class="si">}</span><span class="s2">项任务...错误</span><span class="si">#{</span><span class="n">error_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;puts Time.now.strftime(&quot;%Y-%m-%d  %H:%M:%S&quot;) + &quot;  程序结束&quot;</span>
+</span><span class='line'><span class="sr">puts &quot;-----------------------------------------------------------------\n\n\n&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码:mssql.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;win32ole&quot;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;class MssqlDb&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">mdb</span><span class="p">,</span><span class="n">user</span><span class="p">,</span><span class="n">pass</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;@host= host</span>
+</span><span class='line'><span class="sr">@mdb=@database= mdb</span>
+</span><span class='line'><span class="sr">@username= user</span>
+</span><span class='line'><span class="sr">@password= pass</span>
+</span><span class='line'><span class="sr">@connection = nil</span>
+</span><span class='line'><span class="sr">@data = nil</span>
+</span><span class='line'><span class="sr">@fields = nil</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">open</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;connection_string = &quot;Provider=SQLOLEDB.1;User ID=</span><span class="si">#@username</span><span class="sr">;password=</span><span class="si">#@password</span><span class="sr">;Data Source=</span><span class="si">#@host</span><span class="sr">,1433;Initial Catalog=</span><span class="si">#@mdb</span><span class="sr">&quot;</span>
+</span><span class='line'><span class="sr">@connection = WIN32OLE.new(&#39;ADODB.Connection&#39;)</span>
+</span><span class='line'><span class="sr">begin</span>
+</span><span class='line'><span class="sr">  @connection.Open(connection_string)</span>
+</span><span class='line'><span class="sr">  @isconnected = 1</span>
+</span><span class='line'><span class="sr">rescue</span>
+</span><span class='line'><span class="sr">  @isconnected = 0</span>
+</span><span class='line'><span class="sr">  puts &quot;数据库链接失败 !!!&quot;</span>
+</span><span class='line'><span class="sr">  nil</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;recordset = WIN32OLE.new(&#39;ADODB.Recordset&#39;)</span>
+</span><span class='line'><span class="sr">recordset.open(sql, @connection)</span>
+</span><span class='line'><span class="sr">@fields = []</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">recordset.Fields.each do |field|</span>
+</span><span class='line'><span class="sr">  @fields &amp;lt;&amp;lt; field.Name</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">begin</span>
+</span><span class='line'><span class="sr">  @data = recordset.GetRows.transpose</span>
+</span><span class='line'><span class="sr">rescue</span>
+</span><span class='line'><span class="sr">  @data = []</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr">recordset.Close</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;@connection.Execute(sql)</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">close</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;if @isconnected == 1</span>
+</span><span class='line'><span class="sr">  @connection.Close</span>
+</span><span class='line'><span class="sr">else</span>
+</span><span class='line'><span class="sr">  puts &quot;请检查程序配置是否正确 数据库访问是否正常&quot;</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="kp">attr_reader</span> <span class="ss">:data</span><span class="p">,</span> <span class="ss">:fields</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>YAML代码:config.yml  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">db</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">dbname</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">test</span>        <span class="c1"># 数据库名称</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">username</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sa</span>        <span class="c1"># 用户名</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">password</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sa</span>        <span class="c1"># 密码</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">host</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">localhost</span>     <span class="c1"># 主机名&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;  path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">D:\ems</span>        <span class="c1">#文件路径</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+</feed>

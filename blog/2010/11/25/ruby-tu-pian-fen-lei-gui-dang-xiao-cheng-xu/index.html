@@ -1,0 +1,536 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>ruby 图片分类归档小程序 - 杜永文 博客</title>
+	<meta name="author" content="Du Yongwen">
+	
+	<meta name="description" content="需求简述： 1 处理某个目录下EMS快递单扫描图片，文件名格式：“20100702111538015-EF000000000CS.jpg”。 2 连接SQL Server 数据库，表中已有EMS编号，将匹配的图片移动到指定目录。重复扫描的图片只保留最新一张，其余错误文件移动到指定目录。 3 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+	<link rel="icon" type="image/gif" href="/animated_favicon1.gif">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">杜永文 博客</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:duyw.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/duyw" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:duyw.github.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Ruby 图片分类归档小程序</h2>
+	<div class="entry-content"><p>需求简述：</p>
+
+<p>1 处理某个目录下EMS快递单扫描图片，文件名格式：“20100702111538015-EF000000000CS.jpg”。</p>
+
+<p>2 连接SQL Server 数据库，表中已有EMS编号，将匹配的图片移动到指定目录。重复扫描的图片只保留最新一张，其余错误文件移动到指定目录。</p>
+
+<p>3 将匹配正确的图片名称存储到数据库。</p>
+
+<p>4 程序定时执行，并记录日志。</p>
+
+<p>程序代码如下：</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span>Ruby代码: ems.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;mssql.rb&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;FileUtils&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;yaml&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;-----------------------------------------------------------------&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-%d  %H:%M:%S&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;  程序运行&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="n">error_count</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1">#处理失败总数</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">config</span> <span class="o">=</span> <span class="no">YAML</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;config.yml&quot;</span><span class="p">))</span>  <span class="c1">#加载配置文件 config.yml</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#获取配置文件中的值</span>
+</span><span class='line'><span class="n">host</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="s2">&quot;db&quot;</span><span class="o">][</span><span class="s2">&quot;host&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="n">dbname</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="s2">&quot;db&quot;</span><span class="o">][</span><span class="s2">&quot;dbname&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="n">username</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="s2">&quot;db&quot;</span><span class="o">][</span><span class="s2">&quot;username&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="n">password</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="s2">&quot;db&quot;</span><span class="o">][</span><span class="s2">&quot;password&quot;</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">path</span> <span class="o">=</span> <span class="n">config</span><span class="o">[</span><span class="s2">&quot;path&quot;</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">db</span> <span class="o">=</span> <span class="no">MssqlDb</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">dbname</span><span class="p">,</span><span class="n">username</span><span class="p">,</span><span class="n">password</span><span class="p">)</span>   <span class="c1">#数据库连接，四个参数分别为主机名、数据库名称、用户名、密码</span>
+</span><span class='line'><span class="n">picture_names</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'><span class="k">if</span> <span class="n">db</span><span class="o">.</span><span class="n">open</span>  <span class="c1">#判断如果数据库连接成功才执行下面的操作</span>
+</span><span class='line'>  <span class="no">FileUtils</span><span class="o">.</span><span class="n">mkdir_p</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="s2">/pictures&quot;</span>  <span class="c1">#在该目录下创建文件夹</span>
+</span><span class='line'>  <span class="no">FileUtils</span><span class="o">.</span><span class="n">mkdir_p</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="s2">/files&quot;</span>  <span class="c1">#在该目录下创建文件夹</span>
+</span><span class='line'>  <span class="no">FileUtils</span><span class="o">.</span><span class="n">mkdir_p</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="s2">/error_files&quot;</span>  <span class="c1">#在该目录下创建文件夹</span>
+</span><span class='line'>  <span class="no">FileUtils</span><span class="o">.</span><span class="n">cd</span>        <span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="s2">/pictures&quot;</span>
+</span><span class='line'>  <span class="c1">#Dir.chdir(&quot;#{path}/pictures&quot;)#将当前目录改为 d:\ems\pictures</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">picture_names1</span> <span class="o">=</span> <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.jpg&#39;</span><span class="p">)</span> <span class="c1">#获取所有后缀为 .jpg 的文件的文件名</span>
+</span><span class='line'>  <span class="n">count</span> <span class="o">=</span> <span class="n">picture_names1</span><span class="o">.</span><span class="n">length</span>
+</span><span class='line'>  <span class="n">picture_names3</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">picture_names1</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">p</span><span class="o">|</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nb">p</span><span class="o">.</span><span class="n">length</span> <span class="o">!=</span> <span class="mi">35</span>
+</span><span class='line'>      <span class="n">error_count</span> <span class="o">+=</span><span class="mi">1</span>
+</span><span class='line'>      <span class="no">FileUtils</span><span class="o">.</span><span class="n">mv</span> <span class="nb">p</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">error_files&quot;</span>   <span class="c1">#将图片移到 path 目录下的 error_files 中</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">p</span><span class="si">}</span><span class="s2"> 名称错误&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">picture_names1</span> <span class="o">=</span> <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.jpg&#39;</span><span class="p">)</span> <span class="c1">#获取所有后缀为 .jpg 的文件的文件名</span>
+</span><span class='line'>  <span class="n">picture_names2</span> <span class="o">=</span> <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.jpg&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">picture_names1</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">p1</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">picture_names2</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">p2</span><span class="o">|</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">p1</span> <span class="o">!=</span> <span class="n">p2</span> <span class="ow">and</span> <span class="n">p1</span><span class="o">[</span><span class="mi">18</span><span class="p">,</span><span class="mi">13</span><span class="o">]</span> <span class="o">==</span> <span class="n">p2</span><span class="o">[</span><span class="mi">18</span><span class="p">,</span><span class="mi">13</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">picture_names2</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">picture_names3</span> <span class="o">=</span> <span class="n">picture_names1</span> <span class="o">-</span> <span class="n">picture_names2</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">picture_names3</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">p3</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">error_count</span> <span class="o">+=</span><span class="mi">1</span>
+</span><span class='line'>    <span class="no">FileUtils</span><span class="o">.</span><span class="n">mv</span> <span class="n">p3</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">error_files&quot;</span>   <span class="c1">#将图片移到 path 目录下的 error_files 中</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">p3</span><span class="si">}</span><span class="s2"> 重复&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">picture_names</span> <span class="o">=</span> <span class="n">picture_names2</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="n">picture_names</span><span class="o">.</span><span class="n">length</span> <span class="o">!=</span> <span class="mi">0</span> <span class="c1">#如果names不为空</span>
+</span><span class='line'>    <span class="n">picture_names</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">n</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;select CONVERT(VARCHAR(6), SendDate, 112) AS senddate from tb_ems where emscode= &#39;</span><span class="si">#{</span><span class="n">n</span><span class="o">[</span><span class="mi">18</span><span class="p">,</span><span class="mi">17</span><span class="o">].</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; &quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">rows</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">data</span>  <span class="c1">#获取查询结果</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1">#如果未找到相应的记录</span>
+</span><span class='line'>        <span class="no">FileUtils</span><span class="o">.</span><span class="n">mv</span> <span class="n">n</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">error_files&quot;</span>   <span class="c1">#将图片移到 path 目录下的 error_files 中</span>
+</span><span class='line'>        <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">n</span><span class="si">}</span><span class="s2"> 数据库中未找到相应记录&quot;</span>
+</span><span class='line'>        <span class="n">error_count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="k">elsif</span><span class="p">(</span> <span class="n">rows</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">rows</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">[</span><span class="mi">0</span><span class="o">]!=</span> <span class="kp">nil</span> <span class="p">)</span>  <span class="c1">#如果找到相应的记录，并且 senddate 字段不为空</span>
+</span><span class='line'>        <span class="n">sendtime</span> <span class="o">=</span> <span class="n">rows</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'>        <span class="no">FileUtils</span><span class="o">.</span><span class="n">mkdir_p</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">files</span><span class="se">\\</span><span class="s2">&quot;</span><span class="o">+</span><span class="n">sendtime</span> <span class="c1">#创建目录</span>
+</span><span class='line'>        <span class="no">FileUtils</span><span class="o">.</span><span class="n">mv</span> <span class="n">n</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">files</span><span class="se">\\</span><span class="si">#{</span><span class="n">sendtime</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1">#将图片移到新创建的目录下 </span>
+</span><span class='line'>        <span class="c1">#puts &quot;#{n} 已经移动到 #{path}\\files\\#{sendtime}&quot;</span>
+</span><span class='line'>        <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;update tb_ems set filename = &#39;</span><span class="si">#{</span><span class="n">sendtime</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">n</span><span class="si">}</span><span class="s2">&#39; where emscode= &#39;</span><span class="si">#{</span><span class="n">n</span><span class="o">[</span><span class="mi">18</span><span class="p">,</span><span class="mi">17</span><span class="o">].</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; &quot;</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">elsif</span><span class="p">(</span> <span class="n">rows</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">rows</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">[</span><span class="mi">0</span><span class="o">]==</span> <span class="kp">nil</span> <span class="p">)</span>  <span class="c1">#如果找到相应的记录，但是 senddate 字段为空</span>
+</span><span class='line'>        <span class="no">FileUtils</span><span class="o">.</span><span class="n">mv</span> <span class="n">n</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">error_files&quot;</span>   <span class="c1">#将图片移到 path 目录下的 error_files 中</span>
+</span><span class='line'>        <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">n</span><span class="si">}</span><span class="s2"> 数据库中SendDate（发送时间）字段为空&quot;</span>
+</span><span class='line'>        <span class="n">error_count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="no">FileUtils</span><span class="o">.</span><span class="n">mv</span> <span class="n">n</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">path</span><span class="si">}</span><span class="se">\\</span><span class="s2">error_files&quot;</span>   <span class="c1">#将图片移到 path 目录下的 error_files 中</span>
+</span><span class='line'>        <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">n</span><span class="si">}</span><span class="s2"> 数据库中存在多条记录&quot;</span>
+</span><span class='line'>        <span class="n">error_count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">db</span><span class="o">.</span><span class="n">close</span> <span class="c1">#关闭数据库连接</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span>  <span class="s2">&quot;共有</span><span class="si">#{</span><span class="n">count</span><span class="si">}</span><span class="s2">项任务...错误</span><span class="si">#{</span><span class="n">error_count</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-%d  %H:%M:%S&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;  程序结束&quot;</span>
+</span><span class='line'><span class="nb">puts</span> <span class="s2">&quot;-----------------------------------------------------------------</span><span class="se">\n\n\n</span><span class="s2">&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Ruby代码:mssql.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;win32ole&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">MssqlDb</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">mdb</span><span class="p">,</span><span class="n">user</span><span class="p">,</span><span class="n">pass</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@host</span><span class="o">=</span> <span class="n">host</span>
+</span><span class='line'>    <span class="vi">@mdb</span><span class="o">=</span><span class="vi">@database</span><span class="o">=</span> <span class="n">mdb</span>
+</span><span class='line'>    <span class="vi">@username</span><span class="o">=</span> <span class="n">user</span>
+</span><span class='line'>    <span class="vi">@password</span><span class="o">=</span> <span class="n">pass</span>
+</span><span class='line'>    <span class="vi">@connection</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>    <span class="vi">@data</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>    <span class="vi">@fields</span> <span class="o">=</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">open</span>
+</span><span class='line'>    <span class="n">connection_string</span> <span class="o">=</span> <span class="s2">&quot;Provider=SQLOLEDB.1;User ID=</span><span class="si">#@username</span><span class="s2">;password=</span><span class="si">#@password</span><span class="s2">;Data Source=</span><span class="si">#@host</span><span class="s2">,1433;Initial Catalog=</span><span class="si">#@mdb</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="vi">@connection</span> <span class="o">=</span> <span class="no">WIN32OLE</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ADODB.Connection&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">begin</span>
+</span><span class='line'>      <span class="vi">@connection</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">connection_string</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@isconnected</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="k">rescue</span>
+</span><span class='line'>      <span class="vi">@isconnected</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;数据库链接失败 !!!&quot;</span>
+</span><span class='line'>      <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">recordset</span> <span class="o">=</span> <span class="no">WIN32OLE</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ADODB.Recordset&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">recordset</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="vi">@connection</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@fields</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">recordset</span><span class="o">.</span><span class="n">Fields</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">field</span><span class="o">|</span>
+</span><span class='line'>      <span class="vi">@fields</span> <span class="o">&lt;&lt;</span> <span class="n">field</span><span class="o">.</span><span class="n">Name</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">begin</span>
+</span><span class='line'>      <span class="vi">@data</span> <span class="o">=</span> <span class="n">recordset</span><span class="o">.</span><span class="n">GetRows</span><span class="o">.</span><span class="n">transpose</span>
+</span><span class='line'>    <span class="k">rescue</span>
+</span><span class='line'>      <span class="vi">@data</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">recordset</span><span class="o">.</span><span class="n">Close</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@connection</span><span class="o">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">close</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@isconnected</span> <span class="o">==</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="vi">@connection</span><span class="o">.</span><span class="n">Close</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s2">&quot;请检查程序配置是否正确 数据库访问是否正常&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:data</span><span class="p">,</span> <span class="ss">:fields</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>YAML代码:config.yml  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">db</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">dbname</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">test</span>        <span class="c1"># 数据库名称</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">username</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sa</span>        <span class="c1"># 用户名</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">password</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sa</span>        <span class="c1"># 密码</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">host</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">localhost</span>     <span class="c1"># 主机名</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">D:\ems</span>        <span class="c1">#文件路径</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-25T10:50:00+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2010</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ruby/'>Ruby</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2010/11/25/ruby-tu-pian-fen-lei-gui-dang-xiao-cheng-xu/#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Du Yongwen
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'duyw';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://duyw.github.com/blog/2010/11/25/ruby-tu-pian-fen-lei-gui-dang-xiao-cheng-xu/';
+        var disqus_url = 'http://duyw.github.com/blog/2010/11/25/ruby-tu-pian-fen-lei-gui-dang-xiao-cheng-xu/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-38875642-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>

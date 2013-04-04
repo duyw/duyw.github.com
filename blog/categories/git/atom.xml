@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Git | 杜永文 博客]]></title>
+  <link href="http://duyw.github.com/blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://duyw.github.com/"/>
+  <updated>2013-04-04T21:48:40+08:00</updated>
+  <id>http://duyw.github.com/</id>
+  <author>
+    <name><![CDATA[Du Yongwen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Git 常用命令]]></title>
+    <link href="http://duyw.github.com/blog/2013/03/13/git-chang-yong-ming-ling/"/>
+    <updated>2013-03-13T14:19:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/03/13/git-chang-yong-ming-ling</id>
+    <content type="html"><![CDATA[<h2>Git 指令结构图</h2>
+
+<p><img src="/images/post/git-transport.png" title="Git 指令结构图" alt="Git 指令结构图" /></p>
+
+<p>图片中展示了Git Repository结构和执行相关Command后数据的变迁流程，Git维护的代码分成三个部分</p>
+
+<ul>
+<li><p>current working directory 当前工作目录 (1)</p></li>
+<li><p>index file 暂存区 (2)</p></li>
+<li><p>git repository 历史仓库 (3)</p></li>
+</ul>
+
+
+<!-- more -->
+
+
+<p><img src="/images/post/basic-usage.svg" title="Git 指令结构图" alt="Git 指令结构图" /></p>
+
+<p><code>git add</code>命令会将(1)的改变写到(2)</p>
+
+<p><code>git commit</code> 将(2)的改变写到(3)</p>
+
+<p><code>git commit -a</code> 会直接将(1)中的改动同时写到(2)和(3)</p>
+
+<p><code>git reset</code> 用来撤销最后一次git add files，也可以用来撤销所有暂存区域文件。</p>
+
+<p><code>git checkout</code> 把文件复制到工作目录或者暂存区域，可以用来撤销在当前工作目录中的修改。</p>
+
+<p><code>git checkout HEAD --files</code>将仓库中的文件覆盖到工作目录。</p>
+
+<p><code>git diff</code> 命令用来查看差异：</p>
+
+<ul>
+<li><p>git diff 得到的是从(2)到(1)的变化</p></li>
+<li><p>git diff –cached 得到的是从(3)到(2)的变化</p></li>
+<li><p>git diff HEAD 得到的是从(3)到(1)的变化</p></li>
+<li><p>git diff <source_branch> <target_branch>  查看分支间差异</p></li>
+</ul>
+
+
+<h2>Git的基本命令举例</h2>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;帮助和配置&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git <span class="nb">help command</span>                          查看帮助
+</span><span class='line'>git <span class="nb">command</span> –help                         查看帮助
+</span><span class='line'>git config –global user.name &lt;username&gt;   设置用户名
+</span><span class='line'>git config –global user.email &lt;email&gt;     设置用户邮箱
+</span><span class='line'>git config –list                          查看用户信息&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;新建仓库&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git init                                     初始化
+</span><span class='line'>git clone /path/to/repository                创建一个本地仓库的克隆
+</span><span class='line'>git clone username@host:/path/to/repository  创建一个远端服务器仓库的克隆&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;git add 命令  含义&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git add file_name                 加单个文件到缓存区
+</span><span class='line'>git add .                         加当前目录的所有文件到缓存区
+</span><span class='line'>git add -i                        进入交互式add
+</span><span class='line'>git add -p                        直接进入补丁模式，可以暂存修改的一部分。
+</span><span class='line'>git remote add origin &lt;server&gt;    修改推送到远程的服务器&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;git commit 命令 含义&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git commit -m “代码提交信息”         提交改动
+</span><span class='line'>git commit -a                      第一步：自动地add所有改动的代码，使得所有的开发代码都列于index file中；第二步：自动地删除那些在index file中但不在工作树中的文件；第三步：执行commit命令来提交。
+</span><span class='line'>git commit –amend -m “新的提交信息”  提交改动（若有改动） + 修补最近一次提交&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;git push 命令 含义&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git push origin <span class="nb">test</span>:test2      提交本地test分支作为远程test2分支
+</span><span class='line'>git push origin <span class="nb">test</span>            提交本地test分支作为远程test分支
+</span><span class='line'>git push origin :test           删除远程test分支
+</span><span class='line'>git push origin :refs/tags/t4   删除远程tag标签t4&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;git pull 命令 含义&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git pull                    从仓库取回代码，更新本地仓库至最新
+</span><span class='line'>git pull origin <span class="nb">test</span>:test2  取回远程的test分支作为本地的test2分支&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;git checkout 命令 含义&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git checkout master         切换回主分支
+</span><span class='line'>git checkout <span class="nb">test</span>           如果本地无test分支，先需要从远程pull回test分支
+</span><span class='line'>git checkout -b feature_x   创建一个叫做“feature_x”的分支，并切换过去&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;git branch 命令 含义&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git branch b4 t4          以tag t4建立新的分支b4
+</span><span class='line'>git branch -d feature_x   删除分支&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;git merge 命令  含义&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git merge AAA             将分支AAA与当前分枝合并&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;git diff 命令 含义&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git diff  查看working tree与index file的差别的（这个命令只在git add之前使用有效。如果已经add了，那么此命令输出为空）。
+</span><span class='line'>git diff –cached  查看index file与commit的差别的（这个命令在git add之后在git commit之前有效。）。
+</span><span class='line'>git diff HEAD 查看working tree和commit的差别的。（你一定没有忘记，HEAD代表的是最近的一次commit的信息）&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;git reset 命令  含义&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git reset –soft     只撤销commit，保留working tree和index file。
+</span><span class='line'>git reset –mixed    撤销commit和index file，保留working tree
+</span><span class='line'>git reset –hard     撤销commit、index file和working tree，即撤销销毁最近一次的commit
+</span><span class='line'>git reset           和git reset –mixed完全一样
+</span><span class='line'>git reset –         用于删除登记在index file里的某个文件。例如：git reset – roc.c&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;git revert 命令 含义&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git revert  用于回滚（撤销）一些commit。对于一个或者多个已经存在的commit，去除由这些commit引入的改变，并且用一个新的commit来记录这个回滚操作。这个命令要求working tree必须是干净的。
+</span><span class='line'>git revert HEAD~3 丢弃最近的三个commit，把状态恢复到最近的第四个commit，并且提交一个新的commit来记录这次改变。
+</span><span class='line'>git revert -n master~5..master~2  丢弃从最近的第五个commit（包含）到第二个（不包含）,但是不自动生成commit，这个revert仅仅修改working tree和index。&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;其他命令&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;git merge &lt;branch&gt;  合并其他分支到当前分支
+</span><span class='line'>git log             获取提交 ID
+</span><span class='line'>git tag 1.0.0 &lt;ID&gt;  创建一个叫做 1.0.0 的标签
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+</feed>

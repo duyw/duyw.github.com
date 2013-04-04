@@ -1,0 +1,267 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>杜永文 博客</title>
+	<meta name="author" content="Du Yongwen">
+	
+	<meta name="description" content="功能及说明： 利用Linux的计划任务功能实现mysql数据库的定时备份，也可以手动执行 mysql_backup.sh
+备份文件名称按照日期存储
+可以删除旧的备份文件，只保留最近n天的备份数据源。
+备份过程都将记录到日志文件中，便于查看。
+提供三种备份方式， mysqldump： &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+	<link rel="icon" type="image/gif" href="/animated_favicon1.gif">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">杜永文 博客</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:duyw.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/duyw" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:duyw.github.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2010/11/19/mysql-shu-ju-ku-zi-dong-bei-fen-jiao-ben/">
+		
+			MySQL 数据库自动备份脚本</a>
+	</h2>
+	<div class="entry-content">
+		<p>功能及说明：</p>
+
+<ol>
+<li><p>利用Linux的计划任务功能实现mysql数据库的定时备份，也可以手动执行 mysql_backup.sh</p></li>
+<li><p>备份文件名称按照日期存储</p></li>
+<li><p>可以删除旧的备份文件，只保留最近n天的备份数据源。</p></li>
+<li><p>备份过程都将记录到日志文件中，便于查看。</p></li>
+<li><p>提供三种备份方式，</p>
+
+<ul>
+<li><p>mysqldump：将数据导出为sql文件</p></li>
+<li><p>mysqlhotcopy：参看最后面的介绍</p></li>
+<li><p>tar：先停止mysql服务然后将数据库文件打包</p></li>
+</ul>
+</li>
+<li><p>如果已经做了当天的备份，重复执行不会覆盖原有备份，需要手动删除旧备份才可以重新生成备份文件</p></li>
+</ol>
+
+
+
+		
+		<a href="/blog/2010/11/19/mysql-shu-ju-ku-zi-dong-bei-fen-jiao-ben/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-19T00:19:00+08:00" pubdate data-updated="true">Nov 19<span>th</span>, 2010</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/mysql/'>MySQL</a>, <a class='category' href='/blog/categories/backup/'>备份</a>, <a class='category' href='/blog/categories/database/'>数据库</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2010/11/19/mysql-shu-ju-ku-zi-dong-bei-fen-jiao-ben//blog/page/2/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2010/06/20/windows-mysql-fu-wu-zi-dong-guan-li-jiao-ben/">
+		
+			Windows MySQL 服务自动管理脚本</a>
+	</h2>
+	<div class="entry-content">
+		<p>脚本说明：在开发过程中由于经常需要启动或停止MySQL服务，非常麻烦，于是编写了这个简单的批处理脚本，自动判断MySQL服务如果是启动状态则停止该服务，如果未启动，则启动。</p>
+
+<figure class='code'><figcaption><span>脚本名称：mysql server.bat  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='bat'><span class='line'><span class="p">@</span><span class="k">echo</span> <span class="k">off</span>
+</span><span class='line'>color b<span class="m">0</span>
+</span><span class='line'>title 启动<span class="n">/关闭</span> MySQL服务
+</span><span class='line'>tasklist <span class="n">/nh|</span> @findstr <span class="n">/i</span> <span class="s2">&quot;mysqld-nt.exe&quot;</span>
+</span><span class='line'><span class="k">set</span>  <span class="nv">dyw</span><span class="o">=</span><span class="nv">%ERRORLEVEL%</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="nv">%dyw%</span> <span class="o">==</span> <span class="m">1</span> (
+</span><span class='line'>  net start mysql
+</span><span class='line'>) <span class="k">else</span> (
+</span><span class='line'>  net stop mysql
+</span><span class='line'>)
+</span><span class='line'>ping -n <span class="m">3</span> <span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">1</span><span class="p">&gt;</span><span class="n">nul</span>
+</span><span class='line'>exit
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-20T00:09:00+08:00" pubdate data-updated="true">Jun 20<span>th</span>, 2010</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/mysql/'>MySQL</a>, <a class='category' href='/blog/categories/database/'>数据库</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2010/06/20/windows-mysql-fu-wu-zi-dong-guan-li-jiao-ben//blog/page/2/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+<nav id="pagenavi">
+    
+        <a href="/" class="prev">Prev</a>
+    
+    
+    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
+</nav></div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Du Yongwen
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'duyw';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-38875642-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>

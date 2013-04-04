@@ -1,0 +1,287 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>windows 平台部署rails - 杜永文 博客</title>
+	<meta name="author" content="Du Yongwen">
+	
+	<meta name="description" content="　　公司一个现有项目是用 ruby 1.8.6 + rails1.2.6 做的，之前的客户服务器都是linux系统，这次客户服务器用的是windows，所以研究了一下部署方案，从网上各方搜集资料，最后配置成功，整理在此： 1. mongrel 安装 由于默认的gem版本为0.9.4，版本太旧了， &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+	<link rel="icon" type="image/gif" href="/animated_favicon1.gif">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">杜永文 博客</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:duyw.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/duyw" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:duyw.github.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Windows 平台部署rails</h2>
+	<div class="entry-content"><p>　　公司一个现有项目是用 ruby 1.8.6 + rails1.2.6 做的，之前的客户服务器都是linux系统，这次客户服务器用的是windows，所以研究了一下部署方案，从网上各方搜集资料，最后配置成功，整理在此：</p>
+
+<h3>1. mongrel 安装</h3>
+
+<p>由于默认的gem版本为0.9.4，版本太旧了，无法运行gem install mongrel 命令，所以要先升级gem版本，首先下载 rubygem_update ,地址：http://rubyforge.org/frs/download.php/70695/rubygems-update-1.3.7.gem</p>
+
+<p>下载后在cmd下cd到rubygems-update-1.3.7.gem所在的目录</p>
+
+<p>安装命令：<code>gem install rubygems-update-1.3.7.gem</code></p>
+
+<p>接下来升级gem，命令：<code>update_rubygems</code></p>
+
+<p>安装完成后 查看gem版本，输入 <code>gem -v</code> 会显示 “1.3.7”，至此，升级成功。</p>
+
+<p>安装mongrel，运行命令：<code>gem install mongrel</code></p>
+
+<p>安装完成后，在rail项目下运行 <code>ruby script/server</code> 启动时，会使用mongrel而不是webrake。</p>
+
+<!-- more -->
+
+
+<h3>2. 安装mongrel_service</h3>
+
+<p>命令：<code>gem install mongrel_service</code></p>
+
+<h3>3. 将mongrel设置为系统服务</h3>
+
+<p>命令：<code>mongrel_rails service::install -N zc0 -c d:\svn\zc_hn\code\zc -p 3000 -e development</code></p>
+
+<p>（zc0为服务名称，d:\svn\zc_hn\code\zc 为项目路径，development为开发模式，3000为端口）</p>
+
+<p>执行后在系统服务中会增加一项名为zc的服务。</p>
+
+<p>启动：<code>net start zc0</code></p>
+
+<p>关闭：<code>net stop zc0</code></p>
+
+<p>删除服务：先关闭，然后命令行执行：<code>mongrel_rails service::remove -N zc0</code></p>
+
+<p>如果需要安装多个mongrel实例，那么可以这样：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mongrel_rails service::install -N zc0 -c d:\svn\zc_hn\code\zc -p 3000 –e production
+</span><span class='line'>mongrel_rails service::install -N zc1 -c d:\svn\zc_hn\code\zc -p 3001 –e production
+</span><span class='line'>……</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4. 安装、配置 apache</h3>
+
+<p>从Apache网站下载Windows版本的Apache2.2，运行安装。</p>
+
+<p>安装后进入安装目录下修改 httpd.conf文件,将以下三个模块的注释去掉</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>LoadModule proxy_module modules/mod_proxy.so
+</span><span class='line'>LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
+</span><span class='line'>LoadModule proxy_http_module modules/mod_proxy_http.so
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你希望对页面输出使用压缩，也需要取消如下模块的注释：</p>
+
+<p><code>LoadModule deflate_module modules/mod_deflate.so</code></p>
+
+<p>然后按如下内容配置基于HTTP代理的负载均衡，在最后添加：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> ProxyRequests Off    
+</span><span class='line'>   
+</span><span class='line'>  BalancerMember http://localhost:3000    
+</span><span class='line'>  BalancerMember http://localhost:3001    
+</span><span class='line'>   
+</span><span class='line'>  ServerName www.xxx.com    
+</span><span class='line'>  DocumentRoot d:/svn/zc_hn/code/zc/    
+</span><span class='line'>  ProxyPass images !    
+</span><span class='line'>  ProxyPass stylesheets !    
+</span><span class='line'>  ProxyPass javascripts !    
+</span><span class='line'>  ProxyPass / balancer://myCluster/    
+</span><span class='line'>  ProxyPassReverse / balancer://myCluster/    
+</span><span class='line'>  ProxyPreserveHost on    </span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>(网上的资料中在images 前面有&#8221;/&#8221;,访问的时候页面图片css都没了，只有数据，去掉后正常)</p>
+
+<hr />
+
+<p>myCluster定义了群集中的每个mongrel应用服务器节点。ProxyPass /images !指明该URL开始的请求不代理给Mongrel群集，而由Apache自己处理。重起Apache，然后打开浏览器访问www.xxx.com，检查配置是否正确。</p>
+
+<p>至此，在Windows Server上面一个具备良好稳定性和性能的Ruby on rails生产环境就搭建好了。</p>
+
+<p>对于页面输出，还可以使用mod_deflate进行输出内容压缩，以提高页面下载速度，这个就留给大家自己配置了。</p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-19T18:33:00+08:00" pubdate data-updated="true">Nov 19<span>th</span>, 2010</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/mongrel/'>Mongrel</a>, <a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/deploy/'>部署</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2010/11/19/windows-ping-tai-bu-shu-rails/#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Du Yongwen
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'duyw';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://duyw.github.com/blog/2010/11/19/windows-ping-tai-bu-shu-rails/';
+        var disqus_url = 'http://duyw.github.com/blog/2010/11/19/windows-ping-tai-bu-shu-rails/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-38875642-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,363 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>A simple Script for installing ROR on ubuntu12.04 - 杜永文 博客</title>
+	<meta name="author" content="Du Yongwen">
+	
+	<meta name="description" content="This is a usful script,I found it here: Sudobits 博客 rails-installer.sh 链接到github 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+	<link rel="icon" type="image/gif" href="/animated_favicon1.gif">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">杜永文 博客</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:duyw.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/duyw" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:duyw.github.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">A Simple Script for Installing ROR on ubuntu12.04</h2>
+	<div class="entry-content"><p>This is a usful script,I found it here: <a href="http://blog.sudobits.com/2012/05/02/how-to-install-ruby-on-rails-in-ubuntu-12-04-lts/">Sudobits 博客</a></p>
+
+<figure class='code'><figcaption><span>rails-installer.sh </span><a href='https://github.com/rkjha/RailsOnUbuntu/blob/master/rails-installer.sh'>链接到github </a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'><span class="c"># A simple Script for installing Rails on Ubuntu 12.04 LTS / 12.10</span>
+</span><span class='line'><span class="c"># It will also install the dependencies required as well as the RVM</span>
+</span><span class='line'><span class="c"># Author: Ramesh Jha (ramesh@rameshjha.com),(http://blog.sudobits.com)</span>
+</span><span class='line'><span class="c"># License: MIT </span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">RUBY_VERSION</span><span class="o">=</span><span class="s2">&quot;1.9.3&quot;</span>
+</span><span class='line'><span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&quot;$HOME/install.log&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Rails Installer started&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Installing Dependencies</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;.......Updating package cache.....&quot;</span>
+</span><span class='line'>sudo apt-get update &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;......Done..........&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;..........Installing git..........&quot;</span>
+</span><span class='line'>sudo apt-get -y install git &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;..........Done....................&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Installing Curl&quot;</span>
+</span><span class='line'>sudo apt-get -y install curl &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;...........Done...................&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Install RVM (Ruby Version Manager)</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;.....Installing RVM..............&quot;</span>
+</span><span class='line'>curl -L get.rvm.io | bash -s stable &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># fallback for the above command (in case of certificates errors)</span>
+</span><span class='line'><span class="c">#if ($? !=0)</span>
+</span><span class='line'><span class="c"># then</span>
+</span><span class='line'><span class="c">#  curl -kL get.rvm.io | bash -s stable</span>
+</span><span class='line'><span class="c">#fi  </span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;............DONE..........&quot;</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;......Loading RVM..........&quot;</span>
+</span><span class='line'><span class="nb">source</span> ~/.rvm/scripts/rvm &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;...........Done...........&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Install Additional Dependencies</span>
+</span><span class='line'>
+</span><span class='line'>sudo apt-get -y install build-essential openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
+</span><span class='line'>
+</span><span class='line'><span class="c"># Install nodejs from the PPA</span>
+</span><span class='line'>sudo apt-add-repository -y ppa:chris-lea/node.js
+</span><span class='line'>sudo apt-get update
+</span><span class='line'>sudo apt-get -y install nodejs
+</span><span class='line'>
+</span><span class='line'><span class="c"># Install Latest version of Ruby</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;........Installing Ruby v $RUBY_VERSION ...&quot;</span>
+</span><span class='line'>rvm install <span class="nv">$RUBY_VERSION</span> &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;==&gt; Done.........&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;If you want to install another version of ruby e.g 1.8.7&quot;</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Then use the command &#39;rvm install 1.8.7&#39; &quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Select and Set latest version of ruby as the default so that</span>
+</span><span class='line'><span class="c"># You won&#39;t have to select each time you start a terminal</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;.......Setting the default version of Ruby...&quot;</span>
+</span><span class='line'>rvm --default use <span class="nv">$RUBY_VERSION</span> &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;==&gt; Done.........&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Now, You are using Ruby $RUBY_VERSION by default&quot;</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;if you want to change that then use &#39;rvm --default &lt;ruby_version&gt;&#39; &quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Install Latest version of Rails</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;..........Installing Rails gem................&quot;</span>
+</span><span class='line'>gem install rails &gt;&gt;<span class="nv">$LOG_FILE</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;.........Done&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;######################################&quot;</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;###### Installation Completed ########&quot;</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;######################################&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;if something went wrong then checkout the log file $LOG_FILE&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-04T11:48:00+08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>, <a class='category' href='/blog/categories/install/'>安装</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04/#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Du Yongwen
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'duyw';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://duyw.github.com/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04/';
+        var disqus_url = 'http://duyw.github.com/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-38875642-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>

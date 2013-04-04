@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 其他 | 杜永文 博客]]></title>
+  <link href="http://duyw.github.com/blog/categories/others/atom.xml" rel="self"/>
+  <link href="http://duyw.github.com/"/>
+  <updated>2013-04-04T21:48:40+08:00</updated>
+  <id>http://duyw.github.com/</id>
+  <author>
+    <name><![CDATA[Du Yongwen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress simple guide]]></title>
+    <link href="http://duyw.github.com/blog/2013/02/28/octopress-simple-guide/"/>
+    <updated>2013-02-28T18:15:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/02/28/octopress-simple-guide</id>
+    <content type="html"><![CDATA[<p>Octopress的搭建过程如下：</p>
+
+<h3>1 配置本地Octopress</h3>
+
+<p><code>
+git clone git://github.com/imathis/octopress.git davidpan.github.com
+cd davidpan.github.com
+gem install bundler
+bundle install
+rake install
+</code></p>
+
+<h3>2 关联到 GitHub</h3>
+
+<p>```
+rake setup_github_pages</p>
+
+<h1>输入git源：git://github.com/duyw/duyw.github.com.git</h1>
+
+<h1>命令执行之后 会生成一个 _deploy 目录，该目录本身也是一个git的仓库</h1>
+
+<p>```</p>
+
+<!-- more -->
+
+
+<h3>3 修改配置文件</h3>
+
+<p>修改OctoPress根目录 _config.yml</p>
+
+<p><code>
+url:  http://username.github.com     # 博客地址
+title:                               # 博客标题
+subtitle:                            # 副标题
+author:                              # 作者
+simple_search:  http://www.google.com.hk/search     # 搜索引擎
+description:                                        # 关于博客的描述
+subscribe_rss:  /atom.xml            # Rss订阅地址, 默认是  /atom.xml
+subscribe_email:                     # 提供Email订阅的地址
+email:                               # Rss订阅的Email地址
+root:  /               # 博客路径，默认是“/“，如果你打算在子目录中，记得修改这个路径
+permalink: /blog/:year/:month/:day/:title/           # 文章的固定链接形式
+</code></p>
+
+<h3>4 跟换主题</h3>
+
+<p>主题位于octopress根目录的 .theme 文件夹下，以安装'slash'主题为例：</p>
+
+<p><code>
+cd .theme
+git clone git://github.com/tommy351/Octopress-Theme-Slash.git slash
+rake install['slash']
+rake generate
+</code></p>
+
+<blockquote><p>提示： 更改网站样式相关</p>
+
+<p><a href="https://github.com/imathis/octopress/wiki/Octopress-Sites">https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes</a></p>
+
+<p><a href="https://github.com/imathis/octopress/wiki/Octopress-Sites">https://github.com/imathis/octopress/wiki/Octopress-Sites</a></p></blockquote>
+
+<h3>5 添加文章</h3>
+
+<p>执行 <code>rake new_post["my first blog"]</code> ,</p>
+
+<p>这样会在octopress的/source/_post下生成一个markdown文件，可以用文本软件进行编辑</p>
+
+<h3>6 新建页面</h3>
+
+<p>命令：<code>rake new_page["page_name"]</code></p>
+
+<blockquote><p>提示：修改source/_include/custom 文件，可将页面添加到导航栏。</p></blockquote>
+
+<h3>7 生成静态页面，预览，发布</h3>
+
+<p>完成编辑后执行<code>rake generate</code>，生成静态页面（将source和sass下的源码生成到public目录）。
+执行<code>rake preview</code>，启动本地预览，可以在浏览器内以这个地址进行预览。
+最后执行rake deploy，将日志提交到github上（将生成到public中的内容复制到_deploy目录，并提交到github的master分支）。</p>
+
+<blockquote><p>提示：generate 和 deploy 可以用一条命令搞定： rake gen_deploy</p></blockquote>
+
+<h3>8 将修改备份到github的source分支上</h3>
+
+<p><code>
+git add .
+git commit -m 'your message'
+git push origin source
+</code></p>
+
+<h3>9 补充</h3>
+
+<ul>
+<li><p>查询所有rake参数 ： <code>rake -T</code></p></li>
+<li><p>添加附加功能</p>
+
+<p>1 使用google的 Analytics 监控网站流量，需要先申请账号。</p>
+
+<p>  先将需要添加的代码添加到 source/_includes 文件中</p>
+
+<p>  然后配置 google_analytics_tracking_id 项 （位于_config.yml文件中）。</p>
+
+<p>2 添加评论，使用 DISQUS 实现。同样需要修改 _config.yml 文件</p></li>
+</ul>
+
+
+<br /><br /><br />
+
+
+<hr />
+
+<br />
+
+
+<h3>为github上已有的oct opress配置本地环境 方法一</h3>
+
+<ol>
+<li><p>直接将远程仓库签出到本地</p>
+
+<p> <code>git clone git@github.com:duyw/duyw.github.com.git duyw.github.com</code></p></li>
+<li><p>签出source分支的源码</p>
+
+<p> <code>cd duyw.github.com</code></p>
+
+<p> <code>git checkout sources</code></p>
+
+<p> 这样当前项目就有了两个分支,查看分支命令： git branch</p></li>
+<li><p>安装依赖</p>
+
+<p> <code>bundle install</code></p></li>
+<li><p>配置和github的关联</p>
+
+<p> <code>rake setup_github_pages</code></p></li>
+<li><p>生成预览部署</p>
+
+<p> <code>rake generate</code></p>
+
+<p> <code>rake preview</code></p>
+
+<p> <code>rake deploy</code></p></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[markdown使用学习]]></title>
+    <link href="http://duyw.github.com/blog/2013/02/28/markdownshi-yong-xue-xi/"/>
+    <updated>2013-02-28T15:13:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/02/28/markdownshi-yong-xue-xi</id>
+    <content type="html"><![CDATA[<h3>Markdown简介</h3>
+
+<hr />
+
+<p>　　Markdown 是一种轻量级的标记语言，由John Gruber和Aaron Swartz创建，使其成为可读性最大并可再发行的可输入输出的格式。这种语言创建灵感来自于已经存在的带标记的电子邮件文本。Markdown 允许 HTML 语法，所以使用者如果需要可以直接用 HTML来表示是可以的。Markdown最初由Gruber应用在Perl语言中，但现在已经有多种编程语言应用了。它是开源项目，并以BSD-style许可证的许可方式以插件形式或内容管理系统形式发布。</p>
+
+<!-- more -->
+
+
+<h3>快速上手</h3>
+
+<hr />
+
+<h3>标题</h3>
+
+<p>```</p>
+
+<h1>这是 H1</h1>
+
+<h2>这是 H2</h2>
+
+<h6>这是 H6</h6>
+
+<p>```</p>
+
+<h3>文字样式</h3>
+
+<p>粗体用“<em>*”或者“__”包围，斜体用“</em>”或者“_”</p>
+
+<p>粗体： <strong>粗体</strong>      写法：<code>**粗体**</code>或者<code>__粗体__</code></p>
+
+<p>斜体： <em>斜体</em>      写法： <code>_斜体_</code>或者<code>*斜体*</code></p>
+
+<h3>分隔符</h3>
+
+<p>在一行中使用三个或三个以上的*、-或_可以添加分隔线，其中可以有空白，但是不能有其他字符。</p>
+
+<h3>段落</h3>
+
+<p>　　由一个或多个连续的文本行组成，它的前后要有一个以上的空行。</p>
+
+<h3>引用</h3>
+
+<p>```</p>
+
+<blockquote><p>这是一个引用，
+这里木有换行， <br/>
+在这里换行了。</p>
+
+<blockquote><p>内部嵌套
+```</p></blockquote></blockquote>
+
+<p>效果：</p>
+
+<blockquote><p>这是一个引用，
+这里木有换行， <br/>
+在这里换行了。</p>
+
+<blockquote><p>内部嵌套</p></blockquote></blockquote>
+
+<h3>列表</h3>
+
+<p>　　Markdown 支持有序列表和无序列表。</p>
+
+<ul>
+<li>无序列表使用星号、加号或是减号作为列表标记：</li>
+</ul>
+
+
+<p><code>
+*   Red
+*   Green
+*   Blue
+</code></p>
+
+<p>等同于：
+<code>
++   Red
++   Green
++   Blue
+</code></p>
+
+<p>也等同于：
+<code>
+-   Red
+-   Green
+-   Blue
+</code>
+* 有序列表则使用数字（任意数字即可，相同数字也ok）接着一个英文句点：</p>
+
+<p><code>
+1.  Bird
+2.  McHale
+3.  Parish
+</code></p>
+
+<p><code>
+1.  Bird
+1.  McHale
+1.  Parish
+</code></p>
+
+<h3>内容区块</h3>
+
+<p>用一个缩进或者反单引号来将需要突出显示内容区块
+例如：</p>
+
+<p>```</p>
+
+<pre><code>以热爱祖国为荣，以危害祖国为耻；
+以服务人民为荣，以背离人民为耻；
+以崇尚科学为荣，以愚昧无知为耻；
+以辛勤劳动为荣，以好逸恶劳为耻；
+以团结互助为荣，以损人利己为耻；
+以诚实守信为荣，以见利忘义为耻；
+以遵纪守法为荣，以违法乱纪为耻；
+以艰苦奋斗为荣，以骄奢淫逸为耻。
+</code></pre>
+
+<p>```</p>
+
+<pre><code>以热爱祖国为荣，以危害祖国为耻；
+以服务人民为荣，以背离人民为耻；
+以崇尚科学为荣，以愚昧无知为耻；
+以辛勤劳动为荣，以好逸恶劳为耻；
+以团结互助为荣，以损人利己为耻；
+以诚实守信为荣，以见利忘义为耻；
+以遵纪守法为荣，以违法乱纪为耻；
+以艰苦奋斗为荣，以骄奢淫逸为耻。
+</code></pre>
+
+<h3>代码区块</h3>
+
+<ul>
+<li>用三个 “`”符号包围代码：</li>
+</ul>
+
+
+<p><code>
+</code>
+def update
+  respond_to do |format|</p>
+
+<pre><code>if @comment.update_attributes(params[:comment])
+  format.js
+else
+  render :json =&gt; :error
+end
+</code></pre>
+
+<p>  end
+end
+<code>`</code>
+```</p>
+
+<p>Octopress中可以为代码着色，写法：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>代码说明： </span><a href='http://www.baidu.com'>链接到百度 </a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">update</span>
+</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;if @comment.update_attributes(params[:comment])</span>
+</span><span class='line'><span class="sr">  format.js</span>
+</span><span class='line'><span class="sr">else</span>
+</span><span class='line'><span class="sr">  fromat.html</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
+</span><span class='line'><span class="sr">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>单行代码</li>
+</ul>
+
+
+<p>用反引号包围要显示的<code>单行</code>代码片段:
+<code>&lt;img src="http://duyw.github.com/path/to/img.jpg" alt="alt text" title="Title" /&gt;</code></p>
+
+<h3>图片</h3>
+
+<p><img src="http://l.ruby-china.org/assets/text_logo-e616f2a05abc2e0ebea1f8c6cac685d7.png" title="Ruby China的logo" alt="Ruby China的logo" />
+写法：
+<code>
+![Ruby China的logo](http://l.ruby-china.org/assets/text_logo-e616f2a05abc2e0ebea1f8c6cac685d7.png "Ruby China的logo")
+</code>
+图片的另一种写法：
+```
+<img src="http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif" title="Optional title attribute1" alt="第一张百度logo图" />
+<img src="http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif" title="Optional title attribute2" alt="第二张百度logo图" /></p>
+
+<p>```
+效果：</p>
+
+<p><img src="http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif" title="Optional title attribute1" alt="第一张百度logo图" />
+<img src="http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif" title="Optional title attribute2" alt="第二张百度logo图" />
+在octopress中图片写法：</p>
+
+<pre><code><img class="[left|right] [class names]" src="/path/to/image" title="[width] [height] [title text [alt text]]" >
+</code></pre>
+
+<p>效果</p>
+
+<p><img src="http://placekitten.com/890/280">
+<img class="left" src="http://placekitten.com/320/250" title="Place Kitten #2" >
+<img class="right" src="http://placekitten.com/300/500" width="150" height="250" title="Place Kitten #3" >
+<img class="right" src="http://placekitten.com/300/500" width="150" height="250" title="Place Kitten #4" alt="An image of a very cute kitten"></p>
+
+<h3>链接</h3>
+
+<p>这是一个无title链接： <a href="http://www.baidu.com/">百度</a>
+写法：
+<code>
+[百度](http://www.baidu.com/)
+</code>
+这是一个有title链接： <a href="http://www.baidu.com/" title="点击打开百度首页">百度</a>
+<code>
+[百度](http://www.baidu.com/ "点击打开百度首页")
+</code></p>
+
+<p>I get 10 times more traffic from <a href="http://google.com/" title="Google">Google</a> than from
+<a href="http://search.yahoo.com/" title="Yahoo Search">Yahoo</a> or <a href="http://search.msn.com/" title="MSN Search">MSN</a>.
+<code>
+I get 10 times more traffic from [Google][aaaa] than from
+[Yahoo][bbbb] or [MSN][cccc].
+</code></p>
+
+<p>最后贴一张儿子的照片 ～～～</p>
+
+<p><img src="http://p13.freep.cn/p.aspx?u=v20_p13_photo_1302281746571604_0.jpg" title="儿子照片" alt="儿子照片" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My first blog]]></title>
+    <link href="http://duyw.github.com/blog/2013/02/27/my-first-blog/"/>
+    <updated>2013-02-27T10:59:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/02/27/my-first-blog</id>
+    <content type="html"><![CDATA[<p>　　这是搭建Octopress后写的第一篇 blog，另外为博客添加了gogle Analytics 和 DISQUS，小小的激动了一下，  哈哈。</p>
+
+<p>　　这个博客专门用来分享技术学习笔记，以前写过很多，有的记录在本地，有的分散在各个博客系统，有机会把有用的东西陆续整理过来。</p>
+
+<p>　　comme on  加油～！！！</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[virtualbox中虚拟硬盘扩容]]></title>
+    <link href="http://duyw.github.com/blog/2011/04/04/virtualboxzhong-xu-ni-ying-pan-kuo-rong/"/>
+    <updated>2011-04-04T17:17:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2011/04/04/virtualboxzhong-xu-ni-ying-pan-kuo-rong</id>
+    <content type="html"><![CDATA[<p>VirtualBox中虚拟硬盘扩容（vdi或者vmdk文件）扩容：</p>
+
+<p>　　今天在使用虚拟机的时候发现分配的硬盘空间不足，需要扩大容量，最简单的办法就是重新创建一个虚拟硬盘，然后挂载到虚拟系统中即可，考虑到虚拟系统的备份迁移等问题，我想直接将vmdk格式的虚拟硬盘扩容，最后操作成功，记录在此。</p>
+
+<p>　　其实创建和安装虚拟系统的时候可以将虚拟容量设置的大一些，比如可以设置50G，这50G动态扩大的，虚拟操作系统真正使用了多少，文件在外面系统中就占用多大的空间，这个文件大小最大限度是50G，所以不必担心会浪费的硬盘资源。</p>
+
+<p>　　如果你使用的是VMWare，将已有虚拟系统扩容则直接一条命令就可以搞定，方法google便知。</p>
+
+<p>　　但是VirtualBox就没那么方便了，因为VirtualBox不能改变已经创建的虚拟硬盘的大小，这一点很不人性化，但总是有办法的，操作的思路是先新建一个容量较大的vdi虚拟硬盘，然后将现有vdi虚拟硬盘的数据复制过去，然后把新建的虚拟硬盘挂载到虚拟系统中将原来的虚拟硬盘删除即可，复制的时候使用VBoxManage的 clonevdi 命令即可。</p>
+
+<p>　　需要提醒的是启动虚拟系统后查看硬盘大小并没有改变，需要在虚拟系统中创建分区分配盘符。</p>
+
+<p>　　VirtualBox与VMWare创建的虚拟系统都是vmdk格式的， 此外VirtualBox还支持vdi格式，如果你现有虚拟系统是vmdk格式的，那么要转换成vdi，然后将内容复制到新的vdi虚拟硬盘中，我找到两种方法可以实现转换：</p>
+
+<!-- more -->
+
+
+<h3>方法一：vmdk —> bin —> vdi</h3>
+
+<p>从vmdk转换到bin需要下载 QemuManager安装工具，操作示例：</p>
+
+<p>vmdk —> bin</p>
+
+<p><code>
+ "d:\Program Files\QemuManager\qemu\qemu-img.exe" convert "E:\virtualOS\server2003\win2003.vmdk" -O raw "E:\virtualOS\server2003\win2003.bin"
+</code></p>
+
+<p>bin —> vdi</p>
+
+<p><code>
+"D:\Program Files\Oracle\VirtualBox\VBoxManage.exe" convertfromraw "E:\virtualOS\server2003\win2003.bin" "E:\virtualOS\server2003\win2003.vdi"
+</code></p>
+
+<h3>方法二：直接转换</h3>
+
+<p>但是我在操作的过程中没有成功，不知道什么原因，你可以尝试一下：</p>
+
+<p><code>
+VBoxManage clonehd source.vmdk target.vdi --format VDI
+</code></p>
+
+<p>另外如果将vdi转换成vmdk：</p>
+
+<p><code>
+VBoxManage clonehd source.vdi target.vmdk --format VMDK
+</code></p>
+
+<p>通过前面的操作，接下来将原来的vid虚拟硬盘数据复制到新的vid硬盘，示例：</p>
+
+<p>旧vdi —> 新vdi</p>
+
+<p><code>
+"D:\Program Files\Oracle\VirtualBox\VBoxManage.exe"  clonevdi "E:\virtualOS\server2003\win2003.vdi"  "E:\virtualOS\server2003\server2003.vdi" --existing
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

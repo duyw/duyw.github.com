@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Oracle | 杜永文 博客]]></title>
+  <link href="http://duyw.github.com/blog/categories/oracle/atom.xml" rel="self"/>
+  <link href="http://duyw.github.com/"/>
+  <updated>2013-04-04T21:48:40+08:00</updated>
+  <id>http://duyw.github.com/</id>
+  <author>
+    <name><![CDATA[Du Yongwen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[rails 连接 Oracle]]></title>
+    <link href="http://duyw.github.com/blog/2010/12/29/rails-lian-jie-oracle/"/>
+    <updated>2010-12-29T14:06:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2010/12/29/rails-lian-jie-oracle</id>
+    <content type="html"><![CDATA[<p>我的环境如下：</p>
+
+<pre><code>ruby 1.8.7
+
+rails 2.3.8 
+
+本机安装 Oracle 11g客户端
+
+另一台电脑安装 Oracle 11g的服务器端
+</code></pre>
+
+<p>需要用到的gem包：</p>
+
+<pre><code>ruby-oci8
+
+activerecord-oracle-adapter
+</code></pre>
+
+<h3>操作步骤：</h3>
+
+<p> activerecord-oracle-adapter插件的使用说明：<a href="http://github.com/rsim/oracle-enhanced/wiki/Usage">跳转</a></p>
+
+<h4>1.首先将oracle客户端添加到系统环境变量中。</h4>
+
+<pre><code>注意：
+
+* Oracle 的密码不能为纯数字，否则报错。
+
+* 安装好客户端后要确保安装无误，可以访问到服务器。
+</code></pre>
+
+<h4>2.安装需要的gem包</h4>
+
+<p><code>
+gem install ruby-oci8-2.0.4-x86-mingw32.gem
+gem install activerecord-oracle-adapter --source http://gems.rubyonrails.org
+</code></p>
+
+<p>注意：安装好 oci8 后要测试 是否安装正确 方法是打开 irb 输入 require ‘oci8’ 如果不报错说明安装成功。</p>
+
+<p>另外可以用oci8测试 查询：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">OCI8</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;dyw1&#39;</span><span class="p">,</span><span class="s1">&#39;123456&#39;</span><span class="p">,</span><span class="s1">&#39;192.168.23.162/orcl&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s1">&#39;select * from journals&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">r</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<!-- more -->
+
+
+<h4>3.在rails项目中，进入config目录，修改 environment.rb 文件，添加如下内容：</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">gem</span> <span class="s2">&quot;activerecord-oracle_enhanced-adapter&quot;</span><span class="p">,</span> <span class="ss">:lib</span> <span class="o">=&gt;</span> <span class="s2">&quot;active_record/connection_adapters/oracle_enhanced_adapter&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>4.修改config目录下的 database.yml 文件，配置数据库的格式：</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>YAML代码:  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">adapter</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">oracle_enhanced</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">host</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">192.168.23.162/ORCL</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">username</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">OPAC</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">password</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">opac</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>5.在config/initializers 目录下创建文件 oracle.rb，当rails启动会自动执行，内容：</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:ConnectionAdapters</span><span class="o">::</span><span class="no">OracleEnhancedAdapter</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">emulate_integers_by_column_name</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">emulate_dates_by_column_name</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">emulate_booleans_from_strings</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">string_to_date_format</span> <span class="o">=</span> <span class="s2">&quot;%d.%m.%Y&quot;</span>
+</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">string_to_time_format</span> <span class="o">=</span> <span class="s2">&quot;%d.%m.%Y %H:%M:%S&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<br>
+
+
+<hr />
+
+<h5>下面是网上找的一些资料：</h5>
+
+<p>rails开发中的Oracle问题</p>
+
+<p>1.关联查询时的条件字段要明确指定</p>
+
+<p>碰到的问题为mysql下order by id正常, Oracle报错：OCIError: ORA-00918: column ambiguously defined</p>
+
+<p>2.`表名`问题</p>
+
+<p>mysql会给表名外加 `` (注意不是单引号), 手工加条件(如排序: order by `departments`.id)时,mysql正常，Oracle报错： OCIError: ORA-00911: invalid character</p>
+
+<p>3.级联更新问题</p>
+
+<p>has_one、has_many如未设置:dependent=>:delete/:delete_all，解除子项关联时，默认会去更新子项的外键为NULL，mysql下没问题，Oracle报错：OCIError: ORA-01407: cannot update</p>
+
+<p>4.日期问题</p>
+
+<p>2个短格式(yyyy-mm-dd)日期(一个从数据库取)直接相减求时间差得到相差天数, mysql下正常，oracle下出错, 可以采取date.to_s(:db).to_date的办法解决</p>
+
+<p>5.修改字段</p>
+
+<p>如果字段值不为空，oracle下不可修改字段类型，mysql下可以，可以用增加临时字段的方式解决。</p>
+]]></content>
+  </entry>
+  
+</feed>
