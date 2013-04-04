@@ -4,7 +4,7 @@
   <title><![CDATA[杜永文 博客]]></title>
   <link href="http://duyw.github.com/atom.xml" rel="self"/>
   <link href="http://duyw.github.com/"/>
-  <updated>2013-04-04T21:50:28+08:00</updated>
+  <updated>2013-04-04T21:52:44+08:00</updated>
   <id>http://duyw.github.com/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -46,6 +46,9 @@ postgresql-server-dev-9.1
 /etc/postgres/9.1/main/         存放postgresql配置文文件 
 /var/lib/postgresql/            postgres用户的主文件夹
 </code></pre>
+
+<!-- more -->
+
 
 <h3>2.配置管理员“postgres”，使用psql</h3>
 
