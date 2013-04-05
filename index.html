@@ -309,66 +309,12 @@ $ svn checkout &hellip;">
 </code></pre>
 
 <p> 如果将文件复制到<code>/usr/share/applications/</code>目录下，就可以在Dash中被搜索到。</p></li>
-<li><p>破解：</p>
-
-<p> 首先备份安装目录下的sublime_text文件<code>cp sublime_text sublime_text.bak</code></p>
-
-<p> 使用vim打开：<code>vim sublime_text</code> (如果没有安装vim，可以通过命令<code>sudo apt-get install vim</code>安装。)</p>
-
-<p> 将文件转化成16进制,在vim中输入：<code>:%!xxd</code></p>
-
-<p> 查找要修改的地方,在vim中输入： <code>/4333 3342</code></p>
-
-<p> 将3342修改为3242</p>
-
-<p> 将文件转换回去,在vim中输入： <code>:%!xxd -r</code></p>
-
-<p> 保存文件、退出,在vim中输入： <code>:wq</code></p>
-
-<p> 打开sublime text 2 编辑器，将下面的Licence填入即可大功告成：</p>
-
-<pre><code> —–BEGIN LICENSE—–
- China
- Unlimited User License
- EA7E-2861
- BE67D2175D3569FDAB9EB5340FAD2822
- E7B56B3397A76AA9FBE8AC3D3C65918B
- DFC28F2EA158140D9E07853D594818EB
- 3A237B2E8E98ED257C269548F50EDA34
- EF0C7F72D8917DB538A0245E46BFD6B1
- 85F4EDE331F253530ED67A5C19E92399
- 04C5F4A1AF4AF3DB5EC49C1FEE17CA76
- 7E369F8AAE4AC6C6E756B5882E1608B9
- —–END LICENSE—–
-</code></pre></li>
-<li><p>创建链接，这样就可以直接在命令行中通过 sub 命令启动</p>
-
-<p> <code>sudo ln -s /home/ivan/apps/Sublime\ Text\ 2/sublime_text /usr/bin/sub</code></p></li>
-<li><p>安装插件安装管理工具“package control”</p>
-
-<p> 打开 Sublime Text 2，按下 Control + ` 调出 Console，输入以下内容，回车执行：</p>
-
-<pre><code> import urllib2,os;pf='Package Control.sublime-package';ipp=sublime.installed_packages_path();os.makedirs(ipp) if not os.path.exists(ipp) else None;open(os.path.join(ipp,pf),'wb').write(urllib2.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read())
-</code></pre></li>
-<li><p>解决ubuntu12.04系统下中文输入问题：</p>
-
-<p> 需要通过安装InputHelper插件来实现中文输入：</p>
-
-<p> <code>cd ~/.config/sublime-text-2/Packages/</code></p>
-
-<p> <code>git clone https://github.com/xgenvn/InputHelper.git</code></p>
-
-<p> 也可以通过 package control 来安装.</p>
-
-<p> 使用方法：重启 Sublime Text 2 ,通过快捷键 Shift ＋ Ctrl ＋ Z 来呼出输入窗口，可在其中输入汉字，输入完成直接回车即可。</p></li>
-<li><p>相关插件介绍</p>
-
-<p> 待续&#8230;</p></li>
 </ol>
 
 
+
 		
-		
+		<a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2/" class="more-link">Continue reading &rarr;</a>
 	</div>
 
 

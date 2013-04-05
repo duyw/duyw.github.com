@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ubuntu | 杜永文 博客]]></title>
   <link href="http://duyw.github.com/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://duyw.github.com/"/>
-  <updated>2013-04-05T21:49:28+08:00</updated>
+  <updated>2013-04-05T21:51:59+08:00</updated>
   <id>http://duyw.github.com/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -429,6 +429,13 @@ sudo mysqladmin -u root password newpassword
 </code></pre>
 
 <p> 如果将文件复制到<code>/usr/share/applications/</code>目录下，就可以在Dash中被搜索到。</p></li>
+</ol>
+
+
+<!-- more -->
+
+
+<ol>
 <li><p>破解：</p>
 
 <p> 首先备份安装目录下的sublime_text文件<code>cp sublime_text sublime_text.bak</code></p>
