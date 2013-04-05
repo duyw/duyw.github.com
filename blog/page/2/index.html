@@ -6,7 +6,7 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content="我的环境如下： ruby 1.8.7 rails 2.3.8 本机安装 Oracle 11g客户端 另一台电脑安装 Oracle 11g的服务器端 需要用到的gem包： ruby-oci8 activerecord-oracle-adapter 操作步骤： activerecord-oracle &hellip;">
+	<meta name="description" content="　　这是搭建Octopress后写的第一篇 blog，另外为博客添加了gogle Analytics 和 DISQUS，小小的激动了一下， 哈哈。 　　这个博客专门用来分享技术学习笔记，以前写过很多，有的记录在本地，有的分散在各个博客系统，有机会把有用的东西陆续整理过来。 　　comme on &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -76,6 +76,107 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/02/27/my-first-blog/">
+		
+			My First Blog</a>
+	</h2>
+	<div class="entry-content">
+		<p>　　这是搭建Octopress后写的第一篇 blog，另外为博客添加了gogle Analytics 和 DISQUS，小小的激动了一下，  哈哈。</p>
+
+<p>　　这个博客专门用来分享技术学习笔记，以前写过很多，有的记录在本地，有的分散在各个博客系统，有机会把有用的东西陆续整理过来。</p>
+
+<p>　　comme on  加油～！！！</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-27T10:59:00+08:00" pubdate data-updated="true">Feb 27<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/others/'>其他</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2013/02/27/my-first-blog//blog/page/2/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2011/04/04/virtualboxzhong-xu-ni-ying-pan-kuo-rong/">
+		
+			Virtualbox中虚拟硬盘扩容</a>
+	</h2>
+	<div class="entry-content">
+		<p>VirtualBox中虚拟硬盘扩容（vdi或者vmdk文件）扩容：</p>
+
+<p>　　今天在使用虚拟机的时候发现分配的硬盘空间不足，需要扩大容量，最简单的办法就是重新创建一个虚拟硬盘，然后挂载到虚拟系统中即可，考虑到虚拟系统的备份迁移等问题，我想直接将vmdk格式的虚拟硬盘扩容，最后操作成功，记录在此。</p>
+
+<p>　　其实创建和安装虚拟系统的时候可以将虚拟容量设置的大一些，比如可以设置50G，这50G动态扩大的，虚拟操作系统真正使用了多少，文件在外面系统中就占用多大的空间，这个文件大小最大限度是50G，所以不必担心会浪费的硬盘资源。</p>
+
+<p>　　如果你使用的是VMWare，将已有虚拟系统扩容则直接一条命令就可以搞定，方法google便知。</p>
+
+<p>　　但是VirtualBox就没那么方便了，因为VirtualBox不能改变已经创建的虚拟硬盘的大小，这一点很不人性化，但总是有办法的，操作的思路是先新建一个容量较大的vdi虚拟硬盘，然后将现有vdi虚拟硬盘的数据复制过去，然后把新建的虚拟硬盘挂载到虚拟系统中将原来的虚拟硬盘删除即可，复制的时候使用VBoxManage的 clonevdi 命令即可。</p>
+
+<p>　　需要提醒的是启动虚拟系统后查看硬盘大小并没有改变，需要在虚拟系统中创建分区分配盘符。</p>
+
+<p>　　VirtualBox与VMWare创建的虚拟系统都是vmdk格式的， 此外VirtualBox还支持vdi格式，如果你现有虚拟系统是vmdk格式的，那么要转换成vdi，然后将内容复制到新的vdi虚拟硬盘中，我找到两种方法可以实现转换：</p>
+
+
+		
+		<a href="/blog/2011/04/04/virtualboxzhong-xu-ni-ying-pan-kuo-rong/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-04T17:17:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2011</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/virtualbox/'>Virtualbox</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2011/04/04/virtualboxzhong-xu-ni-ying-pan-kuo-rong//blog/page/2/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ubuntu | 杜永文 博客]]></title>
   <link href="http://duyw.github.com/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://duyw.github.com/"/>
-  <updated>2013-04-04T23:28:29+08:00</updated>
+  <updated>2013-04-05T21:47:12+08:00</updated>
   <id>http://duyw.github.com/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -12,6 +12,391 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu12.04下 SVN 安装和配置]]></title>
+    <link href="http://duyw.github.com/blog/2013/04/05/ubuntu12-dot-04xia-svn-an-zhuang-he-pei-zhi/"/>
+    <updated>2013-04-05T20:30:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/04/05/ubuntu12-dot-04xia-svn-an-zhuang-he-pei-zhi</id>
+    <content type="html"><![CDATA[<h3>1. 安装</h3>
+
+<p><code>
+sudo apt-get install subversion
+</code></p>
+
+<h3>2. 将最新版本文件签出到本地</h3>
+
+<p><code>
+svn checkout repository_path local_path --username 用户名  --password 密码
+</code></p>
+
+<p>例如：</p>
+
+<p><code>
+$ svn checkout svn://192.168.1.1/pro  --username 用户名 --password 密码
+</code></p>
+
+<p><code>
+$ svn checkout http://192.168.1.1/pro --username 用户名 --password 密码
+</code></p>
+
+<p>简写：<code>$ svn co svn://192.168.1.1/pro</code>或者 <code>$ svn co http://192.168.1.1/pro</code></p>
+
+<p>注：--password 参数传输密码的话，会提示输入密码。local_path  参数如果为空的话，会签出到当前目录。</p>
+
+<h3>3. 导出(导出一个干净的不带.svn文件夹的目录树)</h3>
+
+<p><code>
+svn export [-r 版本号] http://路径(目录或文件的全路径) [本地目录全路径] --username 用户名
+svn export [-r 版本号] svn://路径(目录或文件的全路径)  [本地目录全路径] --username 用户名
+svn export 本地检出的(即带有.svn文件夹的)目录全路径  要导出的本地目录全路径
+</code></p>
+
+<p>例子：</p>
+
+<p><code>
+svn export svn://192.168.0.3/测试工具 /home/testtools --username ivan
+svn export http://192.168.0.3/test/testapp --username ivan
+svn export /home/testapp /home/testtools
+</code></p>
+
+<p>注：</p>
+
+<p>第一种从版本库导出干净工作目录树的形式是指定URL，如果指定了修订版本号，会导出相应的版本，如果没有指定修订版本，则会导出最新的，导出到指定位置。</p>
+
+<p>如果省略 本地目录全路径，URL的最后一部分会作为本地目录的名字。</p>
+
+<p>第二种形式是指定 本地检出的目录全路径 到 要导出的本地目录全路径，所有的本地修改将会保留，但是不在版本控制下(即没提交的新文件，因为.svn文件夹里没有与之相关的信息记录)的文件不会拷贝。</p>
+
+<h3>4. 往版本库中添加新的文件</h3>
+
+<p><code>$ svn add file</code> 告诉SVN服务器要添加文件了，还要用<code>svn commint -m</code>真实的上传上去！</p>
+
+<p>例如：</p>
+
+<p><code>
+$ svn add test.php   #(添加test.php)   
+$ svn add *.php      #(添加当前目录下所有的php文件)
+</code></p>
+
+<h3>5. 提交</h3>
+
+<p><code>
+svn commit -m “提交备注信息文本“ [-N] [--no-unlock] 文件名
+svn ci     -m “提交备注信息文本“ [-N] [--no-unlock] 文件名
+</code></p>
+
+<p>必须带上-m参数，参数可以为空，但是必须写上-m</p>
+
+<p>例子：</p>
+
+<p><code>
+svn commit -m “提交当前目录下的全部在版本控制下的文件“ *    #注意这个*表示全部文件
+svn commit -m “提交我的测试用test.php“ test.php
+svn commit -m “提交我的测试用test.php“ -N --no-unlock test.php    #保持锁就用–no-unlock开关
+</code></p>
+
+<p><code>
+svn ci -m “提交当前目录下的全部在版本控制下的文件“ *    #注意这个*表示全部文件
+svn ci -m “提交我的测试用test.php“ test.php
+svn ci -m “提交我的测试用test.php“ -N --no-unlock test.php    #保持锁就用–no-unlock开关
+</code></p>
+
+<h3>6. 更新文件</h3>
+
+<p><code>
+svn update
+svn update -r 修正版本 文件名
+svn update 文件名
+</code></p>
+
+<p>例子：</p>
+
+<p><code>
+svn update                    # 后面没有目录，默认将当前目录以及子目录下的所有文件都更新到最新版本
+svn update -r 200 test.cpp    # 将版本库中的文件 test.cpp 还原到修正版本（revision）200
+svn update test.php           # 更新与版本库同步。
+</code>
+注：提交的时候提示过期冲突，需要先 update 修改文件，然后清除 svn resolved，最后再commit。</p>
+
+<h3>7. 删除文件</h3>
+
+<p><code>
+svn delete svn://路径(目录或文件的全路径) -m “删除备注信息文本”
+</code></p>
+
+<p>推荐如下操作：</p>
+
+<p><code>
+svn delete 文件名  svn ci -m “删除备注信息文本”
+</code></p>
+
+<p>例子：</p>
+
+<p><code>
+svn delete svn://192.168.1.1/testapp/test.php -m “删除测试文件test.php”
+</code></p>
+
+<p>推荐如下操作：</p>
+
+<p><code>
+svn delete test.php  svn ci -m “删除测试文件test.php”
+</code></p>
+
+<h3>8. 加锁/解锁</h3>
+
+<p><code>
+svn lock -m “加锁备注信息文本“ [--force] 文件名  
+svn unlock 文件名
+</code></p>
+
+<p>例子：</p>
+
+<p><code>
+svn lock -m “锁信测试用test.php文件“ test.php  
+svn unlock test.php
+</code></p>
+
+<h3>9. 比较差异</h3>
+
+<p><code>
+svn diff 文件名  
+svn diff -r 修正版本号m:修正版本号n 文件名
+</code></p>
+
+<p>例子：</p>
+
+<p><code>
+svn diff test.php              # 将修改的文件与基础版本比较
+svn diff -r 200:201 test.php   # 对 修正版本号200 和 修正版本号201 比较差异
+</code></p>
+
+<h3>10. 查看文件或者目录状态</h3>
+
+<p><code>
+svn st     目录路径/名
+svn status 目录路径/名   #目录下的文件和子目录的状态，正常状态不显示
+</code></p>
+
+<p>说明：  ?：不在svn的控制中；  M：内容被修改；C：发生冲突； A：预定加入到版本库；K：被锁定</p>
+
+<p><code>
+svn  -v 目录路径/名
+svn status -v 目录路径/名    #显示文件和子目录状态
+</code></p>
+
+<p>说明：第一列保持相同，第二列显示工作版本号，第三和第四列显示最后一次修改的版本号和修改人</p>
+
+<p>注：
+svn status、svn diff 和 svn revert 这三条命令在没有网络的情况下也可以执行的，原因是svn在本地的.svn中保留了本地版本的原始拷贝（但不是所有历史版本的拷贝，这点和GIT是不同的）。</p>
+
+<h3>11. 查看日志</h3>
+
+<p><code>
+svn log 文件名
+</code></p>
+
+<p>例子：</p>
+
+<p><code>
+svn log test.php  #显示这个文件的所有修改记录，及其版本号的变化
+</code></p>
+
+<h3>12. 查看文件详细信息</h3>
+
+<p><code>
+svn info 文件名
+</code></p>
+
+<p>例子：</p>
+
+<p><code>
+svn info test.php
+</code></p>
+
+<h3>13. SVN 帮助</h3>
+
+<p><code>
+svn help          # 全部功能选项
+svn help ci      # 具体功能的说明
+</code></p>
+
+<h3>14. 查看版本库下的文件和目录列表</h3>
+
+<p><code>
+svn list svn://路径(目录或文件的全路径)
+svn ls   svn://路径(目录或文件的全路径)
+</code></p>
+
+<p>例子：</p>
+
+<p><code>
+svn list svn://192.168.0.3/test
+svn ls   svn://192.168.0.3/test   # 显示svn://192.168.0.3/test目录下的所有属于版本库的文件和目录
+</code></p>
+
+<h3>15. 创建纳入版本控制下的新目录</h3>
+
+<p><code>
+svn mkdir 目录名
+svn mkdir -m "新增目录备注文本" http://目录全路径
+</code></p>
+
+<p>例子：</p>
+
+<p><code>
+svn mkdir newdir
+svn mkdir -m "Making a new dir." http://192.168.0.3/test/newdir  
+</code></p>
+
+<p>注：添加完子目录后，一定要回到根目录更新一下，不然在该目录下提交文件会提示“提交失败”</p>
+
+<p><code>
+svn update
+</code></p>
+
+<p>注：如果手工在checkout出来的目录里创建了一个新文件夹newsubdir，再用svn mkdir newsubdir命令后，SVN会提示：</p>
+
+<pre><code>svn: 尝试用 “svn add”或 “svn add --non-recursive”代替？
+svn: 无法创建目录“hello”: 文件已经存在
+</code></pre>
+
+<p>此时，用如下命令解决：<code>svn add --non-recursive newsubdir</code></p>
+
+<p>再次进入这个newsubdir文件夹，用<code>ls -a</code>查看它下面的全部目录与文件，会发现多了：.svn目录</p>
+
+<p>再用 <code>svn mkdir -m "添hello功能模块文件" svn://192.168.0.3/test/newdir/newsubdir</code> 命令，SVN提示：</p>
+
+<pre><code>svn: File already exists: filesystem '/data/svnroot/test/db', transaction '4541-1',
+path '/newdir/newsubdir '
+</code></pre>
+
+<h3>16. 恢复本地修改</h3>
+
+<p><code>
+svn revert [--recursive] 文件名
+</code></p>
+
+<p>注意: 本子命令不会存取网络，并且会解除冲突的状况。但是它不会恢复被删除的目录。</p>
+
+<p>例子：</p>
+
+<p><code>
+svn revert foo.c            # 丢弃对一个文件的修改
+svn revert --recursive .    # 恢复一整个目录的文件，. 为当前目录
+</code></p>
+
+<h3>17. 把工作拷贝更新到别的URL</h3>
+
+<p><code>
+svn switch http://目录全路径 本地目录全路径
+</code></p>
+
+<p>例子：</p>
+
+<p><code>
+svn switch http://192.163.0.3/test/456 . #(原为123的分支)当前所在目录分支到192.163.0.3/test/456
+</code></p>
+
+<h3>18. 解决冲突</h3>
+
+<p><code>
+svn resolved [本地目录全路径]
+</code></p>
+
+<p>例子：</p>
+
+<p><code>
+$ svn update
+C foo.c
+Updated to revision 31.
+</code></p>
+
+<p>如果你在更新时得到冲突，你的工作拷贝会产生三个新的文件：</p>
+
+<p><code>  
+$ ls
+foo.c
+foo.c.mine
+foo.c.r30
+foo.c.r31
+</code></p>
+
+<p>当你解决了foo.c的冲突，并且准备提交，运行svn resolved让你的工作拷贝知道你已经完成了所有事情。 你可以仅仅删除冲突的文件并且提交，但是svn resolved除了删除冲突文件，还修正了一些记录在工作拷贝管理区域的记录数据，所以我们推荐你使用这个命令。</p>
+
+<h3>19. 不checkout而查看输出特定文件或URL的内容</h3>
+
+<p><code>
+svn cat http://文件全路径
+</code></p>
+
+<p>例子： <code>svn cat http://192.168.0.3/test/readme.txt</code></p>
+
+<p>另外，在Linxu下，可视化SVN客户端可以用 Rabbitvcs 。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu12.04 安装 MySQL]]></title>
+    <link href="http://duyw.github.com/blog/2013/04/05/ubuntu12-dot-04-an-zhuang-mysql/"/>
+    <updated>2013-04-05T20:15:00+08:00</updated>
+    <id>http://duyw.github.com/blog/2013/04/05/ubuntu12-dot-04-an-zhuang-mysql</id>
+    <content type="html"><![CDATA[<h3>第一步：卸载mysql</h3>
+
+<p><code>
+sudo apt-get autoremove --purge mysql-server-5.0
+sudo apt-get remove mysql-server
+sudo apt-get autoremove mysql-server
+sudo apt-get remove mysql-common (非常重要)
+</code></p>
+
+<h3>第二步：清理残留数据</h3>
+
+<p><code>
+dpkg -l |grep ^rc|awk '{print $2}' |sudo xargs dpkg -P
+</code></p>
+
+<h3>第三步：安装 mysql</h3>
+
+<p><code>
+sudo apt-get install mysql-server
+sudo apt-get install mysql-client
+sudo apt-get install php5-mysql(安装php5-mysql 是将php和mysql连接起来 )
+</code></p>
+
+<p>一旦安装完成，MySQL 服务器应该自动启动。您可以在终端提示符后运行以下命令来检查 MySQL 服务器是否正在运行：</p>
+
+<p><code>
+sudo netstat -tap | grep mysql
+</code></p>
+
+<p>当您运行该命令时，您可以看到类似下面的行：</p>
+
+<p><code>
+tcp 0 0 localhost.localdomain:mysql *:* LISTEN -
+</code></p>
+
+<p>如果服务器不能正常运行，您可以通过下列命令启动它：</p>
+
+<p><code>
+sudo /etc/init.d/mysql restart
+</code></p>
+
+<h3>第四步：配置管理员密码</h3>
+
+<p>进入mysql</p>
+
+<p><code>
+$mysql -uroot -p 管理员密码
+</code></p>
+
+<p>配置 MySQL 的管理员密码：</p>
+
+<p><code>
+sudo mysqladmin -u root password newpassword
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ubuntu12.04 安装 Sublime Text 2 ]]></title>
@@ -352,201 +737,6 @@ host all all 0.0.0.0 0.0.0.0 md5
 <p>1 安装过程中总是下载不了要安装的文件，更新源添加163源都无法解决，最后通过vpn翻墙以后可以正常安装。</p>
 
 <p>2 安装以后pgAdmin3固定到启动器后不显示图标，解决方法，修改/usr/share/applications目录下的 pgAdmin III.desktop文件，将其中的 Icon值改为“/usr/share/pixmaps/pgadmin3.svg”，搞定。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[A simple Script for installing RoR on Ubuntu12.04]]></title>
-    <link href="http://duyw.github.com/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04/"/>
-    <updated>2013-03-04T11:48:00+08:00</updated>
-    <id>http://duyw.github.com/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04</id>
-    <content type="html"><![CDATA[<p>This is a usful script,I found it here: <a href="http://blog.sudobits.com/2012/05/02/how-to-install-ruby-on-rails-in-ubuntu-12-04-lts/">Sudobits 博客</a></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>rails-installer.sh </span><a href='https://github.com/rkjha/RailsOnUbuntu/blob/master/rails-installer.sh'>链接到github </a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;A simple Script <span class="k">for </span>installing Rails on Ubuntu 12.04 LTS / 12.10&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;It will also install the dependencies required as well as the RVM&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Author: Ramesh Jha <span class="o">(</span>ramesh@rameshjha.com<span class="o">)</span>,<span class="o">(</span>http://blog.sudobits.com<span class="o">)</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;License: MIT&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;RUBY_VERSION<span class="o">=</span><span class="s2">&quot;1.9.3&quot;</span>
-</span><span class='line'><span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&quot;$HOME/install.log&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;Rails Installer started&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Installing Dependencies&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;.......Updating package cache.....&quot;</span>
-</span><span class='line'>sudo apt-get update &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;......Done..........&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;..........Installing git..........&quot;</span>
-</span><span class='line'>sudo apt-get -y install git &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;..........Done....................&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;Installing Curl&quot;</span>
-</span><span class='line'>sudo apt-get -y install curl &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;...........Done...................&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Install RVM <span class="o">(</span>Ruby Version Manager<span class="o">)</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;.....Installing RVM..............&quot;</span>
-</span><span class='line'>curl -L get.rvm.io | bash -s stable &gt;&gt;<span class="nv">$LOG_FILE</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;fallback <span class="k">for </span>the above <span class="nb">command</span> <span class="o">(</span>in <span class="k">case </span>of certificates errors<span class="o">)</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;if <span class="o">(</span><span class="nv">$?</span> !<span class="o">=</span>0<span class="o">)</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;then&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;curl -kL get.rvm.io | bash -s stable&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;fi&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;............DONE..........&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;......Loading RVM..........&quot;</span>
-</span><span class='line'><span class="nb">source</span> ~/.rvm/scripts/rvm &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;...........Done...........&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Install Additional Dependencies&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;sudo apt-get -y install build-essential openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Install nodejs from the PPA&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;sudo apt-add-repository -y ppa:chris-lea/node.js
-</span><span class='line'>sudo apt-get update
-</span><span class='line'>sudo apt-get -y install nodejs&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Install Latest version of Ruby&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;........Installing Ruby v $RUBY_VERSION ...&quot;</span>
-</span><span class='line'>rvm install <span class="nv">$RUBY_VERSION</span> &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;==&gt; Done.........&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;If you want to install another version of ruby e.g 1.8.7&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Then use the command &#39;rvm install 1.8.7&#39; &quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Select and Set latest version of ruby as the default so that&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;You won<span class="s1">&#39;t have to select each time you start a terminal&lt;/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;p&gt;echo &quot;.......Setting the default version of Ruby...&quot;</span>
-</span><span class='line'><span class="s1">rvm --default use $RUBY_VERSION &gt;&gt;$LOG_FILE</span>
-</span><span class='line'><span class="s1">echo &quot;==&gt; Done.........&quot;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;p&gt;echo &quot;Now, You are using Ruby $RUBY_VERSION by default&quot;</span>
-</span><span class='line'><span class="s1">echo &quot;if you want to change that then use &#39;</span>rvm --default &lt;ruby_version&gt;<span class="err">&#39;</span> <span class="s2">&quot;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">&lt;h1&gt;Install Latest version of Rails&lt;/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">&lt;p&gt;echo &quot;</span>..........Installing Rails gem................<span class="s2">&quot;</span>
-</span><span class='line'><span class="s2">gem install rails &gt;&gt;$LOG_FILE</span>
-</span><span class='line'><span class="s2">echo &quot;</span>.........Done<span class="s2">&quot;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">&lt;p&gt;echo &quot;</span><span class="c">######################################&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;###### Installation Completed ########&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;######################################&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;if something went wrong then checkout the log file $LOG_FILE&quot;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   

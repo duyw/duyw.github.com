@@ -6,8 +6,10 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content="Sublime Text 2 是一款非常优秀的编辑器，可以媲美苹果系统下的TextMate，用Sublime Text 2 进行RoR开发是一件很惬意的事，在Ubuntu12.04系统下安装步骤如下： 到官网下载软件包： “Sublime Text 2.0.1.tar.bz2”。
-复制到安装目录 &hellip;">
+	<meta name="description" content="1. 安装 1
+sudo apt-get install subversion 2. 将最新版本文件签出到本地 1
+svn checkout repository_path local_path --username 用户名 --password 密码 例如： 1
+$ svn checkout &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -77,6 +79,499 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/04/05/ubuntu12-dot-04xia-svn-an-zhuang-he-pei-zhi/">
+		
+			Ubuntu12.04下 SVN 安装和配置</a>
+	</h2>
+	<div class="entry-content">
+		<h3>1. 安装</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install subversion</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2. 将最新版本文件签出到本地</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn checkout repository_path local_path --username 用户名  --password 密码</span></code></pre></td></tr></table></div></figure>
+
+
+<p>例如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ svn checkout svn://192.168.1.1/pro  --username 用户名 --password 密码</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ svn checkout http://192.168.1.1/pro --username 用户名 --password 密码</span></code></pre></td></tr></table></div></figure>
+
+
+<p>简写：<code>$ svn co svn://192.168.1.1/pro</code>或者 <code>$ svn co http://192.168.1.1/pro</code></p>
+
+<p>注：&#8211;password 参数传输密码的话，会提示输入密码。local_path  参数如果为空的话，会签出到当前目录。</p>
+
+<h3>3. 导出(导出一个干净的不带.svn文件夹的目录树)</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn export [-r 版本号] http://路径(目录或文件的全路径) [本地目录全路径] --username 用户名
+</span><span class='line'>svn export [-r 版本号] svn://路径(目录或文件的全路径)  [本地目录全路径] --username 用户名
+</span><span class='line'>svn export 本地检出的(即带有.svn文件夹的)目录全路径  要导出的本地目录全路径 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn export svn://192.168.0.3/测试工具 /home/testtools --username ivan
+</span><span class='line'>svn export http://192.168.0.3/test/testapp --username ivan
+</span><span class='line'>svn export /home/testapp /home/testtools</span></code></pre></td></tr></table></div></figure>
+
+
+<p>注：</p>
+
+<p>第一种从版本库导出干净工作目录树的形式是指定URL，如果指定了修订版本号，会导出相应的版本，如果没有指定修订版本，则会导出最新的，导出到指定位置。</p>
+
+<p>如果省略 本地目录全路径，URL的最后一部分会作为本地目录的名字。</p>
+
+<p>第二种形式是指定 本地检出的目录全路径 到 要导出的本地目录全路径，所有的本地修改将会保留，但是不在版本控制下(即没提交的新文件，因为.svn文件夹里没有与之相关的信息记录)的文件不会拷贝。</p>
+
+<h3>4. 往版本库中添加新的文件</h3>
+
+<p><code>$ svn add file</code> 告诉SVN服务器要添加文件了，还要用<code>svn commint -m</code>真实的上传上去！</p>
+
+<p>例如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ svn add test.php   #(添加test.php)   
+</span><span class='line'>$ svn add *.php      #(添加当前目录下所有的php文件) </span></code></pre></td></tr></table></div></figure>
+
+
+<h3>5. 提交</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn commit -m “提交备注信息文本“ [-N] [--no-unlock] 文件名
+</span><span class='line'>svn ci     -m “提交备注信息文本“ [-N] [--no-unlock] 文件名</span></code></pre></td></tr></table></div></figure>
+
+
+<p>必须带上-m参数，参数可以为空，但是必须写上-m</p>
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn commit -m “提交当前目录下的全部在版本控制下的文件“ *    #注意这个*表示全部文件 
+</span><span class='line'>svn commit -m “提交我的测试用test.php“ test.php 
+</span><span class='line'>svn commit -m “提交我的测试用test.php“ -N --no-unlock test.php    #保持锁就用–no-unlock开关 </span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn ci -m “提交当前目录下的全部在版本控制下的文件“ *    #注意这个*表示全部文件 
+</span><span class='line'>svn ci -m “提交我的测试用test.php“ test.php 
+</span><span class='line'>svn ci -m “提交我的测试用test.php“ -N --no-unlock test.php    #保持锁就用–no-unlock开关</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>6. 更新文件</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn update 
+</span><span class='line'>svn update -r 修正版本 文件名 
+</span><span class='line'>svn update 文件名 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn update                    # 后面没有目录，默认将当前目录以及子目录下的所有文件都更新到最新版本 
+</span><span class='line'>svn update -r 200 test.cpp    # 将版本库中的文件 test.cpp 还原到修正版本（revision）200 
+</span><span class='line'>svn update test.php           # 更新与版本库同步。</span></code></pre></td></tr></table></div></figure>
+
+
+<p>注：提交的时候提示过期冲突，需要先 update 修改文件，然后清除 svn resolved，最后再commit。</p>
+
+<h3>7. 删除文件</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn delete svn://路径(目录或文件的全路径) -m “删除备注信息文本” </span></code></pre></td></tr></table></div></figure>
+
+
+<p>推荐如下操作：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn delete 文件名  svn ci -m “删除备注信息文本”</span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn delete svn://192.168.1.1/testapp/test.php -m “删除测试文件test.php” </span></code></pre></td></tr></table></div></figure>
+
+
+<p>推荐如下操作：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn delete test.php  svn ci -m “删除测试文件test.php”</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>8. 加锁/解锁</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn lock -m “加锁备注信息文本“ [--force] 文件名  
+</span><span class='line'>svn unlock 文件名 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn lock -m “锁信测试用test.php文件“ test.php  
+</span><span class='line'>svn unlock test.php </span></code></pre></td></tr></table></div></figure>
+
+
+<h3>9. 比较差异</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn diff 文件名  
+</span><span class='line'>svn diff -r 修正版本号m:修正版本号n 文件名 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn diff test.php              # 将修改的文件与基础版本比较 
+</span><span class='line'>svn diff -r 200:201 test.php   # 对 修正版本号200 和 修正版本号201 比较差异</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>10. 查看文件或者目录状态</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn st     目录路径/名 
+</span><span class='line'>svn status 目录路径/名   #目录下的文件和子目录的状态，正常状态不显示</span></code></pre></td></tr></table></div></figure>
+
+
+<p>说明：  ?：不在svn的控制中；  M：内容被修改；C：发生冲突； A：预定加入到版本库；K：被锁定</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn  -v 目录路径/名 
+</span><span class='line'>svn status -v 目录路径/名    #显示文件和子目录状态</span></code></pre></td></tr></table></div></figure>
+
+
+<p>说明：第一列保持相同，第二列显示工作版本号，第三和第四列显示最后一次修改的版本号和修改人</p>
+
+<p>注：
+svn status、svn diff 和 svn revert 这三条命令在没有网络的情况下也可以执行的，原因是svn在本地的.svn中保留了本地版本的原始拷贝（但不是所有历史版本的拷贝，这点和GIT是不同的）。</p>
+
+<h3>11. 查看日志</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn log 文件名 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn log test.php  #显示这个文件的所有修改记录，及其版本号的变化</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>12. 查看文件详细信息</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn info 文件名 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn info test.php</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>13. SVN 帮助</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn help          # 全部功能选项 
+</span><span class='line'>svn help ci      # 具体功能的说明</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>14. 查看版本库下的文件和目录列表</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn list svn://路径(目录或文件的全路径) 
+</span><span class='line'>svn ls   svn://路径(目录或文件的全路径) </span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn list svn://192.168.0.3/test 
+</span><span class='line'>svn ls   svn://192.168.0.3/test   # 显示svn://192.168.0.3/test目录下的所有属于版本库的文件和目录 </span></code></pre></td></tr></table></div></figure>
+
+
+<h3>15. 创建纳入版本控制下的新目录</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn mkdir 目录名 
+</span><span class='line'>svn mkdir -m "新增目录备注文本" http://目录全路径 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn mkdir newdir 
+</span><span class='line'>svn mkdir -m "Making a new dir." http://192.168.0.3/test/newdir  </span></code></pre></td></tr></table></div></figure>
+
+
+<p>注：添加完子目录后，一定要回到根目录更新一下，不然在该目录下提交文件会提示“提交失败”</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn update </span></code></pre></td></tr></table></div></figure>
+
+
+<p>注：如果手工在checkout出来的目录里创建了一个新文件夹newsubdir，再用svn mkdir newsubdir命令后，SVN会提示：</p>
+
+<pre><code>svn: 尝试用 “svn add”或 “svn add --non-recursive”代替？
+svn: 无法创建目录“hello”: 文件已经存在
+</code></pre>
+
+<p>此时，用如下命令解决：<code>svn add --non-recursive newsubdir</code></p>
+
+<p>再次进入这个newsubdir文件夹，用<code>ls -a</code>查看它下面的全部目录与文件，会发现多了：.svn目录</p>
+
+<p>再用 <code>svn mkdir -m "添hello功能模块文件" svn://192.168.0.3/test/newdir/newsubdir</code> 命令，SVN提示：</p>
+
+<pre><code>svn: File already exists: filesystem '/data/svnroot/test/db', transaction '4541-1',
+path '/newdir/newsubdir '
+</code></pre>
+
+<h3>16. 恢复本地修改</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn revert [--recursive] 文件名 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>注意: 本子命令不会存取网络，并且会解除冲突的状况。但是它不会恢复被删除的目录。</p>
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn revert foo.c            # 丢弃对一个文件的修改
+</span><span class='line'>svn revert --recursive .    # 恢复一整个目录的文件，. 为当前目录</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>17. 把工作拷贝更新到别的URL</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn switch http://目录全路径 本地目录全路径 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn switch http://192.163.0.3/test/456 . #(原为123的分支)当前所在目录分支到192.163.0.3/test/456</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>18. 解决冲突</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn resolved [本地目录全路径] </span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ svn update 
+</span><span class='line'>C foo.c 
+</span><span class='line'>Updated to revision 31. </span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你在更新时得到冲突，你的工作拷贝会产生三个新的文件：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ls 
+</span><span class='line'>foo.c 
+</span><span class='line'>foo.c.mine 
+</span><span class='line'>foo.c.r30 
+</span><span class='line'>foo.c.r31 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>当你解决了foo.c的冲突，并且准备提交，运行svn resolved让你的工作拷贝知道你已经完成了所有事情。 你可以仅仅删除冲突的文件并且提交，但是svn resolved除了删除冲突文件，还修正了一些记录在工作拷贝管理区域的记录数据，所以我们推荐你使用这个命令。</p>
+
+<h3>19. 不checkout而查看输出特定文件或URL的内容</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn cat http://文件全路径 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子： <code>svn cat http://192.168.0.3/test/readme.txt</code></p>
+
+<p>另外，在Linxu下，可视化SVN客户端可以用 Rabbitvcs 。</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-05T20:30:00+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/svn/'>SVN</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2013/04/05/ubuntu12-dot-04xia-svn-an-zhuang-he-pei-zhi//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/04/05/ubuntu12-dot-04-an-zhuang-mysql/">
+		
+			Ubuntu12.04 安装 MySQL</a>
+	</h2>
+	<div class="entry-content">
+		<h3>第一步：卸载mysql</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get autoremove --purge mysql-server-5.0
+</span><span class='line'>sudo apt-get remove mysql-server
+</span><span class='line'>sudo apt-get autoremove mysql-server
+</span><span class='line'>sudo apt-get remove mysql-common (非常重要)</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>第二步：清理残留数据</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dpkg -l |grep ^rc|awk '{print $2}' |sudo xargs dpkg -P</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>第三步：安装 mysql</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install mysql-server
+</span><span class='line'>sudo apt-get install mysql-client
+</span><span class='line'>sudo apt-get install php5-mysql(安装php5-mysql 是将php和mysql连接起来 )</span></code></pre></td></tr></table></div></figure>
+
+
+<p>一旦安装完成，MySQL 服务器应该自动启动。您可以在终端提示符后运行以下命令来检查 MySQL 服务器是否正在运行：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo netstat -tap | grep mysql</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当您运行该命令时，您可以看到类似下面的行：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>tcp 0 0 localhost.localdomain:mysql *:* LISTEN -</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果服务器不能正常运行，您可以通过下列命令启动它：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo /etc/init.d/mysql restart</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>第四步：配置管理员密码</h3>
+
+<p>进入mysql</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$mysql -uroot -p 管理员密码</span></code></pre></td></tr></table></div></figure>
+
+
+<p>配置 MySQL 的管理员密码：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo mysqladmin -u root password newpassword</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-05T20:15:00+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/mysql/'>MySQL</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>, <a class='category' href='/blog/categories/database/'>数据库</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2013/04/05/ubuntu12-dot-04-an-zhuang-mysql//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">
@@ -769,107 +1264,6 @@ postgresql-server-dev-9.1
 </div>
 	
 		<div class="comments"><a href="/blog/2013/02/28/markdownshi-yong-xue-xi//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/02/27/my-first-blog/">
-		
-			My First Blog</a>
-	</h2>
-	<div class="entry-content">
-		<p>　　这是搭建Octopress后写的第一篇 blog，另外为博客添加了gogle Analytics 和 DISQUS，小小的激动了一下，  哈哈。</p>
-
-<p>　　这个博客专门用来分享技术学习笔记，以前写过很多，有的记录在本地，有的分散在各个博客系统，有机会把有用的东西陆续整理过来。</p>
-
-<p>　　comme on  加油～！！！</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-27T10:59:00+08:00" pubdate data-updated="true">Feb 27<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/others/'>其他</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/02/27/my-first-blog//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2011/04/04/virtualboxzhong-xu-ni-ying-pan-kuo-rong/">
-		
-			Virtualbox中虚拟硬盘扩容</a>
-	</h2>
-	<div class="entry-content">
-		<p>VirtualBox中虚拟硬盘扩容（vdi或者vmdk文件）扩容：</p>
-
-<p>　　今天在使用虚拟机的时候发现分配的硬盘空间不足，需要扩大容量，最简单的办法就是重新创建一个虚拟硬盘，然后挂载到虚拟系统中即可，考虑到虚拟系统的备份迁移等问题，我想直接将vmdk格式的虚拟硬盘扩容，最后操作成功，记录在此。</p>
-
-<p>　　其实创建和安装虚拟系统的时候可以将虚拟容量设置的大一些，比如可以设置50G，这50G动态扩大的，虚拟操作系统真正使用了多少，文件在外面系统中就占用多大的空间，这个文件大小最大限度是50G，所以不必担心会浪费的硬盘资源。</p>
-
-<p>　　如果你使用的是VMWare，将已有虚拟系统扩容则直接一条命令就可以搞定，方法google便知。</p>
-
-<p>　　但是VirtualBox就没那么方便了，因为VirtualBox不能改变已经创建的虚拟硬盘的大小，这一点很不人性化，但总是有办法的，操作的思路是先新建一个容量较大的vdi虚拟硬盘，然后将现有vdi虚拟硬盘的数据复制过去，然后把新建的虚拟硬盘挂载到虚拟系统中将原来的虚拟硬盘删除即可，复制的时候使用VBoxManage的 clonevdi 命令即可。</p>
-
-<p>　　需要提醒的是启动虚拟系统后查看硬盘大小并没有改变，需要在虚拟系统中创建分区分配盘符。</p>
-
-<p>　　VirtualBox与VMWare创建的虚拟系统都是vmdk格式的， 此外VirtualBox还支持vdi格式，如果你现有虚拟系统是vmdk格式的，那么要转换成vdi，然后将内容复制到新的vdi虚拟硬盘中，我找到两种方法可以实现转换：</p>
-
-
-		
-		<a href="/blog/2011/04/04/virtualboxzhong-xu-ni-ying-pan-kuo-rong/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-04T17:17:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2011</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/virtualbox/'>Virtualbox</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2011/04/04/virtualboxzhong-xu-ni-ying-pan-kuo-rong//index.html#disqus_thread">Comments</a></div>
 	
 </div></article>
 
