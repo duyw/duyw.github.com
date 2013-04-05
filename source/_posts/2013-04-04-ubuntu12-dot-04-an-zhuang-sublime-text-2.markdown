@@ -33,6 +33,8 @@ Sublime Text 2 是一款非常优秀的编辑器，可以媲美苹果系统下�
 		Name[zh_CN]=sublime-text
 	如果将文件复制到`/usr/share/applications/`目录下，就可以在Dash中被搜索到。
 
+<!-- more -->
+
 5. 破解：
 
 	首先备份安装目录下的sublime_text文件`cp sublime_text sublime_text.bak`
