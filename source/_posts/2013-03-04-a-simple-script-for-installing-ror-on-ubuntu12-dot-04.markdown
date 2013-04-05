@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A simple Script for installing ROR on ubuntu12.04"
+title: "A simple Script for installing RoR on Ubuntu12.04"
 date: 2013-03-04 11:48
 comments: true
 categories: 

@@ -4,7 +4,7 @@ title: "markdown使用学习"
 date: 2013-02-28 15:13
 comments: true
 categories: 
-- 其他{others}
+- Markdown{markdown}
 ---
 
 ### Markdown简介

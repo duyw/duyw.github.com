@@ -4,7 +4,7 @@ title: "Octopress simple guide"
 date: 2013-02-28 18:15
 comments: true
 categories: 
-- 其他{others}
+- Octopress{octopress}
 ---
 
 Octopress的搭建过程如下：
@@ -118,26 +118,29 @@ git push origin source
 
 1. 直接将远程仓库签出到本地
 
-`git clone git@github.com:duyw/duyw.github.com.git duyw.github.com`
+	`git clone git@github.com:duyw/duyw.github.com.git duyw.github.com`
 
 2. 签出source分支的源码
 
-```
-cd duyw.github.com`
-git checkout sources`
-# 这样当前项目就有了两个分支
-# 查看分支命令： git branch
-```
+	`cd duyw.github.com`
+
+	`git checkout sources`
+
+	这样当前项目就有了两个分支,查看分支命令： git branch
 
 3. 安装依赖
 
-`bundle install`
+	`bundle install`
 
 4. 配置和github的关联
 
-`rake setup_github_pages`
+	`rake setup_github_pages`
 
 
 5. 生成预览部署
 
-rake generate, rake preview, rake deploy
+	`rake generate`
+
+	`rake preview`
+
+	`rake deploy`
