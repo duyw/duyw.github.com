@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ubuntu | 杜永文 博客]]></title>
   <link href="http://duyw.github.com/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://duyw.github.com/"/>
-  <updated>2013-04-05T21:47:12+08:00</updated>
+  <updated>2013-04-05T21:49:28+08:00</updated>
   <id>http://duyw.github.com/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -67,6 +67,9 @@ svn export /home/testapp /home/testtools
 <p>如果省略 本地目录全路径，URL的最后一部分会作为本地目录的名字。</p>
 
 <p>第二种形式是指定 本地检出的目录全路径 到 要导出的本地目录全路径，所有的本地修改将会保留，但是不在版本控制下(即没提交的新文件，因为.svn文件夹里没有与之相关的信息记录)的文件不会拷贝。</p>
+
+<!-- more -->
+
 
 <h3>4. 往版本库中添加新的文件</h3>
 
