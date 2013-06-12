@@ -1,0 +1,333 @@
+---
+layout: post
+title: "MongoDB Quick Tips"
+date: 2013-05-02 11:04
+comments: true
+categories: 
+- MongoDB{mongodb}
+- 数据库{database}
+---
+
+### 1. 介绍
+
+　　一个mongod服务可以有建立多个数据库，每个数据库可以有多张表，这里的表名叫collection，每个collection可以存放多个文档（document），每个文档都以BSON（binary json）的形式存放于硬盘中，因此可以存储比较复杂的数据类型。它是以单文档为单位存储的，你可以任意给一个或一批文档新增或删除字段，而不会对其它文档造成影响，这就是所谓的schema-free，这也是文档型数据库最主要的优点。跟一般的key-value数据库不一样的是，它的value中存储了结构信息，所以你又可以像关系型数据库那样对某些域进行读写、统计等操作。Mongo最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。Mongo还可以解决海量数据的查询效率，根据官方文档，当数据量达到50GB以上数据时，Mongo数据库访问速度是MySQL10 倍以上。
+
+#### BSON
+
+　　BSON是Binary JSON 的简称，是一个JSON文档对象的二进制编码格式。BSON同JSON一样支持往其它文档对象和数组中再插入文档对象和数组，同时扩展了JSON的数据类型。如：BSON有Date类型和BinDate类型。
+
+　　BSON被比作二进制的交换格式，如同Protocol Buffers，但BSON比它更“schema-less”，非常好的灵活性但空间占用稍微大一点。
+
+BSON有以下三个特点：
+
+1． 轻量级
+
+2． 跨平台
+
+3． 效率高
+
+#### 命名空间
+
+　　MongoDB存储BSON对象到collections,这一系列的数据库名和collection名被称为一个命名空间。如同：java.util.List;用来管理数据库中的数据。
+
+#### 索引
+　　mongodb可以对某个字段建立索引，可以建立组合索引、唯一索引，也可以删除索引，建立索引就意味着增加空间开销。默认情况下每个表都会有一个唯一索引：_id，如果插入数据时没有指定_id，服务会自动生成一个_id，为了充分利用已有索引，减少空间开销，最好是自己指定一个unique的key为_id，通常用对象的ID比较合适，比如商品的ID。
+ 
+
+
+### 2. 安装
+
+Linux系统下有两种安装方式:
+
+#### 第一种：下载二进制包，然后解压到相应目录即可。
+
+1. 直接到[官网](http://www.mongodb.org/downloads)下载二进制包，下载以后是一个tgz文件。
+
+    `curl http://downloads.mongodb.org/linux/mongodb-linux-i686-2.4.3.tgz > mongodb.tgz`
+
+2. 将文件解压到指定目录
+
+   `tar -zxvf mongodb.tgz`
+
+   重命名：
+
+   `cp -R -n  mongodb-linux-????-??-??/ mongodb`
+
+在 mongodb/bin 目录下可以看到和MongoDB相关的一些二进制文件包括 mongod 等。
+
+到此为止MongoDB已经安装完成，接下来开始使用MongoDB：
+
+在第一次启动mongdod的时候，需要创建存放数据文件的目录，默认的目录是 `/data/db/`
+
+首先创建这个目录： `mkdir -p /data/db`
+
+> 注意： 
+
+> 要确保运行 mongod 进程的系统用户对改目录拥有读写权限。
+
+> 如果 mongod 运行在 mongo 用户帐号下，可以使用 `chown mongo /data/db ` 命令来更改该目录的拥有者。
+
+至此，我们已经可以运行 mongod ，也可以通过 mongo 命令来链接到数据库，前提是这两个命令要在 MongoDB 的安装目录下的bin目录下执行。
+
+如果要直接使用这两个命令，需要将它们添加到系统的环境变量里面去，方法是在bin目录下执行
+
+`sudo cp mongo /usr/bin/`
+
+之后就可以在任意目录使用 mongo 命令了。
+
+将mongodb 加入到开机启动,
+
+`sudo gedit /etc/rc.local`
+
+编辑 rc.local 加入
+```
+#add mongonDB service 
+
+rm -rf /data/mongodb_data/* && /usr/local/mongodb/bin/mongod –dbpath=/data/mongodb_data/ –logpath=/data/mongodb_log/mongodb.log –logappend& 
+```
+注意.地址可能需要修改。
+
+
+#### 第二种：通过命令行安装。
+
+```
+sudo apt-get install mongodb
+```
+
+该命令会安装以下软件包：
+
+	mongodb-clients
+	mongodb-dev
+	mongodb-server
+	mongodb
+
+安装完成以后会生成以下文件：
+
+	数据文件： /var/lib/mongodb
+	日志文件： /var/log/mongodb/mongodb.log
+	服务脚本： /etc/init.d/mongodb
+	配置文件： /etc/mongodb.conf
+
+如果要修改启动选项可以直接修改这个文件。
+
+安装完成以后会在系统中新建一个用户 mongodb，会用这个用户帐号来启动 MongodDB，
+
+MongodDB默认使用27017端口,通过 `netstat -tlunp | grep 27017` 可以查看到进程。
+
+如果要以其他用户来运行Mongodb，需要修改 /var/lib/mongodb 和 /var/log/mongodb的权限。
+
+可以通过命令 `sudo service mongodb start/stop/restart/status` 来控制mongod进程。
+
+### 3. 使用
+
+打开终端，输入 mongo 命令，连接到MongoDB数据库：
+
+    ╭─# ivan@ubuntu in ~/work ‹ruby-1.8.7@rails304›  
+    ╰─$ mongo
+    MongoDB shell version: 2.0.4
+    connecting to: test
+    > 
+
+### 简单操作命令：
+
+* 进入数据库 admin：
+
+`use admin`
+
+* 增加或修改用户密码：
+
+`db.addUser('name','pwd')`
+
+* 查看用户列表
+
+`db.system.users.find()`
+
+* 用户认证
+
+`db.auth('name','pwd')`
+
+* 删除用户
+
+`db.removeUser('name')`
+
+* 查看所有用户
+
+`show users`
+
+* 查看所有数据库
+
+`show dbs`
+
+* 查看所有的 collection
+
+`show collections`
+
+* 查看各 collection 的状态
+
+`db.printCollectionStats()`
+
+* 查看主从复制状态
+
+`db.printReplicationInfo()`
+
+* 修复数据库
+
+`db.repairDatabase()`
+
+* 设置记录 profiling，0=off 1=slow 2=all
+
+`db.setProfilingLevel(1)`
+
+* 查看profiling
+
+`show profile`
+
+* 拷贝数据库
+
+`db.copyDatabase('mail_addr','mail_addr_tmp')`
+
+* 删除 collection
+
+`db.mail_addr.drop()`
+
+* 删除当前的数据库
+
+`db.dropDatabase()`
+
+### 增删改
+
+* 存储嵌套的对象
+
+```
+db.foo.save({'name':'ysz','address':{'city':'beijing','post':100096},'phone':[138,139]})
+```
+
+* 存储数组对象
+
+```
+db.user_addr.save({'Uid':'yushunzhi@sohu.com','Al':['test-1@sohu.com','test-2@sohu.com']})
+```
+
+* 根据query条件修改，如果不存在则插入，允许修改多条记录
+
+```
+db.foo.update({'yy':5},{'$set':{'xx':2}},upsert=true,multi=true)
+```
+
+* 删除yy=5的记录
+
+```
+db.foo.remove({'yy':5})
+```
+
+* 删除所有的记录
+
+```
+db.foo.remove()
+```
+
+
+### 索引
+
+* 增加索引：1(ascending),-1(descending)
+
+```
+db.foo.ensureIndex({firstname: 1, lastname: 1}, {unique: true});
+```
+
+* 索引子对象
+
+```
+db.user_addr.ensureIndex({'Al.Em': 1})
+```
+
+* 查看索引信息
+
+```
+db.foo.getIndexes()
+db.foo.getIndexKeys()
+```
+
+* 根据索引名删除索引
+
+```
+db.user_addr.dropIndex('Al.Em_1')
+```
+
+
+### 查询
+
+* 查找所有
+
+```
+db.foo.find()
+```
+
+* 查找一条记录
+
+```
+db.foo.findOne()
+```
+
+* 根据条件检索10条记录
+
+```
+db.foo.find({'msg':'Hello 1'}).limit(10)
+```
+
+* sort排序
+
+```
+db.deliver_status.find({'From':'ixigua@sina.com'}).sort({'Dt',-1})
+db.deliver_status.find().sort({'Ct':-1}).limit(1)
+```
+
+* count操作
+
+```
+db.user_addr.count()
+```
+
+* distinct操作,查询指定列，去重复
+
+```
+db.foo.distinct('msg')
+```
+
+* ”>=”操作
+
+```
+db.foo.find({"timestamp": {"$gte" : 2}})
+```
+
+* 子对象的查找
+
+```
+db.foo.find({'address.city':'beijing'})
+```
+
+
+### 管理
+
+* 查看collection数据的大小
+
+```
+db.deliver_status.dataSize()
+```
+
+* 查看colleciont状态
+
+```
+db.deliver_status.stats()
+```
+
+* 查询所有索引的大小
+
+```
+db.deliver_status.totalIndexSize()
+```
+
+
+
+
+

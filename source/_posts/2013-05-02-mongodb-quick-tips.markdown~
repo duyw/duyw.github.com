@@ -1,0 +1,52 @@
+---
+layout: post
+title: "MongoDB Quick Tips"
+date: 2013-05-02 11:04
+comments: true
+categories: 
+- MongoDB{mongodb}
+- 数据库{database}
+---
+
+
+### 1. 安装
+
+Linux系统下有两种安装方式:
+
+第一种：直接从[官网](http://www.mongodb.org/downloads)下载相应的压缩包，然后解压到相应目录即可。
+
+```
+
+```
+
+第二种：通过命令行安装。
+
+```
+sudo apt-get install mongodb
+```
+
+该命令会安装以下软件包：
+
+mongodb-clients
+mongodb-dev
+mongodb-server
+mongodb
+
+安装完成以后会生成以下文件：
+
+数据文件： /var/lib/mongodb
+日志文件： /var/log/mongodb/mongodb.log
+服务脚本： /etc/init.d/mongodb
+配置文件： /etc/mongodb.conf
+
+如果要修改启动选项可以直接修改这个文件。
+
+安装完成以后会在系统中新建一个用户 mongodb，会用这个用户帐号来启动MongodDB，使用 `netstat -tlunp | grep 27017` 可以查看到进程。
+
+如果要以其他用户来运行Mongodb，需要修改 /var/lib/mongodb 和 /var/log/mongodb的权限。
+
+
+
+可以通过命令 sudo service mongodb start/stop/restart/status 来控制mongod进程。
+
+
