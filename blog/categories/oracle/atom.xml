@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Oracle | 杜永文 博客]]></title>
-  <link href="http://duyw.github.com/blog/categories/oracle/atom.xml" rel="self"/>
-  <link href="http://duyw.github.com/"/>
-  <updated>2013-04-05T21:51:59+08:00</updated>
-  <id>http://duyw.github.com/</id>
+  <link href="http://duyw.github.io/blog/categories/oracle/atom.xml" rel="self"/>
+  <link href="http://duyw.github.io/"/>
+  <updated>2013-06-13T00:09:20+08:00</updated>
+  <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[rails 连接 Oracle]]></title>
-    <link href="http://duyw.github.com/blog/2010/12/29/rails-lian-jie-oracle/"/>
+    <link href="http://duyw.github.io/blog/2010/12/29/rails-lian-jie-oracle/"/>
     <updated>2010-12-29T14:06:00+08:00</updated>
-    <id>http://duyw.github.com/blog/2010/12/29/rails-lian-jie-oracle</id>
+    <id>http://duyw.github.io/blog/2010/12/29/rails-lian-jie-oracle</id>
     <content type="html"><![CDATA[<p>我的环境如下：</p>
 
 <pre><code>ruby 1.8.7

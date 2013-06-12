@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: GEM | 杜永文 博客]]></title>
-  <link href="http://duyw.github.com/blog/categories/gem/atom.xml" rel="self"/>
-  <link href="http://duyw.github.com/"/>
-  <updated>2013-04-05T21:51:59+08:00</updated>
-  <id>http://duyw.github.com/</id>
+  <title><![CDATA[Category: Gem | 杜永文 博客]]></title>
+  <link href="http://duyw.github.io/blog/categories/gem/atom.xml" rel="self"/>
+  <link href="http://duyw.github.io/"/>
+  <updated>2013-06-13T00:09:20+08:00</updated>
+  <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
     
@@ -14,29 +14,32 @@
 
   
   <entry>
-    <title type="html"><![CDATA[GEM 更新]]></title>
-    <link href="http://duyw.github.com/blog/2013/04/04/gem-geng-xin/"/>
-    <updated>2013-04-04T21:56:00+08:00</updated>
-    <id>http://duyw.github.com/blog/2013/04/04/gem-geng-xin</id>
-    <content type="html"><![CDATA[<p>更新方法：</p>
+    <title type="html"><![CDATA[Install gem without ri and rdoc]]></title>
+    <link href="http://duyw.github.io/blog/2013/05/03/install-gem-without-ri-and-rdoc/"/>
+    <updated>2013-05-03T09:23:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2013/05/03/install-gem-without-ri-and-rdoc</id>
+    <content type="html"><![CDATA[<p>用 <code>gem install XXX</code> 安装 Gem 包的同时会安装 ri 和 rdoc，但这两个东西一般用不到，另外还严重影响安装速度，介于这两个原因我们一般都会这么做：</p>
 
-<ol>
-<li><p>从低版本升级到高版本</p>
+<p><code>gem install rails --no-ri --no-rdoc</code></p>
 
-<p><code>gem update –system</code></p></li>
-<li><p>从高版本降到低版本</p></li>
-</ol>
+<p>但是每个 Gem 包安装都这么做就太麻烦了，我们可以直接修改配置让 Gem 默认不安装 ri 和 rdoc：</p>
 
+<p>打开 ~/.gemrc   （如果没有这个文件可以自己手动创建）</p>
 
-<p>  从 <a href="http://rubyforge.org/frs/?group_id=126">RubyForge</a> 下载需要的版本,以tgz格式为例:</p>
+<p>在文件最后加入 <code>gem: --no-ri --no-rdoc</code> ：</p>
 
-<p>  先解压  <code>tar zxf gem_name_xxxxx</code></p>
+<pre><code>---
+:backtrace: false
+:benchmark: false
+:bulk_threshold: 1000
+:sources:
+- http://ruby.taobao.org
+:update_sources: true
+:verbose: true
+gem: --no-ri --no-rdoc
+</code></pre>
 
-<p>  cd 进去 <code>ruby setup.rb</code></p>
-
-<p>  查看帮助: <code>ruby setup.rb --help</code></p>
-
-<p>参考：<a href="https://rubygems.org/pages/download">https://rubygems.org/pages/download</a></p>
+<p>大功告成~</p>
 ]]></content>
   </entry>
   

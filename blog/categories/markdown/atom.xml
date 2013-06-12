@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Markdown | 杜永文 博客]]></title>
-  <link href="http://duyw.github.com/blog/categories/markdown/atom.xml" rel="self"/>
-  <link href="http://duyw.github.com/"/>
-  <updated>2013-04-05T21:51:59+08:00</updated>
-  <id>http://duyw.github.com/</id>
+  <link href="http://duyw.github.io/blog/categories/markdown/atom.xml" rel="self"/>
+  <link href="http://duyw.github.io/"/>
+  <updated>2013-06-13T00:09:20+08:00</updated>
+  <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[markdown使用学习]]></title>
-    <link href="http://duyw.github.com/blog/2013/02/28/markdownshi-yong-xue-xi/"/>
+    <link href="http://duyw.github.io/blog/2013/02/28/markdownshi-yong-xue-xi/"/>
     <updated>2013-02-28T15:13:00+08:00</updated>
-    <id>http://duyw.github.com/blog/2013/02/28/markdownshi-yong-xue-xi</id>
+    <id>http://duyw.github.io/blog/2013/02/28/markdownshi-yong-xue-xi</id>
     <content type="html"><![CDATA[<h3>Markdown简介</h3>
 
 <hr />
@@ -207,7 +207,7 @@ end
 
 
 <p>用反引号包围要显示的<code>单行</code>代码片段:
-<code>&lt;img src="http://duyw.github.com/path/to/img.jpg" alt="alt text" title="Title" /&gt;</code></p>
+<code>&lt;img src="http://duyw.github.io/path/to/img.jpg" alt="alt text" title="Title" /&gt;</code></p>
 
 <h3>图片</h3>
 

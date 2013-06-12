@@ -1,0 +1,200 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Install gem without ri and rdoc - 杜永文 博客</title>
+	<meta name="author" content="Du Yongwen">
+	
+	<meta name="description" content="用 gem install XXX 安装 Gem 包的同时会安装 ri 和 rdoc，但这两个东西一般用不到，另外还严重影响安装速度，介于这两个原因我们一般都会这么做： gem install rails --no-ri --no-rdoc 但是每个 Gem 包安装都这么做就太麻烦了， &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+	<link rel="icon" type="image/gif" href="/animated_favicon1.gif">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">杜永文 博客</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:duyw.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/duyw" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:duyw.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Install Gem Without Ri and Rdoc</h2>
+	<div class="entry-content"><p>用 <code>gem install XXX</code> 安装 Gem 包的同时会安装 ri 和 rdoc，但这两个东西一般用不到，另外还严重影响安装速度，介于这两个原因我们一般都会这么做：</p>
+
+<p><code>gem install rails --no-ri --no-rdoc</code></p>
+
+<p>但是每个 Gem 包安装都这么做就太麻烦了，我们可以直接修改配置让 Gem 默认不安装 ri 和 rdoc：</p>
+
+<p>打开 ~/.gemrc   （如果没有这个文件可以自己手动创建）</p>
+
+<p>在文件最后加入 <code>gem: --no-ri --no-rdoc</code> ：</p>
+
+<pre><code>---
+:backtrace: false
+:benchmark: false
+:bulk_threshold: 1000
+:sources:
+- http://ruby.taobao.org
+:update_sources: true
+:verbose: true
+gem: --no-ri --no-rdoc
+</code></pre>
+
+<p>大功告成~</p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-03T09:23:00+08:00" pubdate data-updated="true">May 3<span>rd</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gem/'>Gem</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2013/05/03/install-gem-without-ri-and-rdoc/#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    Du Yongwen
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'duyw';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://duyw.github.io/blog/2013/05/03/install-gem-without-ri-and-rdoc/';
+        var disqus_url = 'http://duyw.github.io/blog/2013/05/03/install-gem-without-ri-and-rdoc/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-38875642-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>

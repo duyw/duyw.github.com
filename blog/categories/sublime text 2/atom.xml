@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Sublime Text 2 | 杜永文 博客]]></title>
-  <link href="http://duyw.github.com/blog/categories/sublime text 2/atom.xml" rel="self"/>
-  <link href="http://duyw.github.com/"/>
-  <updated>2013-04-05T21:51:59+08:00</updated>
-  <id>http://duyw.github.com/</id>
+  <link href="http://duyw.github.io/blog/categories/sublime text 2/atom.xml" rel="self"/>
+  <link href="http://duyw.github.io/"/>
+  <updated>2013-06-13T00:09:20+08:00</updated>
+  <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Ubuntu12.04 安装 Sublime Text 2 ]]></title>
-    <link href="http://duyw.github.com/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2/"/>
+    <link href="http://duyw.github.io/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2/"/>
     <updated>2013-04-04T22:41:00+08:00</updated>
-    <id>http://duyw.github.com/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2</id>
+    <id>http://duyw.github.io/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2</id>
     <content type="html"><![CDATA[<p>Sublime Text 2 是一款非常优秀的编辑器，可以媲美苹果系统下的TextMate，用Sublime Text 2 进行RoR开发是一件很惬意的事，在Ubuntu12.04系统下安装步骤如下：</p>
 
 <ol>

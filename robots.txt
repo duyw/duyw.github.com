@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://duyw.github.com/sitemap.xml 
+Sitemap: http://duyw.github.io/sitemap.xml 

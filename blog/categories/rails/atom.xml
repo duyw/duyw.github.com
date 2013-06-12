@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Rails | 杜永文 博客]]></title>
-  <link href="http://duyw.github.com/blog/categories/rails/atom.xml" rel="self"/>
-  <link href="http://duyw.github.com/"/>
-  <updated>2013-04-05T21:51:59+08:00</updated>
-  <id>http://duyw.github.com/</id>
+  <link href="http://duyw.github.io/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://duyw.github.io/"/>
+  <updated>2013-06-13T00:09:20+08:00</updated>
+  <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
     
@@ -14,10 +14,39 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Rails Engine]]></title>
+    <link href="http://duyw.github.io/blog/2013/05/02/rails-engine/"/>
+    <updated>2013-05-02T15:55:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2013/05/02/rails-engine</id>
+    <content type="html"><![CDATA[<h3>1. Engine是什么？</h3>
+
+<p>Engine 可以被看作是（一个）微型的rails应用程序。其提供（一些额外的）功能给它们的宿主程序（host applications）。</p>
+
+<p>一个 Rails 应用程序实际上就是一个 “加强版”（supercharged） engine，因为 Rails::Application 继承了来自 Rails::Engine 的更多习惯。</p>
+
+<p>Engine 也可以与他们的宿主程序相互隔离。controllers， models 和 table也是名称空间化的。</p>
+
+<p>可以简单的理解为 Engine 是对宿主程序的一个拓展、加强。典型的Engine案例有<a href="https://github.com/plataformatec/devise">Devise</a>、<a href="https://github.com/radar/forem">Forem</a>、<a href="https://github.com/resolve/refinerycms">Refinerycms</a>等。</p>
+
+<h3>2. 创建一个Engine</h3>
+
+<p>本文以创建一个基于 rails3.2 的 Engine 为例，命令：</p>
+
+<p><code>
+rails plugin new my_engine --full --mountable
+</code></p>
+
+<p><code>--full</code>:  创建一个完整的，等同rails项目的目录结构。</p>
+
+<p><code>--mountable</code>: 选项告诉创建器去挂载 engine 到在 engine 中的 test/dummy 的模拟（dummy）测试程序。在dummy的 config/routes.rb 加入内容：<code>mount MyEngine::Engine =&gt; "/my_engine"</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[A simple Script for installing RoR on Ubuntu12.04]]></title>
-    <link href="http://duyw.github.com/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04/"/>
+    <link href="http://duyw.github.io/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04/"/>
     <updated>2013-03-04T11:48:00+08:00</updated>
-    <id>http://duyw.github.com/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04</id>
+    <id>http://duyw.github.io/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04</id>
     <content type="html"><![CDATA[<p>This is a usful script,I found it here: <a href="http://blog.sudobits.com/2012/05/02/how-to-install-ruby-on-rails-in-ubuntu-12-04-lts/">Sudobits 博客</a></p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>rails-installer.sh </span><a href='https://github.com/rkjha/RailsOnUbuntu/blob/master/rails-installer.sh'>链接到github </a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -210,9 +239,9 @@
   
   <entry>
     <title type="html"><![CDATA[rails 连接 Oracle]]></title>
-    <link href="http://duyw.github.com/blog/2010/12/29/rails-lian-jie-oracle/"/>
+    <link href="http://duyw.github.io/blog/2010/12/29/rails-lian-jie-oracle/"/>
     <updated>2010-12-29T14:06:00+08:00</updated>
-    <id>http://duyw.github.com/blog/2010/12/29/rails-lian-jie-oracle</id>
+    <id>http://duyw.github.io/blog/2010/12/29/rails-lian-jie-oracle</id>
     <content type="html"><![CDATA[<p>我的环境如下：</p>
 
 <pre><code>ruby 1.8.7
@@ -341,9 +370,9 @@ gem install activerecord-oracle-adapter --source http://gems.rubyonrails.org
   
   <entry>
     <title type="html"><![CDATA[windows 平台部署rails]]></title>
-    <link href="http://duyw.github.com/blog/2010/11/19/windows-ping-tai-bu-shu-rails/"/>
+    <link href="http://duyw.github.io/blog/2010/11/19/windows-ping-tai-bu-shu-rails/"/>
     <updated>2010-11-19T18:33:00+08:00</updated>
-    <id>http://duyw.github.com/blog/2010/11/19/windows-ping-tai-bu-shu-rails</id>
+    <id>http://duyw.github.io/blog/2010/11/19/windows-ping-tai-bu-shu-rails</id>
     <content type="html"><![CDATA[<p>　　公司一个现有项目是用 ruby 1.8.6 + rails1.2.6 做的，之前的客户服务器都是linux系统，这次客户服务器用的是windows，所以研究了一下部署方案，从网上各方搜集资料，最后配置成功，整理在此：</p>
 
 <h3>1. mongrel 安装</h3>

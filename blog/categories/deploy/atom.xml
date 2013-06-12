@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: 部署 | 杜永文 博客]]></title>
-  <link href="http://duyw.github.com/blog/categories/deploy/atom.xml" rel="self"/>
-  <link href="http://duyw.github.com/"/>
-  <updated>2013-04-05T21:51:59+08:00</updated>
-  <id>http://duyw.github.com/</id>
+  <link href="http://duyw.github.io/blog/categories/deploy/atom.xml" rel="self"/>
+  <link href="http://duyw.github.io/"/>
+  <updated>2013-06-13T00:09:20+08:00</updated>
+  <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[windows 平台部署rails]]></title>
-    <link href="http://duyw.github.com/blog/2010/11/19/windows-ping-tai-bu-shu-rails/"/>
+    <link href="http://duyw.github.io/blog/2010/11/19/windows-ping-tai-bu-shu-rails/"/>
     <updated>2010-11-19T18:33:00+08:00</updated>
-    <id>http://duyw.github.com/blog/2010/11/19/windows-ping-tai-bu-shu-rails</id>
+    <id>http://duyw.github.io/blog/2010/11/19/windows-ping-tai-bu-shu-rails</id>
     <content type="html"><![CDATA[<p>　　公司一个现有项目是用 ruby 1.8.6 + rails1.2.6 做的，之前的客户服务器都是linux系统，这次客户服务器用的是windows，所以研究了一下部署方案，从网上各方搜集资料，最后配置成功，整理在此：</p>
 
 <h3>1. mongrel 安装</h3>
