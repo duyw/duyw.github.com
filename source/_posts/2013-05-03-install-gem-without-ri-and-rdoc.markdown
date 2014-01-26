@@ -29,6 +29,3 @@ categories:
     gem: --no-ri --no-rdoc
 
 大功告成~
-
-
-
