@@ -4,7 +4,7 @@
   <title><![CDATA[杜永文 博客]]></title>
   <link href="http://duyw.github.io/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-01-26T22:35:06+08:00</updated>
+  <updated>2014-01-26T23:18:52+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -12,6 +12,19 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[博客很久没有更新了]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/26/bo-ke-hen-jiu-mei-you-geng-xin-liao/"/>
+    <updated>2014-01-26T22:50:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/26/bo-ke-hen-jiu-mei-you-geng-xin-liao</id>
+    <content type="html"><![CDATA[<p>的确很久没有更新了，回顾2013年，从来没有感觉时间过的如此之快。</p>
+
+<p>我只记得来广联达面试的时候我穿的是羽绒服，再次穿上羽绒服的时候猛然发现一个夏天已经过去了。再后来，不知不觉又到了过年回家抢火车票的时候。</p>
+
+<p>一整年几乎都是在加班与忙碌中度过，难得在家的时候也不得清闲，要帮忙照顾小宝。这一年虽然累，但也算累的充实，工作不忙的时候我也经常会去公司学习，积攒了不少东西，平时为了图方便都记录在为知笔记中，刚好假期中有时间，打算整理到博客中，一是为了回顾学习，二是为了以后方便查询，三是希望能帮助到别人。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Install gem without ri and rdoc]]></title>
@@ -3109,45 +3122,6 @@ activerecord-oracle-adapter
 <li><p>前者只适用于 MyISAM 引擎，而后则则可同时使用于MyISAM引擎和InodDB引擎.</p></li>
 <li><p>前者在使用前必须安装perl-DBD-mysql包,而后者则不需要.</p></li>
 </ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Windows MySQL 服务自动管理脚本]]></title>
-    <link href="http://duyw.github.io/blog/2010/06/20/windows-mysql-fu-wu-zi-dong-guan-li-jiao-ben/"/>
-    <updated>2010-06-20T00:09:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2010/06/20/windows-mysql-fu-wu-zi-dong-guan-li-jiao-ben</id>
-    <content type="html"><![CDATA[<p>脚本说明：在开发过程中由于经常需要启动或停止MySQL服务，非常麻烦，于是编写了这个简单的批处理脚本，自动判断MySQL服务如果是启动状态则停止该服务，如果未启动，则启动。</p>
-
-<figure class='code'><figcaption><span>脚本名称：mysql server.bat  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='bat'><span class='line'><span class="p">@</span><span class="k">echo</span> <span class="k">off</span>
-</span><span class='line'>color b<span class="m">0</span>
-</span><span class='line'>title 启动<span class="n">/关闭</span> MySQL服务
-</span><span class='line'>tasklist <span class="n">/nh|</span> @findstr <span class="n">/i</span> <span class="s2">&quot;mysqld-nt.exe&quot;</span>
-</span><span class='line'><span class="k">set</span>  <span class="nv">dyw</span><span class="o">=</span><span class="nv">%ERRORLEVEL%</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="nv">%dyw%</span> <span class="o">==</span> <span class="m">1</span> (
-</span><span class='line'>  net start mysql
-</span><span class='line'>) <span class="k">else</span> (
-</span><span class='line'>  net stop mysql
-</span><span class='line'>)
-</span><span class='line'>ping -n <span class="m">3</span> <span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">1</span><span class="p">&gt;</span><span class="n">nul</span>
-</span><span class='line'>exit
-</span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
   </entry>
