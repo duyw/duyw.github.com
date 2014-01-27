@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Rails | 杜永文 博客]]></title>
   <link href="http://duyw.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-01-27T12:10:47+08:00</updated>
+  <updated>2014-01-27T19:13:49+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -12,6 +12,211 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Reactor 模式]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/27/reactor-mo-shi/"/>
+    <updated>2014-01-27T19:11:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/27/reactor-mo-shi</id>
+    <content type="html"><![CDATA[<p>Reactor 设计模式（也叫反应器模式，或者应答者模式）是一种基于事件驱动的设计模式，这种模式像是一个女仆或者服务员，随时等待你的召唤。</p>
+
+<p>高并发的场景经常使用Reactor模式取代常用的多线程处理模式，以节省系统资源，提高系统的吞吐量。</p>
+
+<p>说到这里到底什么是Reactor模式，什么又是多线程模式呢？我们举个栗子：</p>
+
+<p>假设有这么一个场景：你去餐厅吃饭，首先要有服务员将菜单拿给你，你选好以后，服务员帮你完成点餐。</p>
+
+<p>第一种情况：  每有一位乘客光临，就分配一个服务员帮助点餐。</p>
+
+<p>第二种情况：  当乘客来到来以后，服务员会给你菜单，你先点菜。这时服务员去服务其他客人，当你选好以后招呼一下‘服务员’，会有服务员过来帮你点餐。</p>
+
+<p>每个客人好比是一个请求事件，餐厅的服务员好比请求的处理。</p>
+
+<p>第一种情况就是典型的多线程模式，每一个事件到来，都会分配一个线程来处理请求。无疑这样的服务是最好的，每个客人都会觉得自己是vip，于是这家店的口碑越来越好，越来越多的客人来这里用餐，很快老板就发现忙不过来了，多请服务员吧，占地方不说还要多出工钱，成本太大了。</p>
+
+<p>显然第二种情况更好一点，较少的资源服务了较多的客人，这就是Reactor模式，用单线程来干多线程的事，进程和线程的开销是很大的，内存占用高不说，上下文之间的切换也是很慢的。</p>
+
+<p>Reactor模式主要是提高系统的吞吐量，在有限的资源下处理更多的事情。</p>
+
+<p>利用Reactor模式的框架：</p>
+
+<p>Node.js
+Gevent、Twisted、Tornado（Python）
+EventMachine、Rev（Ruby）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails 代理方法 delegate]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/27/rails-dai-li-fang-fa-delegate/"/>
+    <updated>2014-01-27T18:58:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/27/rails-dai-li-fang-fa-delegate</id>
+    <content type="html"><![CDATA[<p>通过delegate方法，在Foo对象中可以直接引用Greeter对象的方法：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Greeter</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">hello</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;&quot;hello&quot;</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">goodbye</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;&quot;goodbye&quot;</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">Foo</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:greeter</span>
+</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:greeter</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Foo.new.hello   # =&gt; &quot;hello&quot;</span>
+</span><span class='line'><span class="sr">Foo.new.goodbye # =&gt; NoMethodError: undefined method `goodbye&#39; for #&amp;lt;Foo:0x1af30c&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Multiple delegates to the same target are allowed:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:greeter</span>
+</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:goodbye</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:greeter</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Foo.new.hello   # =&gt; &quot;hello&quot;</span>
+</span><span class='line'><span class="sr">Foo.new.goodbye # =&gt; &quot;goodbye&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>delegate方法首先检查传入的参数，正确参数形式为:method1, :method2, ..., :methodN, :to => klass[, :prefix => prefix]</p>
+
+<p>delegate要求参数的最后必须是一个Hash，
+:to表示需要代理的类，:prefix表示代理的方法是否要加前缀，
+如果:prefix => true，则代理的方法名为klass_method1, klass_method2, ..., klass_methodN，</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'> <span class="n">delegate</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:goodbye</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:greeter</span><span class="p">,</span> <span class="ss">:prefix</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Foo.new.greeter_hello   # =&gt; &quot;hello&quot;&lt;br/</span><span class="o">&gt;</span>
+</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">greeter_goodbye</span> <span class="c1"># =&gt; &quot;goodbye&quot;&lt;br/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>如果:prefix => prefix (prefix为string)，则代理的方法名为prefix_method1, prefix_method2, ..., prefix_methodN。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:goodbye</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:greeter</span><span class="p">,</span> <span class="ss">:prefix</span> <span class="o">=&gt;</span> <span class="ss">:foo</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Foo.new.foo_hello   # =&gt; &quot;hello&quot;&lt;br/</span><span class="o">&gt;</span>
+</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">foo_goodbye</span> <span class="c1"># =&gt; &quot;goodbye&quot;&lt;br/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Controller 中使用 helper]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/27/controller-zhong-shi-yong-helper/"/>
+    <updated>2014-01-27T18:54:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/27/controller-zhong-shi-yong-helper</id>
+    <content type="html"><![CDATA[<p>helper方法默认只能在view层调用（比如strip_tags方法）。如果想要在controller或model中使用，有两中方法：</p>
+
+<h3>方法一：</h3>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;ActionController::Base.helpers.strip_tags(&#39;string&#39;)</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
+</span><span class='line'><span class="sr">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>方法二：</h3>
+
+<p>用代理delegate</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">delegate</span> <span class="s2">&quot;strip_tags&quot;</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">&quot;ActionController::Base.helpers&quot;</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;strip_tags(&quot;html...&quot;)</span>
+</span><span class='line'><span class="sr">...</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
+</span><span class='line'><span class="sr">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails 小坑]]></title>
@@ -95,361 +300,6 @@
 <p>参考资料：</p>
 
 <p>http://guides.ruby-china.org/command_line.html[http://guides.ruby-china.org/command_line.html]</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails Engine]]></title>
-    <link href="http://duyw.github.io/blog/2013/05/02/rails-engine/"/>
-    <updated>2013-05-02T15:55:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/05/02/rails-engine</id>
-    <content type="html"><![CDATA[<h3>1. Engine是什么？</h3>
-
-<p>Engine 可以被看作是（一个）微型的rails应用程序。其提供（一些额外的）功能给它们的宿主程序（host applications）。</p>
-
-<p>一个 Rails 应用程序实际上就是一个 “加强版”（supercharged） engine，因为 Rails::Application 继承了来自 Rails::Engine 的更多习惯。</p>
-
-<p>Engine 也可以与他们的宿主程序相互隔离。controllers， models 和 table也是名称空间化的。</p>
-
-<p>可以简单的理解为 Engine 是对宿主程序的一个拓展、加强。典型的Engine案例有<a href="https://github.com/plataformatec/devise">Devise</a>、<a href="https://github.com/radar/forem">Forem</a>、<a href="https://github.com/resolve/refinerycms">Refinerycms</a>等。</p>
-
-<h3>2. 创建一个Engine</h3>
-
-<p>本文以创建一个基于 rails3.2 的 Engine 为例，命令：</p>
-
-<p><code>
-rails plugin new my_engine --full --mountable
-</code></p>
-
-<p><code>--full</code>:  创建一个完整的，等同rails项目的目录结构。</p>
-
-<p><code>--mountable</code>: 选项告诉创建器去挂载 engine 到在 engine 中的 test/dummy 的模拟（dummy）测试程序。在dummy的 config/routes.rb 加入内容：<code>mount MyEngine::Engine =&gt; "/my_engine"</code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[A simple Script for installing RoR on Ubuntu12.04]]></title>
-    <link href="http://duyw.github.io/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04/"/>
-    <updated>2013-03-04T11:48:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04</id>
-    <content type="html"><![CDATA[<p>This is a usful script,I found it here: <a href="http://blog.sudobits.com/2012/05/02/how-to-install-ruby-on-rails-in-ubuntu-12-04-lts/">Sudobits 博客</a></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>rails-installer.sh </span><a href='https://github.com/rkjha/RailsOnUbuntu/blob/master/rails-installer.sh'>链接到github </a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;A simple Script <span class="k">for </span>installing Rails on Ubuntu 12.04 LTS / 12.10&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;It will also install the dependencies required as well as the RVM&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Author: Ramesh Jha <span class="o">(</span>ramesh@rameshjha.com<span class="o">)</span>,<span class="o">(</span>http://blog.sudobits.com<span class="o">)</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;License: MIT&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;RUBY_VERSION<span class="o">=</span><span class="s2">&quot;1.9.3&quot;</span>
-</span><span class='line'><span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&quot;$HOME/install.log&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;Rails Installer started&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Installing Dependencies&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;.......Updating package cache.....&quot;</span>
-</span><span class='line'>sudo apt-get update &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;......Done..........&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;..........Installing git..........&quot;</span>
-</span><span class='line'>sudo apt-get -y install git &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;..........Done....................&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;Installing Curl&quot;</span>
-</span><span class='line'>sudo apt-get -y install curl &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;...........Done...................&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Install RVM <span class="o">(</span>Ruby Version Manager<span class="o">)</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;.....Installing RVM..............&quot;</span>
-</span><span class='line'>curl -L get.rvm.io | bash -s stable &gt;&gt;<span class="nv">$LOG_FILE</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;fallback <span class="k">for </span>the above <span class="nb">command</span> <span class="o">(</span>in <span class="k">case </span>of certificates errors<span class="o">)</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;if <span class="o">(</span><span class="nv">$?</span> !<span class="o">=</span>0<span class="o">)</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;then&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;curl -kL get.rvm.io | bash -s stable&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;fi&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;............DONE..........&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;......Loading RVM..........&quot;</span>
-</span><span class='line'><span class="nb">source</span> ~/.rvm/scripts/rvm &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;...........Done...........&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Install Additional Dependencies&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;sudo apt-get -y install build-essential openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Install nodejs from the PPA&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;sudo apt-add-repository -y ppa:chris-lea/node.js
-</span><span class='line'>sudo apt-get update
-</span><span class='line'>sudo apt-get -y install nodejs&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Install Latest version of Ruby&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;........Installing Ruby v $RUBY_VERSION ...&quot;</span>
-</span><span class='line'>rvm install <span class="nv">$RUBY_VERSION</span> &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;==&gt; Done.........&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;If you want to install another version of ruby e.g 1.8.7&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Then use the command &#39;rvm install 1.8.7&#39; &quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Select and Set latest version of ruby as the default so that&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;You won<span class="s1">&#39;t have to select each time you start a terminal&lt;/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;p&gt;echo &quot;.......Setting the default version of Ruby...&quot;</span>
-</span><span class='line'><span class="s1">rvm --default use $RUBY_VERSION &gt;&gt;$LOG_FILE</span>
-</span><span class='line'><span class="s1">echo &quot;==&gt; Done.........&quot;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;p&gt;echo &quot;Now, You are using Ruby $RUBY_VERSION by default&quot;</span>
-</span><span class='line'><span class="s1">echo &quot;if you want to change that then use &#39;</span>rvm --default &lt;ruby_version&gt;<span class="err">&#39;</span> <span class="s2">&quot;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">&lt;h1&gt;Install Latest version of Rails&lt;/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">&lt;p&gt;echo &quot;</span>..........Installing Rails gem................<span class="s2">&quot;</span>
-</span><span class='line'><span class="s2">gem install rails &gt;&gt;$LOG_FILE</span>
-</span><span class='line'><span class="s2">echo &quot;</span>.........Done<span class="s2">&quot;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">&lt;p&gt;echo &quot;</span><span class="c">######################################&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;###### Installation Completed ########&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;######################################&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;if something went wrong then checkout the log file $LOG_FILE&quot;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[rails 连接 Oracle]]></title>
-    <link href="http://duyw.github.io/blog/2010/12/29/rails-lian-jie-oracle/"/>
-    <updated>2010-12-29T14:06:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2010/12/29/rails-lian-jie-oracle</id>
-    <content type="html"><![CDATA[<p>我的环境如下：</p>
-
-<pre><code>ruby 1.8.7
-
-rails 2.3.8 
-
-本机安装 Oracle 11g客户端
-
-另一台电脑安装 Oracle 11g的服务器端
-</code></pre>
-
-<p>需要用到的gem包：</p>
-
-<pre><code>ruby-oci8
-
-activerecord-oracle-adapter
-</code></pre>
-
-<h3>操作步骤：</h3>
-
-<p> activerecord-oracle-adapter插件的使用说明：<a href="http://github.com/rsim/oracle-enhanced/wiki/Usage">跳转</a></p>
-
-<h4>1.首先将oracle客户端添加到系统环境变量中。</h4>
-
-<pre><code>注意：
-
-* Oracle 的密码不能为纯数字，否则报错。
-
-* 安装好客户端后要确保安装无误，可以访问到服务器。
-</code></pre>
-
-<h4>2.安装需要的gem包</h4>
-
-<p><code>
-gem install ruby-oci8-2.0.4-x86-mingw32.gem
-gem install activerecord-oracle-adapter --source http://gems.rubyonrails.org
-</code></p>
-
-<p>注意：安装好 oci8 后要测试 是否安装正确 方法是打开 irb 输入 require ‘oci8’ 如果不报错说明安装成功。</p>
-
-<p>另外可以用oci8测试 查询：</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">OCI8</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;dyw1&#39;</span><span class="p">,</span><span class="s1">&#39;123456&#39;</span><span class="p">,</span><span class="s1">&#39;192.168.23.162/orcl&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s1">&#39;select * from journals&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="n">r</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<!-- more -->
-
-
-<h4>3.在rails项目中，进入config目录，修改 environment.rb 文件，添加如下内容：</h4>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">gem</span> <span class="s2">&quot;activerecord-oracle_enhanced-adapter&quot;</span><span class="p">,</span> <span class="ss">:lib</span> <span class="o">=&gt;</span> <span class="s2">&quot;active_record/connection_adapters/oracle_enhanced_adapter&quot;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h4>4.修改config目录下的 database.yml 文件，配置数据库的格式：</h4>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>YAML代码:  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">development</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">adapter</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">oracle_enhanced</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">host</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">192.168.23.162/ORCL</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">username</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">OPAC</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">password</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">opac</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h4>5.在config/initializers 目录下创建文件 oracle.rb，当rails启动会自动执行，内容：</h4>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:ConnectionAdapters</span><span class="o">::</span><span class="no">OracleEnhancedAdapter</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
-</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">emulate_integers_by_column_name</span> <span class="o">=</span> <span class="kp">true</span>
-</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">emulate_dates_by_column_name</span> <span class="o">=</span> <span class="kp">true</span>
-</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">emulate_booleans_from_strings</span> <span class="o">=</span> <span class="kp">true</span>
-</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">string_to_date_format</span> <span class="o">=</span> <span class="s2">&quot;%d.%m.%Y&quot;</span>
-</span><span class='line'>  <span class="nb">self</span><span class="o">.</span><span class="n">string_to_time_format</span> <span class="o">=</span> <span class="s2">&quot;%d.%m.%Y %H:%M:%S&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<br>
-
-
-<hr />
-
-<h5>下面是网上找的一些资料：</h5>
-
-<p>rails开发中的Oracle问题</p>
-
-<p>1.关联查询时的条件字段要明确指定</p>
-
-<p>碰到的问题为mysql下order by id正常, Oracle报错：OCIError: ORA-00918: column ambiguously defined</p>
-
-<p>2.`表名`问题</p>
-
-<p>mysql会给表名外加 `` (注意不是单引号), 手工加条件(如排序: order by `departments`.id)时,mysql正常，Oracle报错： OCIError: ORA-00911: invalid character</p>
-
-<p>3.级联更新问题</p>
-
-<p>has_one、has_many如未设置:dependent=>:delete/:delete_all，解除子项关联时，默认会去更新子项的外键为NULL，mysql下没问题，Oracle报错：OCIError: ORA-01407: cannot update</p>
-
-<p>4.日期问题</p>
-
-<p>2个短格式(yyyy-mm-dd)日期(一个从数据库取)直接相减求时间差得到相差天数, mysql下正常，oracle下出错, 可以采取date.to_s(:db).to_date的办法解决</p>
-
-<p>5.修改字段</p>
-
-<p>如果字段值不为空，oracle下不可修改字段类型，mysql下可以，可以用增加临时字段的方式解决。</p>
 ]]></content>
   </entry>
   

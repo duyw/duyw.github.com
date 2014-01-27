@@ -4,7 +4,7 @@
   <title><![CDATA[杜永文 博客]]></title>
   <link href="http://duyw.github.io/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-01-27T12:10:47+08:00</updated>
+  <updated>2014-01-27T19:13:49+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -12,6 +12,197 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Reactor 模式]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/27/reactor-mo-shi/"/>
+    <updated>2014-01-27T19:11:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/27/reactor-mo-shi</id>
+    <content type="html"><![CDATA[<p>Reactor 设计模式（也叫反应器模式，或者应答者模式）是一种基于事件驱动的设计模式，这种模式像是一个女仆或者服务员，随时等待你的召唤。</p>
+
+<p>高并发的场景经常使用Reactor模式取代常用的多线程处理模式，以节省系统资源，提高系统的吞吐量。</p>
+
+<p>说到这里到底什么是Reactor模式，什么又是多线程模式呢？我们举个栗子：</p>
+
+<p>假设有这么一个场景：你去餐厅吃饭，首先要有服务员将菜单拿给你，你选好以后，服务员帮你完成点餐。</p>
+
+<p>第一种情况：  每有一位乘客光临，就分配一个服务员帮助点餐。</p>
+
+<p>第二种情况：  当乘客来到来以后，服务员会给你菜单，你先点菜。这时服务员去服务其他客人，当你选好以后招呼一下‘服务员’，会有服务员过来帮你点餐。</p>
+
+<p>每个客人好比是一个请求事件，餐厅的服务员好比请求的处理。</p>
+
+<p>第一种情况就是典型的多线程模式，每一个事件到来，都会分配一个线程来处理请求。无疑这样的服务是最好的，每个客人都会觉得自己是vip，于是这家店的口碑越来越好，越来越多的客人来这里用餐，很快老板就发现忙不过来了，多请服务员吧，占地方不说还要多出工钱，成本太大了。</p>
+
+<p>显然第二种情况更好一点，较少的资源服务了较多的客人，这就是Reactor模式，用单线程来干多线程的事，进程和线程的开销是很大的，内存占用高不说，上下文之间的切换也是很慢的。</p>
+
+<p>Reactor模式主要是提高系统的吞吐量，在有限的资源下处理更多的事情。</p>
+
+<p>利用Reactor模式的框架：</p>
+
+<p>Node.js
+Gevent、Twisted、Tornado（Python）
+EventMachine、Rev（Ruby）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails 代理方法 delegate]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/27/rails-dai-li-fang-fa-delegate/"/>
+    <updated>2014-01-27T18:58:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/27/rails-dai-li-fang-fa-delegate</id>
+    <content type="html"><![CDATA[<p>通过delegate方法，在Foo对象中可以直接引用Greeter对象的方法：</p>
+
+<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Greeter</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">hello</span>
+</span><span class='line'>    <span class="s2">&quot;hello&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">goodbye</span>
+</span><span class='line'>    <span class="s2">&quot;goodbye&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Foo</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:greeter</span>
+</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:greeter</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">hello</span>   <span class="c1"># =&gt; &quot;hello&quot;</span>
+</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">goodbye</span> <span class="c1"># =&gt; NoMethodError: undefined method `goodbye&#39; for #&lt;Foo:0x1af30c&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Multiple delegates to the same target are allowed:</p>
+
+<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:greeter</span>
+</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:goodbye</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:greeter</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">hello</span>   <span class="c1"># =&gt; &quot;hello&quot;</span>
+</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">goodbye</span> <span class="c1"># =&gt; &quot;goodbye&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>delegate方法首先检查传入的参数，正确参数形式为:method1, :method2, &#8230;, :methodN, :to => klass[, :prefix => prefix]</p>
+
+<p>delegate要求参数的最后必须是一个Hash，
+:to表示需要代理的类，:prefix表示代理的方法是否要加前缀，
+如果:prefix => true，则代理的方法名为klass_method1, klass_method2, &#8230;, klass_methodN，</p>
+
+<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'> <span class="n">delegate</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:goodbye</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:greeter</span><span class="p">,</span> <span class="ss">:prefix</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">greeter_hello</span>   <span class="c1"># =&gt; &quot;hello&quot;  </span>
+</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">greeter_goodbye</span> <span class="c1"># =&gt; &quot;goodbye&quot;  </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果:prefix => prefix (prefix为string)，则代理的方法名为prefix_method1, prefix_method2, &#8230;, prefix_methodN。</p>
+
+<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:goodbye</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:greeter</span><span class="p">,</span> <span class="ss">:prefix</span> <span class="o">=&gt;</span> <span class="ss">:foo</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">foo_hello</span>   <span class="c1"># =&gt; &quot;hello&quot;  </span>
+</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">foo_goodbye</span> <span class="c1"># =&gt; &quot;goodbye&quot;  </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Controller 中使用 helper]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/27/controller-zhong-shi-yong-helper/"/>
+    <updated>2014-01-27T18:54:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/27/controller-zhong-shi-yong-helper</id>
+    <content type="html"><![CDATA[<p>helper方法默认只能在view层调用（比如strip_tags方法）。如果想要在controller或model中使用，有两中方法：</p>
+
+<h3>方法一：</h3>
+
+<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>    <span class="ss">ActionController</span><span class="p">:</span><span class="ss">:Base</span><span class="o">.</span><span class="n">helpers</span><span class="o">.</span><span class="n">strip_tags</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>方法二：</h3>
+
+<p>用代理delegate</p>
+
+<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">delegate</span> <span class="s2">&quot;strip_tags&quot;</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">&quot;ActionController::Base.helpers&quot;</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>    <span class="n">strip_tags</span><span class="p">(</span><span class="s2">&quot;html...&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails 小坑]]></title>
@@ -1954,488 +2145,6 @@ host all all 0.0.0.0 0.0.0.0 md5
 </span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;if something went wrong then checkout the log file $LOG_FILE&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress simple guide]]></title>
-    <link href="http://duyw.github.io/blog/2013/02/28/octopress-simple-guide/"/>
-    <updated>2013-02-28T18:15:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/02/28/octopress-simple-guide</id>
-    <content type="html"><![CDATA[<p>Octopress的搭建过程如下：</p>
-
-<h3>1 配置本地Octopress</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git davidpan.github.com
-</span><span class='line'>cd davidpan.github.com 
-</span><span class='line'>gem install bundler 
-</span><span class='line'>bundle install 
-</span><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>2 关联到 GitHub</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages
-</span><span class='line'>
-</span><span class='line'># 输入git源：git://github.com/duyw/duyw.github.com.git
-</span><span class='line'># 命令执行之后 会生成一个 _deploy 目录，该目录本身也是一个git的仓库</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<!-- more -->
-
-
-<h3>3 修改配置文件</h3>
-
-<p>修改OctoPress根目录 _config.yml</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>url:  http://username.github.com     # 博客地址
-</span><span class='line'>title:                               # 博客标题 
-</span><span class='line'>subtitle:                            # 副标题 
-</span><span class='line'>author:                              # 作者 
-</span><span class='line'>simple_search:  http://www.google.com.hk/search     # 搜索引擎 
-</span><span class='line'>description:                                        # 关于博客的描述 
-</span><span class='line'>subscribe_rss:  /atom.xml            # Rss订阅地址, 默认是  /atom.xml 
-</span><span class='line'>subscribe_email:                     # 提供Email订阅的地址 
-</span><span class='line'>email:                               # Rss订阅的Email地址
-</span><span class='line'>root:  /               # 博客路径，默认是“/“，如果你打算在子目录中，记得修改这个路径 
-</span><span class='line'>permalink: /blog/:year/:month/:day/:title/           # 文章的固定链接形式</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>4 跟换主题</h3>
-
-<p>主题位于octopress根目录的 .theme 文件夹下，以安装&#8217;slash&#8217;主题为例：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd .theme
-</span><span class='line'>git clone git://github.com/tommy351/Octopress-Theme-Slash.git slash
-</span><span class='line'>rake install['slash']
-</span><span class='line'>rake generate</span></code></pre></td></tr></table></div></figure>
-
-
-<blockquote><p>提示： 更改网站样式相关</p>
-
-<p><a href="https://github.com/imathis/octopress/wiki/Octopress-Sites">https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes</a></p>
-
-<p><a href="https://github.com/imathis/octopress/wiki/Octopress-Sites">https://github.com/imathis/octopress/wiki/Octopress-Sites</a></p></blockquote>
-
-<h3>5 添加文章</h3>
-
-<p>执行 <code>rake new_post["my first blog"]</code> ,</p>
-
-<p>这样会在octopress的/source/_post下生成一个markdown文件，可以用文本软件进行编辑</p>
-
-<h3>6 新建页面</h3>
-
-<p>命令：<code>rake new_page["page_name"]</code></p>
-
-<blockquote><p>提示：修改source/_include/custom 文件，可将页面添加到导航栏。</p></blockquote>
-
-<h3>7 生成静态页面，预览，发布</h3>
-
-<p>完成编辑后执行<code>rake generate</code>，生成静态页面（将source和sass下的源码生成到public目录）。
-执行<code>rake preview</code>，启动本地预览，可以在浏览器内以这个地址进行预览。
-最后执行rake deploy，将日志提交到github上（将生成到public中的内容复制到_deploy目录，并提交到github的master分支）。</p>
-
-<blockquote><p>提示：generate 和 deploy 可以用一条命令搞定： rake gen_deploy</p></blockquote>
-
-<h3>8 将修改备份到github的source分支上</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git add .
-</span><span class='line'>git commit -m 'your message'
-</span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>9 补充</h3>
-
-<ul>
-<li><p>查询所有rake参数 ： <code>rake -T</code></p></li>
-<li><p>添加附加功能</p>
-
-<p>1 使用google的 Analytics 监控网站流量，需要先申请账号。</p>
-
-<p>  先将需要添加的代码添加到 source/_includes 文件中</p>
-
-<p>  然后配置 google_analytics_tracking_id 项 （位于_config.yml文件中）。</p>
-
-<p>2 添加评论，使用 DISQUS 实现。同样需要修改 _config.yml 文件</p></li>
-</ul>
-
-
-<br /><br /><br />
-
-
-<hr />
-
-<br />
-
-
-<h3>为github上已有的oct opress配置本地环境 方法一</h3>
-
-<ol>
-<li><p>直接将远程仓库签出到本地</p>
-
-<p> <code>git clone git@github.com:duyw/duyw.github.com.git duyw.github.com</code></p></li>
-<li><p>签出source分支的源码</p>
-
-<p> <code>cd duyw.github.com</code></p>
-
-<p> <code>git checkout sources</code></p>
-
-<p> 这样当前项目就有了两个分支,查看分支命令： git branch</p></li>
-<li><p>安装依赖</p>
-
-<p> <code>bundle install</code></p></li>
-<li><p>配置和github的关联</p>
-
-<p> <code>rake setup_github_pages</code></p></li>
-<li><p>生成预览部署</p>
-
-<p> <code>rake generate</code></p>
-
-<p> <code>rake preview</code></p>
-
-<p> <code>rake deploy</code></p></li>
-</ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[markdown使用学习]]></title>
-    <link href="http://duyw.github.io/blog/2013/02/28/markdownshi-yong-xue-xi/"/>
-    <updated>2013-02-28T15:13:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/02/28/markdownshi-yong-xue-xi</id>
-    <content type="html"><![CDATA[<h3>Markdown简介</h3>
-
-<hr />
-
-<p>　　Markdown 是一种轻量级的标记语言，由John Gruber和Aaron Swartz创建，使其成为可读性最大并可再发行的可输入输出的格式。这种语言创建灵感来自于已经存在的带标记的电子邮件文本。Markdown 允许 HTML 语法，所以使用者如果需要可以直接用 HTML来表示是可以的。Markdown最初由Gruber应用在Perl语言中，但现在已经有多种编程语言应用了。它是开源项目，并以BSD-style许可证的许可方式以插件形式或内容管理系统形式发布。</p>
-
-<!-- more -->
-
-
-<h3>快速上手</h3>
-
-<hr />
-
-<h3>标题</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># 这是 H1
-</span><span class='line'>
-</span><span class='line'>## 这是 H2
-</span><span class='line'>
-</span><span class='line'>###### 这是 H6</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>文字样式</h3>
-
-<p>粗体用“<em>*”或者“__”包围，斜体用“</em>”或者“_”</p>
-
-<p>粗体： <strong>粗体</strong>      写法：<code>**粗体**</code>或者<code>__粗体__</code></p>
-
-<p>斜体： <em>斜体</em>      写法： <code>_斜体_</code>或者<code>*斜体*</code></p>
-
-<h3>分隔符</h3>
-
-<p>在一行中使用三个或三个以上的*、-或_可以添加分隔线，其中可以有空白，但是不能有其他字符。</p>
-
-<h3>段落</h3>
-
-<p>　　由一个或多个连续的文本行组成，它的前后要有一个以上的空行。</p>
-
-<h3>引用</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&gt; 这是一个引用，
-</span><span class='line'>&gt; 这里木有换行，   
-</span><span class='line'>&gt; 在这里换行了。
-</span><span class='line'>&gt; &gt; 内部嵌套</span></code></pre></td></tr></table></div></figure>
-
-
-<p>效果：</p>
-
-<blockquote><p>这是一个引用，
-这里木有换行， <br/>
-在这里换行了。</p>
-
-<blockquote><p>内部嵌套</p></blockquote></blockquote>
-
-<h3>列表</h3>
-
-<p>　　Markdown 支持有序列表和无序列表。</p>
-
-<ul>
-<li>无序列表使用星号、加号或是减号作为列表标记：</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>*   Red
-</span><span class='line'>*   Green
-</span><span class='line'>*   Blue</span></code></pre></td></tr></table></div></figure>
-
-
-<p>等同于：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>+   Red
-</span><span class='line'>+   Green
-</span><span class='line'>+   Blue</span></code></pre></td></tr></table></div></figure>
-
-
-<p>也等同于：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-   Red
-</span><span class='line'>-   Green
-</span><span class='line'>-   Blue</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>有序列表则使用数字（任意数字即可，相同数字也ok）接着一个英文句点：</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1.  Bird
-</span><span class='line'>2.  McHale
-</span><span class='line'>3.  Parish</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1.  Bird
-</span><span class='line'>1.  McHale
-</span><span class='line'>1.  Parish</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>内容区块</h3>
-
-<p>用一个缩进或者反单引号来将需要突出显示内容区块
-例如：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>以热爱祖国为荣，以危害祖国为耻；
-</span><span class='line'>以服务人民为荣，以背离人民为耻；
-</span><span class='line'>以崇尚科学为荣，以愚昧无知为耻；
-</span><span class='line'>以辛勤劳动为荣，以好逸恶劳为耻；
-</span><span class='line'>以团结互助为荣，以损人利己为耻；
-</span><span class='line'>以诚实守信为荣，以见利忘义为耻；
-</span><span class='line'>以遵纪守法为荣，以违法乱纪为耻；
-</span><span class='line'>以艰苦奋斗为荣，以骄奢淫逸为耻。</span></code></pre></td></tr></table></div></figure>
-
-
-<pre><code>以热爱祖国为荣，以危害祖国为耻；
-以服务人民为荣，以背离人民为耻；
-以崇尚科学为荣，以愚昧无知为耻；
-以辛勤劳动为荣，以好逸恶劳为耻；
-以团结互助为荣，以损人利己为耻；
-以诚实守信为荣，以见利忘义为耻；
-以遵纪守法为荣，以违法乱纪为耻；
-以艰苦奋斗为荣，以骄奢淫逸为耻。
-</code></pre>
-
-<h3>代码区块</h3>
-
-<ul>
-<li>用三个 “`”符号包围代码：</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>```
-</span><span class='line'>def update
-</span><span class='line'>  respond_to do |format|
-</span><span class='line'>    if @comment.update_attributes(params[:comment])
-</span><span class='line'>      format.js
-</span><span class='line'>    else
-</span><span class='line'>      render :json =&gt; :error
-</span><span class='line'>    end
-</span><span class='line'>  end
-</span><span class='line'>end
-</span><span class='line'>`` `</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Octopress中可以为代码着色，写法：</p>
-
-<figure class='code'><figcaption><span>代码说明： </span><a href='http://www.baidu.com'>链接到百度 </a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">update</span>
-</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-</span><span class='line'>    <span class="k">if</span> <span class="vi">@comment</span><span class="o">.</span><span class="n">update_attributes</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:comment</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="nb">format</span><span class="o">.</span><span class="n">js</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="n">fromat</span><span class="o">.</span><span class="n">html</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>单行代码</li>
-</ul>
-
-
-<p>用反引号包围要显示的<code>单行</code>代码片段:
-<code>&lt;img src="http://duyw.github.io/path/to/img.jpg" alt="alt text" title="Title" /&gt;</code></p>
-
-<h3>图片</h3>
-
-<p><img src="http://l.ruby-china.org/assets/text_logo-e616f2a05abc2e0ebea1f8c6cac685d7.png" title="Ruby China的logo" alt="Ruby China的logo" />
-写法：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>![Ruby China的logo](http://l.ruby-china.org/assets/text_logo-e616f2a05abc2e0ebea1f8c6cac685d7.png "Ruby China的logo")</span></code></pre></td></tr></table></div></figure>
-
-
-<p>图片的另一种写法：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>![第一张百度logo图][id1]
-</span><span class='line'>![第二张百度logo图][id2]
-</span><span class='line'>
-</span><span class='line'>[id1]: http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif  "Optional title attribute1"
-</span><span class='line'>[id2]: http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif  "Optional title attribute2"</span></code></pre></td></tr></table></div></figure>
-
-
-<p>效果：</p>
-
-<p><img src="http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif" title="Optional title attribute1" alt="第一张百度logo图" />
-<img src="http://www.baidu.com/img/shouye_b5486898c692066bd2cbaeda86d74448.gif" title="Optional title attribute2" alt="第二张百度logo图" />
-在octopress中图片写法：</p>
-
-<pre><code>&lt;img class="[left|right] [class names]" src="http://duyw.github.io/path/to/image" title="[width] [height] [title text [alt text]]" &gt;
-</code></pre>
-
-<p>效果</p>
-
-<p><img src="http://placekitten.com/890/280">
-<img class="left" src="http://placekitten.com/320/250" title="Place Kitten #2" >
-<img class="right" src="http://placekitten.com/300/500" width="150" height="250" title="Place Kitten #3" >
-<img class="right" src="http://placekitten.com/300/500" width="150" height="250" title="Place Kitten #4" alt="An image of a very cute kitten"></p>
-
-<h3>链接</h3>
-
-<p>这是一个无title链接： <a href="http://www.baidu.com/">百度</a>
-写法：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[百度](http://www.baidu.com/)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这是一个有title链接： <a href="http://www.baidu.com/" title="点击打开百度首页">百度</a></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[百度](http://www.baidu.com/ "点击打开百度首页")</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I get 10 times more traffic from <a href="http://google.com/" title="Google">Google</a> than from
-<a href="http://search.yahoo.com/" title="Yahoo Search">Yahoo</a> or <a href="http://search.msn.com/" title="MSN Search">MSN</a>.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>I get 10 times more traffic from [Google][aaaa] than from
-</span><span class='line'>[Yahoo][bbbb] or [MSN][cccc].
-</span><span class='line'>[aaaa]: http://google.com/ "Google"
-</span><span class='line'>[bbbb]: http://search.yahoo.com/ "Yahoo Search"
-</span><span class='line'>[cccc]: http://search.msn.com/ "MSN Search"</span></code></pre></td></tr></table></div></figure>
-
-
-<p>最后贴一张儿子的照片 ～～～</p>
-
-<p><img src="http://p13.freep.cn/p.aspx?u=v20_p13_photo_1302281746571604_0.jpg" title="儿子照片" alt="儿子照片" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[My first blog]]></title>
-    <link href="http://duyw.github.io/blog/2013/02/27/my-first-blog/"/>
-    <updated>2013-02-27T10:59:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/02/27/my-first-blog</id>
-    <content type="html"><![CDATA[<p>　　这是搭建Octopress后写的第一篇 blog，另外为博客添加了gogle Analytics 和 DISQUS，小小的激动了一下，  哈哈。</p>
-
-<p>　　这个博客专门用来分享技术学习笔记，以前写过很多，有的记录在本地，有的分散在各个博客系统，有机会把有用的东西陆续整理过来。</p>
-
-<p>　　comme on  加油～！！！</p>
 ]]></content>
   </entry>
   
