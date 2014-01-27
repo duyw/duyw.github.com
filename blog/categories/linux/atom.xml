@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Linux | 杜永文 博客]]></title>
+  <link href="http://duyw.github.io/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://duyw.github.io/"/>
+  <updated>2014-01-27T12:10:47+08:00</updated>
+  <id>http://duyw.github.io/</id>
+  <author>
+    <name><![CDATA[Du Yongwen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Linux 查看文件夹大小]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/27/linux-cha-kan-wen-jian-jia-da-xiao/"/>
+    <updated>2014-01-27T11:44:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/27/linux-cha-kan-wen-jian-jia-da-xiao</id>
+    <content type="html"><![CDATA[<p>du -sh 查看当前文件夹大小</p>
+
+<p>du -sh * | sort -n 统计当前文件夹(目录)大小，并按文件大小排序</p>
+
+<p>du -sk filename 查看指定文件大小</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Linux top 命令]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/26/linux-top-ming-ling/"/>
+    <updated>2014-01-26T23:31:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/26/linux-top-ming-ling</id>
+    <content type="html"><![CDATA[<p>top命令经常用来监控linux的系统状况，比如cpu、内存的使用.</p>
+
+<p>执行top命令，系统显示如下：
+```
+top - 19:40:49 up 11:00,  2 users,  load average: 0.24, 0.42, 0.54
+Tasks: 192 total,   1 running, 190 sleeping,   0 stopped,   1 zombie
+Cpu(s):  2.5%us,  1.0%sy,  0.0%ni, 96.4%id,  0.0%wa,  0.0%hi,  0.1%si,  0.0%st
+Mem:   3923984k total,  2716120k used,  1207864k free,   705260k buffers
+Swap:   262140k total,    69596k used,   192544k free,  1385228k cached</p>
+
+<p> PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+1168 root      20   0 90320  22m 7676 S    4  0.6  15:17.95 Xorg
+1947 ivan      20   0  388m  70m  22m S    4  1.8  16:11.03 compiz       <br/>
+2116 ivan      20   0  115m  24m  13m S    1  0.6   0:37.49 python       <br/>
+7346 ivan      20   0  142m  22m  14m S    1  0.6   0:05.42 gnome-terminal
+2031 ivan      20   0  106m  25m  12m S    1  0.7   3:50.68 unity-panel-ser
+2113 ivan      20   0 47556 4184 2520 S    1  0.1   0:45.45 ibus-daemon  <br/>
+7695 ivan      20   0  413m  99m  42m S    1  2.6   0:12.53 chrome       <br/>
+7713 ivan      20   0  389m  62m  15m S    1  1.6   0:09.25 chrome       <br/>
+1822 root      20   0 88528 1712 1484 S    0  0.0   2:19.14 mongod       <br/>
+1919 ivan      20   0  6968 3108  620 S    0  0.1   1:23.65 dbus-daemon  <br/>
+1932 ivan      20   0  238m  13m 9884 S    0  0.3   0:25.07 gnome-settings-
+2033 ivan      20   0 71728 8896 3336 S    0  0.2   0:30.65 hud-service  <br/>
+2104 ivan      20   0 42080 5500 4460 S    0  0.1   0:01.97 ubuntu-geoip-pr
+   1 root      20   0  3664 1796 1204 S    0  0.0   0:00.69 init         <br/>
+   2 root      20   0     0    0    0 S    0  0.0   0:00.00 kthreadd     <br/>
+   3 root      20   0     0    0    0 S    0  0.0   0:03.90 ksoftirqd/0  <br/>
+   6 root      RT   0     0    0    0 S    0  0.0   0:00.21 migration/0  <br/>
+   7 root      RT   0     0    0    0 S    0  0.0   0:00.15 watchdog/0   <br/>
+  20 root       0 -20     0    0    0 S    0  0.0   0:00.00 cpuset       <br/>
+  21 root       0 -20     0    0    0 S    0  0.0   0:00.00 khelper      <br/>
+  22 root      20   0     0    0    0 S    0  0.0   0:00.00 kdevtmpfs    <br/>
+  23 root       0 -20     0    0    0 S    0  0.0   0:00.00 netns        <br/>
+  25 root      20   0     0    0    0 S    0  0.0   0:00.13 sync_supers  <br/>
+  26 root      20   0     0    0    0 S    0  0.0   0:00.00 bdi-default  <br/>
+  27 root       0 -20     0    0    0 S    0  0.0   0:00.00 kintegrityd  <br/>
+```</p>
+
+<h3>第一行：</h3>
+
+<p>19:40:49表明当前系统时间； up 11:00 表明系统持续运行11个小时；2 users：目前两个登录用户；
+load average: 0.24, 0.42, 0.5 ：表明最近的 1、5、15 分钟系统的负载情况</p>
+
+<h3>第二行：进程状态</h3>
+
+<p>Tasks: 192 total,   1 running, 190 sleeping,   0 stopped,   1 zombie :目前进程总数192,其中1个在运行中，190个休眠中，1个僵死；</p>
+
+<h3>第三行： CPU使用情况</h3>
+
+<p>2.5%us： 当前用户CPU占用百分比
+1.0%sy： 系统内核CPU占用百分比
+0.0%ni： 优先继承的CPU占用百分比
+96.4%id：空闲CPU占用百分比
+0.0%wa： IO等待进程CPU占用百分比
+0.0%hi： 硬中断CPU占用百分比
+0.1%si： 软中断CPU占用百分比
+0.0%st</p>
+
+<h3>第四行：内存使用情况</h3>
+
+<p>3923984k total： 物理内存总量（4G）
+2716120k used：  已经使用2.7G
+1207864k free:   空闲物理内存（1.2G）
+705260k buffers：缓存内存量（700兆）</p>
+
+<h3>第五行：swap交换分区</h3>
+
+<p>262140k total：  总共260兆
+69596k used：    已经使用70兆
+192544k free：   剩余190兆
+1385228k cached：缓冲的交换区1.3G</p>
+
+<h3>第六行： 空行</h3>
+
+<p>PID 进程id
+USER 进程所有者
+PR 进程优先级
+NI nice值。负值表示高优先级，正值表示低优先级
+VIRT 进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES
+RES 进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA
+SHR 共享内存大小，单位kb
+S 进程状态。D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程
+%CPU
+%MEM
+TIME+<br/>
+COMMAND</p>
+]]></content>
+  </entry>
+  
+</feed>

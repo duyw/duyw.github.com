@@ -6,7 +6,11 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content="的确很久没有更新了，回顾2013年，从来没有感觉时间过的如此之快。 我只记得来广联达面试的时候我穿的是羽绒服，再次穿上羽绒服的时候猛然发现一个夏天已经过去了。再后来，不知不觉又到了过年回家抢火车票的时候。 一整年几乎都是在加班与忙碌中度过，难得在家的时候也不得清闲，要帮忙照顾小宝。这一年虽然累， &hellip;">
+	<meta name="description" content="我在一个controller中定义了一个action，在这个action的最后： Ruby代码: 1
+2
+3
+4
+redirect_to :action =&gt; &#39;show&#39;, :id =&gt; params[:term_id] , :data_type =&gt; &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -76,6 +80,417 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/27/rails-xiao-keng/">
+		
+			Rails 小坑</a>
+	</h2>
+	<div class="entry-content">
+		<p>我在一个controller中定义了一个action，在这个action的最后：</p>
+
+<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">redirect_to</span> <span class="ss">:action</span> <span class="o">=&gt;</span> <span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="ss">:id</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:term_id</span><span class="o">]</span> <span class="p">,</span> <span class="ss">:data_type</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:data_type</span><span class="o">]</span><span class="p">,</span> <span class="ss">:specialty</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:specialty</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>                <span class="ss">:norm_series</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:norm_series</span><span class="o">]</span><span class="p">,</span> <span class="ss">:range_from</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:range_from</span><span class="o">]</span><span class="p">,</span> <span class="ss">:range_to</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:range_to</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>                <span class="ss">:top_type</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:top_type</span><span class="o">]</span><span class="p">,</span> <span class="ss">:sub_type</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:sub_type</span><span class="o">]</span><span class="p">,</span> <span class="ss">:review_type</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:review_type</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>                <span class="ss">:status</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:status</span><span class="o">]</span><span class="p">,</span> <span class="ss">:page_size</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:page_size</span><span class="o">]</span> <span class="o">||</span> <span class="mi">20</span><span class="p">,</span> <span class="ss">:page</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:page</span><span class="o">]</span> <span class="o">||</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当这个页面执行完以后，没有转到‘show’页面，却进入了一个空白的页面，这个页面只有一句话：</p>
+
+<p>You are being redirected.</p>
+
+<p>点击 &#8216;redirected&#8217; 以后，页面才跳转到&#8217;show&#8217; 页面，百思不得其姐。</p>
+
+<p>最后通过查资料和自己思考终于知道原因了，关键在于后面的堆参数，其中有个 status 变量。哈哈~</p>
+
+<p>说到这里你应该能猜到原因了吧。</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T12:03:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/rails/'>Rails</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/27/rails-xiao-keng//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/27/rails-ming-ling-xing-gong-ju/">
+		
+			Rails 命令行工具</a>
+	</h2>
+	<div class="entry-content">
+		<p>rails 命令行工具</p>
+
+<p>整理一些不常用的但是很有用的命令行工具：</p>
+
+<p>1 rails c &#8211;sandbox</p>
+
+<p>在沙盒模式下启动rails命令行，再此所做的对数据的修改都会会滚。</p>
+
+<p>2 rails runner &#8220;puts User.first.id&#8221;</p>
+
+<p>在rails环境下执行ruby代码，无需启动应用服务。</p>
+
+<p>3 rails dbconsole</p>
+
+<p>启动数据库的命令行，无需数据用户名密码，支持MySQL, PostgreSQL, SQLite and SQLite3.</p>
+
+<p>4 rails destroy</p>
+
+<p>回滚 rails g 对项目的改变。</p>
+
+<p>5 rake -T</p>
+
+<p>查看所有的rake任务。</p>
+
+<p>6 rake about</p>
+
+<p>查看rails应用的环境，包括ruby版本，rails版本等。</p>
+
+<p>7 rake notes</p>
+
+<p>查看项目中的 TODO（待完成）、FIXME（待修复）、OPTIMIZE（待优化）</p>
+
+<p>8 rails g</p>
+
+<p>用于生成脚手架、控制器、模型、数据库迁移任务等。  如果加一个 <code>-p</code> 参数，只输出生成的文件列表，而不是真的创建文件</p>
+
+<p>参考资料：</p>
+
+<p>http://guides.ruby-china.org/command_line.html[http://guides.ruby-china.org/command_line.html]</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T11:58:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/rails/'>Rails</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/27/rails-ming-ling-xing-gong-ju//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/27/ubuntu-du-xie-windows-wen-jian/">
+		
+			Ubuntu 读写 Windows 文件</a>
+	</h2>
+	<div class="entry-content">
+		<p>前提：windows系统电脑和ubuntu在同一个局域网内。</p>
+
+<p>在图形模式下：</p>
+
+<ol>
+<li><p>打开任意一个文件浏览器</p></li>
+<li><p>输入 Ctrl + l</p></li>
+<li><p>输入windows电脑地址：smb://192.168.71.34</p></li>
+<li><p>在弹出界面输入 windows 电脑的用户名、密码、工作组等信息</p></li>
+<li><p>搞定~！</p></li>
+</ol>
+
+
+<p>在命令行模式下：
+命令：<code>mount //192.168.10.56/share -o user=DOMIAN\\user,pass=passwd /mnt</code></p>
+
+<p>注意有两点</p>
+
+<p>（1）domain这里是域名，并且要大写</p>
+
+<p>（2）这里有两个\,其中第一个是转义符，第二个是\</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T11:50:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/27/ubuntu-du-xie-windows-wen-jian//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/27/linux-cha-kan-wen-jian-jia-da-xiao/">
+		
+			Linux 查看文件夹大小</a>
+	</h2>
+	<div class="entry-content">
+		<p>du -sh 查看当前文件夹大小</p>
+
+<p>du -sh * | sort -n 统计当前文件夹(目录)大小，并按文件大小排序</p>
+
+<p>du -sk filename 查看指定文件大小</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T11:44:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/linux/'>Linux</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/27/linux-cha-kan-wen-jian-jia-da-xiao//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/26/linux-top-ming-ling/">
+		
+			Linux Top 命令</a>
+	</h2>
+	<div class="entry-content">
+		<p>top命令经常用来监控linux的系统状况，比如cpu、内存的使用.</p>
+
+<p>执行top命令，系统显示如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>top - 19:40:49 up 11:00,  2 users,  load average: 0.24, 0.42, 0.54
+</span><span class='line'>Tasks: 192 total,   1 running, 190 sleeping,   0 stopped,   1 zombie
+</span><span class='line'>Cpu(s):  2.5%us,  1.0%sy,  0.0%ni, 96.4%id,  0.0%wa,  0.0%hi,  0.1%si,  0.0%st
+</span><span class='line'>Mem:   3923984k total,  2716120k used,  1207864k free,   705260k buffers
+</span><span class='line'>Swap:   262140k total,    69596k used,   192544k free,  1385228k cached
+</span><span class='line'>
+</span><span class='line'> PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+</span><span class='line'>1168 root      20   0 90320  22m 7676 S    4  0.6  15:17.95 Xorg
+</span><span class='line'>1947 ivan      20   0  388m  70m  22m S    4  1.8  16:11.03 compiz         
+</span><span class='line'>2116 ivan      20   0  115m  24m  13m S    1  0.6   0:37.49 python         
+</span><span class='line'>7346 ivan      20   0  142m  22m  14m S    1  0.6   0:05.42 gnome-terminal 
+</span><span class='line'>2031 ivan      20   0  106m  25m  12m S    1  0.7   3:50.68 unity-panel-ser
+</span><span class='line'>2113 ivan      20   0 47556 4184 2520 S    1  0.1   0:45.45 ibus-daemon    
+</span><span class='line'>7695 ivan      20   0  413m  99m  42m S    1  2.6   0:12.53 chrome         
+</span><span class='line'>7713 ivan      20   0  389m  62m  15m S    1  1.6   0:09.25 chrome         
+</span><span class='line'>1822 root      20   0 88528 1712 1484 S    0  0.0   2:19.14 mongod         
+</span><span class='line'>1919 ivan      20   0  6968 3108  620 S    0  0.1   1:23.65 dbus-daemon    
+</span><span class='line'>1932 ivan      20   0  238m  13m 9884 S    0  0.3   0:25.07 gnome-settings-
+</span><span class='line'>2033 ivan      20   0 71728 8896 3336 S    0  0.2   0:30.65 hud-service    
+</span><span class='line'>2104 ivan      20   0 42080 5500 4460 S    0  0.1   0:01.97 ubuntu-geoip-pr
+</span><span class='line'>   1 root      20   0  3664 1796 1204 S    0  0.0   0:00.69 init           
+</span><span class='line'>   2 root      20   0     0    0    0 S    0  0.0   0:00.00 kthreadd       
+</span><span class='line'>   3 root      20   0     0    0    0 S    0  0.0   0:03.90 ksoftirqd/0    
+</span><span class='line'>   6 root      RT   0     0    0    0 S    0  0.0   0:00.21 migration/0    
+</span><span class='line'>   7 root      RT   0     0    0    0 S    0  0.0   0:00.15 watchdog/0     
+</span><span class='line'>  20 root       0 -20     0    0    0 S    0  0.0   0:00.00 cpuset         
+</span><span class='line'>  21 root       0 -20     0    0    0 S    0  0.0   0:00.00 khelper        
+</span><span class='line'>  22 root      20   0     0    0    0 S    0  0.0   0:00.00 kdevtmpfs      
+</span><span class='line'>  23 root       0 -20     0    0    0 S    0  0.0   0:00.00 netns          
+</span><span class='line'>  25 root      20   0     0    0    0 S    0  0.0   0:00.13 sync_supers    
+</span><span class='line'>  26 root      20   0     0    0    0 S    0  0.0   0:00.00 bdi-default    
+</span><span class='line'>  27 root       0 -20     0    0    0 S    0  0.0   0:00.00 kintegrityd    </span></code></pre></td></tr></table></div></figure>
+
+
+<h3>第一行：</h3>
+
+<p>19:40:49表明当前系统时间； up 11:00 表明系统持续运行11个小时；2 users：目前两个登录用户；
+load average: 0.24, 0.42, 0.5 ：表明最近的 1、5、15 分钟系统的负载情况</p>
+
+<h3>第二行：进程状态</h3>
+
+<p>Tasks: 192 total,   1 running, 190 sleeping,   0 stopped,   1 zombie :目前进程总数192,其中1个在运行中，190个休眠中，1个僵死；</p>
+
+<h3>第三行： CPU使用情况</h3>
+
+<p>2.5%us： 当前用户CPU占用百分比
+1.0%sy： 系统内核CPU占用百分比
+0.0%ni： 优先继承的CPU占用百分比
+96.4%id：空闲CPU占用百分比
+0.0%wa： IO等待进程CPU占用百分比
+0.0%hi： 硬中断CPU占用百分比
+0.1%si： 软中断CPU占用百分比
+0.0%st</p>
+
+<h3>第四行：内存使用情况</h3>
+
+<p>3923984k total： 物理内存总量（4G）
+2716120k used：  已经使用2.7G
+1207864k free:   空闲物理内存（1.2G）
+705260k buffers：缓存内存量（700兆）</p>
+
+<h3>第五行：swap交换分区</h3>
+
+<p>262140k total：  总共260兆
+69596k used：    已经使用70兆
+192544k free：   剩余190兆
+1385228k cached：缓冲的交换区1.3G</p>
+
+<h3>第六行： 空行</h3>
+
+<p>PID 进程id
+USER 进程所有者
+PR 进程优先级
+NI nice值。负值表示高优先级，正值表示低优先级
+VIRT 进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES
+RES 进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA
+SHR 共享内存大小，单位kb
+S 进程状态。D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程
+%CPU
+%MEM
+TIME+<br/>
+COMMAND</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-26T23:31:00+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/linux/'>Linux</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/26/linux-top-ming-ling//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">
@@ -817,373 +1232,6 @@ connecting to: test
 </div>
 	
 		<div class="comments"><a href="/blog/2013/04/05/ubuntu12-dot-04xia-svn-an-zhuang-he-pei-zhi//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/04/05/ubuntu12-dot-04-an-zhuang-mysql/">
-		
-			Ubuntu12.04 安装 MySQL</a>
-	</h2>
-	<div class="entry-content">
-		<h3>第一步：卸载mysql</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get autoremove --purge mysql-server-5.0
-</span><span class='line'>sudo apt-get remove mysql-server
-</span><span class='line'>sudo apt-get autoremove mysql-server
-</span><span class='line'>sudo apt-get remove mysql-common (非常重要)</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>第二步：清理残留数据</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>dpkg -l |grep ^rc|awk '{print $2}' |sudo xargs dpkg -P</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>第三步：安装 mysql</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install mysql-server
-</span><span class='line'>sudo apt-get install mysql-client
-</span><span class='line'>sudo apt-get install php5-mysql(安装php5-mysql 是将php和mysql连接起来 )</span></code></pre></td></tr></table></div></figure>
-
-
-<p>一旦安装完成，MySQL 服务器应该自动启动。您可以在终端提示符后运行以下命令来检查 MySQL 服务器是否正在运行：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo netstat -tap | grep mysql</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当您运行该命令时，您可以看到类似下面的行：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>tcp 0 0 localhost.localdomain:mysql *:* LISTEN -</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果服务器不能正常运行，您可以通过下列命令启动它：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo /etc/init.d/mysql restart</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>第四步：配置管理员密码</h3>
-
-<p>进入mysql</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$mysql -uroot -p 管理员密码</span></code></pre></td></tr></table></div></figure>
-
-
-<p>配置 MySQL 的管理员密码：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo mysqladmin -u root password newpassword</span></code></pre></td></tr></table></div></figure>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-05T20:15:00+08:00" pubdate data-updated="true">Apr 5<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/mysql/'>MySQL</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>, <a class='category' href='/blog/categories/database/'>数据库</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/04/05/ubuntu12-dot-04-an-zhuang-mysql//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2/">
-		
-			Ubuntu12.04 安装 Sublime Text 2</a>
-	</h2>
-	<div class="entry-content">
-		<p>Sublime Text 2 是一款非常优秀的编辑器，可以媲美苹果系统下的TextMate，用Sublime Text 2 进行RoR开发是一件很惬意的事，在Ubuntu12.04系统下安装步骤如下：</p>
-
-<ol>
-<li><p>到<a href="http://www.sublimetext.com/2">官网</a>下载软件包： “Sublime Text 2.0.1.tar.bz2”。</p></li>
-<li><p>复制到安装目录。</p></li>
-<li><p>解压缩。</p></li>
-<li><p>进入目录，创建desktop文件（sublime-text.desktop），并赋予可执行权限，启动sublime text 2 就直接运行该文件，这样就可以锁定在启动器，内容如下：</p>
-
-<pre><code> #!/usr/bin/env xdg-open
-
- [Desktop Entry]
- Name=Sublime Text 2
- Comment=Sublime Text 2
- Exec=/home/ivan/apps/"Sublime Text 2"/sublime_text
- Icon=/home/ivan/apps/Sublime Text 2/Icon/256x256/sublime_text.png
- Terminal=false
- Type=Application
- Categories=Application;Development;
- StartupNotify=true
- Name[zh_CN]=sublime-text
-</code></pre>
-
-<p> 如果将文件复制到<code>/usr/share/applications/</code>目录下，就可以在Dash中被搜索到。</p></li>
-</ol>
-
-
-
-		
-		<a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-04T22:41:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/sublime text 2/'>Sublime Text 2</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/04/04/ubuntu12-dot-04an-zhuang-jdk/">
-		
-			Ubuntu12.04 安装 JDK</a>
-	</h2>
-	<div class="entry-content">
-		<p>很多软件运行需要JRE环境，下面的方法用于在Ubuntu中安装JDK：</p>
-
-<ol>
-<li><p>首先下载JDK，点击<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6downloads-1902814.html">这里</a>下载（以“jdk-6u26-linux-i586.bin”为例）下载好以后放到安装位置（以<code>~/apps</code>目录为例）。</p></li>
-<li><p>设置安装文件权限： <code>chmod u+x ./jdk-6u26-linux-i586.bin</code></p></li>
-<li><p>安装：<code>sudo -s ./jdk-6u26-linux-i586.bin</code></p></li>
-<li><p>配置环境变量：</p>
-
-<p> <code>sudo gedit /etc/profile</code></p>
-
-<p> 在文件末尾写入以下内容：</p>
-
-<pre><code> #set java environment    
-
- JAVA_HOME=/home/ivan/apps/jdk1.6.0_26   
-
- export JRE_HOME=/home/ivan/apps/jdk1.6.0_26/jre   
-
- export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH   
-
- export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH 
-
- #set java environment
-</code></pre></li>
-<li><p>测试：</p>
-
-<p> 重启terminal,执行： <code>java -version</code> ，输出版本信息，说明安装成功。</p></li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-04T22:30:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/jdk/'>JDK</a>, <a class='category' href='/blog/categories/java/'>Java</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/04/04/ubuntu12-dot-04an-zhuang-jdk//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/04/04/gem-geng-xin/">
-		
-			GEM 更新</a>
-	</h2>
-	<div class="entry-content">
-		<p>更新方法：</p>
-
-<ol>
-<li><p>从低版本升级到高版本</p>
-
-<p><code>gem update –system</code></p></li>
-<li><p>从高版本降到低版本</p></li>
-</ol>
-
-
-<p>  从 <a href="http://rubyforge.org/frs/?group_id=126">RubyForge</a> 下载需要的版本,以tgz格式为例:</p>
-
-<p>  先解压  <code>tar zxf gem_name_xxxxx</code></p>
-
-<p>  cd 进去 <code>ruby setup.rb</code></p>
-
-<p>  查看帮助: <code>ruby setup.rb --help</code></p>
-
-<p>参考：<a href="https://rubygems.org/pages/download">https://rubygems.org/pages/download</a></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-04T21:56:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/gem/'>GEM</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/04/04/gem-geng-xin//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-postgresqlhe-pgadmin3/">
-		
-			Ubuntu12.04 安装 PostgreSQL 和 PgAdmin3</a>
-	</h2>
-	<div class="entry-content">
-		<h3>1.安装</h3>
-
-<p>安装：<code>sudo apt-get install postgresql postgresql-client postgresql-server-dev-all</code></p>
-
-<p>或者指定版本号：</p>
-
-<pre><code>sudo apt-get install -y postgresql-9.1 postgresql-client-9.1 postgresql-contrib-9.1 \
-postgresql-server-dev-9.1
-</code></pre>
-
-<p>启动：<code>sudo /etc/init.d/postgresql start</code></p>
-
-<p>停止：<code>sudo /etc/init.d/postgresql stop</code></p>
-
-<p>重启：<code>sudo /etc/init.d/postgresql restart</code></p>
-
-<p>察看状态：<code>sudo /etc/init.d/postgresql status</code></p>
-
-<p>另外，也可以使用命令：<code>sudo service postgresql  [start/stop/restart/status]</code></p>
-
-<p>以上命令将把PostgreSQL安装到以下目录：</p>
-
-<pre><code>/usr/lib/postgresql/9.1/        存放postgresql相关的二进制文件
-/usr/lib/postgresql/9.1/bin/    可执行文件 
-/usr/lib/postgresql/9.1/lib/    共享库文件 
-/etc/postgres/9.1/main/         存放postgresql配置文文件 
-/var/lib/postgresql/            postgres用户的主文件夹
-</code></pre>
-
-
-		
-		<a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-postgresqlhe-pgadmin3/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-04T19:33:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/pgadmin3/'>PgAdmin3</a>, <a class='category' href='/blog/categories/postgresql/'>PostgreSQL</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>, <a class='category' href='/blog/categories/database/'>数据库</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-postgresqlhe-pgadmin3//index.html#disqus_thread">Comments</a></div>
 	
 </div></article>
 

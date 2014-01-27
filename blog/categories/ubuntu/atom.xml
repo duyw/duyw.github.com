@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ubuntu | 杜永文 博客]]></title>
   <link href="http://duyw.github.io/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-01-26T23:18:52+08:00</updated>
+  <updated>2014-01-27T12:10:47+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -12,6 +12,35 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu 读写 Windows 文件]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/27/ubuntu-du-xie-windows-wen-jian/"/>
+    <updated>2014-01-27T11:50:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/27/ubuntu-du-xie-windows-wen-jian</id>
+    <content type="html"><![CDATA[<p>前提：windows系统电脑和ubuntu在同一个局域网内。</p>
+
+<p>在图形模式下：</p>
+
+<ol>
+<li><p>打开任意一个文件浏览器</p></li>
+<li><p>输入 Ctrl + l</p></li>
+<li><p>输入windows电脑地址：smb://192.168.71.34</p></li>
+<li><p>在弹出界面输入 windows 电脑的用户名、密码、工作组等信息</p></li>
+<li><p>搞定~！</p></li>
+</ol>
+
+
+<p>在命令行模式下：
+命令：<code>mount //192.168.10.56/share -o user=DOMIAN\\user,pass=passwd /mnt</code></p>
+
+<p>注意有两点</p>
+
+<p>（1）domain这里是域名，并且要大写</p>
+
+<p>（2）这里有两个\,其中第一个是转义符，第二个是\</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ubuntu12.04下 SVN 安装和配置]]></title>
@@ -530,223 +559,6 @@ sudo mysqladmin -u root password newpassword
 <p> 重启terminal,执行： <code>java -version</code> ，输出版本信息，说明安装成功。</p></li>
 </ol>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ubuntu12.04 安装 PostgreSQL 和 PgAdmin3]]></title>
-    <link href="http://duyw.github.io/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-postgresqlhe-pgadmin3/"/>
-    <updated>2013-04-04T19:33:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-postgresqlhe-pgadmin3</id>
-    <content type="html"><![CDATA[<h3>1.安装</h3>
-
-<p>安装：<code>sudo apt-get install postgresql postgresql-client postgresql-server-dev-all</code></p>
-
-<p>或者指定版本号：</p>
-
-<pre><code>sudo apt-get install -y postgresql-9.1 postgresql-client-9.1 postgresql-contrib-9.1 \
-postgresql-server-dev-9.1
-</code></pre>
-
-<p>启动：<code>sudo /etc/init.d/postgresql start</code></p>
-
-<p>停止：<code>sudo /etc/init.d/postgresql stop</code></p>
-
-<p>重启：<code>sudo /etc/init.d/postgresql restart</code></p>
-
-<p>察看状态：<code>sudo /etc/init.d/postgresql status</code></p>
-
-<p>另外，也可以使用命令：<code>sudo service postgresql  [start/stop/restart/status]</code></p>
-
-<p>以上命令将把PostgreSQL安装到以下目录：</p>
-
-<pre><code>/usr/lib/postgresql/9.1/        存放postgresql相关的二进制文件
-/usr/lib/postgresql/9.1/bin/    可执行文件 
-/usr/lib/postgresql/9.1/lib/    共享库文件 
-/etc/postgres/9.1/main/         存放postgresql配置文文件 
-/var/lib/postgresql/            postgres用户的主文件夹
-</code></pre>
-
-<!-- more -->
-
-
-<h3>2.配置管理员“postgres”，使用psql</h3>
-
-<p>PostgreSQL数据默认会创建一个linux用户postgres，需要修改操作系统“postgres”用户的密码为“postgres”：</p>
-
-<ol>
-<li><p>删除密码：<code>sudo passwd -d postgres  //passwd -d 是清空指定用户密码的意思</code></p></li>
-<li><p>设置密码：<code>sudo -u postgres passwd  //或者 sudo su postgres -c passwd</code></p></li>
-</ol>
-
-
-<p>用sudo权限以用户postgres身份登陆PostgreSQL:</p>
-
-<pre><code>sudo -u postgres psql [ -U postgres -h 127.0.0.1]   
-// 运行psql,后面[]中的内容可选，用于登录服务器，默认会登录本机；
-</code></pre>
-
-<p>或者：</p>
-
-<p><code>sudo su postgres -c psql template1（PostgreSQL的默认数据库是template1）</code></p>
-
-<p>运行 PostgreSQL 交互的终端程序， 叫 psql，它允许你交互地输入，编辑，和执行 SQL 命令。</p>
-
-<p>启动 psql：<code>psql mydb</code>（以用户postgres登陆psql：<code>sudo su postgres -c psql</code>）</p>
-
-<p>在 psql 里输入help命令，你会看到下面的提示信息：</p>
-
-<pre><code>You are using psql, the command-line interface to PostgreSQL.
-Type:  \copyright for distribution terms
-          \h for help with SQL commands
-          \? for help with psql commands
-          \g or terminate with semicolon to execute query
-          \q to quit
-</code></pre>
-
-<p>修改PostgreSQL的管理员用户postgres的密码为“postgres”（同操作系统用户postgres的密码一样）：</p>
-
-<p><code>postgres=# ALTER USER postgres WITH PASSWORD 'postgres';</code></p>
-
-<p>查询当前使用的postgresql版本：<code>SELECT version()；</code></p>
-
-<p>查询大概年前日期：            <code>SELECT current_date;</code></p>
-
-<p>现在，我们就可以在数据库服务器上用 postgres帐号通过psql或者pgAdmin等等客户端操作数据库了
-（暂时还不能远程访问）。</p>
-
-<h3>3.管理PostgreSQL用户</h3>
-
-<p>1 创建新用户pgsql，但不给建数据库的权限，有两中创建方式：</p>
-
-<p><strong>一种是在外部命令行直接创建：</strong></p>
-
-<p>  命令：<code>createuser [-a] [-A] [-d] [-D] [-e] [-P] [-h 主机名] [-p port] 用户名</code></p>
-
-<pre><code>参数说明：
-[-a]：允许创建其他用户，相当于创建一个超级用户；
-[-A]：不允许此用户创建其他用户；
-[-d]：允许此用户创建数据库；
-[-D]：不允许此用户创建数据库；
-[-e]：将执行过程显示到Shell上；
-[-P]：创建用户时，同时设置密码；
-[-h 主机名]：为某个主机上的Postgres创建用户；
-[-p port]：与-h参数一同使用，指定主机的端口。
-</code></pre>
-
-<p>例如：</p>
-
-<p><code>ivan@ubuntu:~$ sudo -u postgres createuser -D -P pgsql</code></p>
-
-<p>执行以后会看到如下提示：</p>
-
-<pre><code>Enter password for new role: 
-Enter it again: 
-Shall the new role be a superuser? (y/n) n
-Shall the new role be allowed to create more new roles? (y/n) n
-</code></pre>
-
-<p><strong>另一种方式是登陆psql，通过SQL语句创建：</strong></p>
-
-<p>首先登陆：</p>
-
-<p><code>ivan@ubuntu:~$ psql -U postgres -h 127.0.0.1</code></p>
-
-<p>然后创建：</p>
-
-<pre><code>postgres=# create user “pgsql” with password ‘123456’ nocreatedb; 
-//用户名和数据库名称加上引号后才区分大小写，否则会自动转换成小写
-</code></pre>
-
-<p>2 删除用户：</p>
-
-<p>外部：<code>sudo -u postgres dropuser pgsql</code></p>
-
-<p>内部：``</p>
-
-<h3>4.创建和删除数据库</h3>
-
-<p>同样有外部命令行和psql的SQL语句这两种创建方式。</p>
-
-<p>创建数据库 mydb, 其拥有者是pgsql用户：</p>
-
-<p>1  通过命令行创建（shell命令）：</p>
-
-<p>创建数据库：<code>sudo -u postgres createdb mydb -O pgsql   // -O 设定所有者pgsql；</code></p>
-
-<p>删除数据库：<code>sudo -u postgres dropdb   mydb</code></p>
-
-<p>2  通过psql来创建(sql命令)：</p>
-
-<p>首先利用psql登录PostgreSQL服务器:</p>
-
-<pre><code>sudo -u postgres psql [ -U postgres -h 127.0.0.1]  
-//运行psql,后面[]中的内容可选，用于登录服务器，默认会登录本机；`
-</code></pre>
-
-<p>然后在psql程序中创建数据库（需要先创建好pgsql用户）:</p>
-
-<p><code>create database “mydatabase” with owner=pgsql;</code></p>
-
-<h3>5.数据库导入导出</h3>
-
-<p><strong>导出：</strong>取得服务器 192.168.1.1 上 PostgreSQL中pgsql用户的mydb数据库，导出到当前目录下的 mydb.dump 文件：</p>
-
-<p><code>pg_dump -h 192.168.1.1 -U pgsql -Fc mydb &gt; mydb.dump</code></p>
-
-<p><strong>导入：</strong>将导出的文件 mydb.dump 导入到本地PostgreSQL数据库中pgsql用户下(需要提前创建pgsql用户），要求导入后的数据库名称为“mydb”</p>
-
-<p><code>pg_restore ./mydb.dump | psql -Upgsql -d mydb</code></p>
-
-<h3>6.修改PostgresSQL数据库配置实现远程访问</h3>
-
-<p><code>ivan@ubuntu:~$ sudo vim /etc/postgresql/9.1/main/postgresql.conf</code></p>
-
-<p>1.监听任何地址访问，修改连接权限</p>
-
-<p><code>#listen_addresses = ‘localhost’  改为 listen_addresses = ‘*’</code></p>
-
-<p>2.启用密码验证</p>
-
-<p><code>#password_encryption = on      改为   password_encryption = on</code></p>
-
-<p>3.可访问的用户ip段</p>
-
-<p><code>ivan@ubuntu:~$ sudo vim /etc/postgresql/9.1/main/pg_hba.conf</code></p>
-
-<p>并在文档末尾加上以下内容</p>
-
-<pre><code># to allow your client visiting postgresql server
-host all all 0.0.0.0 0.0.0.0 md5
-</code></pre>
-
-<p>解释一下最后一行：</p>
-
-<pre><code>host表示允许的类型是主机； 
-第一个all是允许的数据库名字； 
-第二个all是允许的用户； 
-第一个0.0.0.0是允许访问的ip address； 
-第二个0.0.0.0是允许访问的subnet mask； 
-最后的md5表示密码的加密方式，如果将md5改成trust则可以让指定范围的主机数据库的时候不需要提供密码。
-关于 ip address 和 subnet mask ，你也可以修改为你的机器IP地址(如10.13.19.53)和子网掩码(如 255.255.255.255)，
-这样就只有你自己的主机可以远程访问数据库了。 如果要使用一个IP地址范围，只需要把子网掩码设置成合适的值，
-如果子网掩码设置成0.0.0.0，则所有主机均可以访问数据库（IP可以任意设定），
-如果将md5改成trust则可以让指定范围的主机访问指定的数据库的时候不需要提供密码。
-</code></pre>
-
-<p>4.重启PostgreSQL数据库</p>
-
-<p><code>ivan@ubuntu:~$ sudo /etc/init.d/postgresql restart</code></p>
-
-<h3>7.安装postgresql数据库pgAdmin3客户端管理程序</h3>
-
-<p><code>ivan@ubuntu:~$ sudo apt-get install -y pgadmin3</code></p>
-
-<p>遇到问题：</p>
-
-<p>1 安装过程中总是下载不了要安装的文件，更新源添加163源都无法解决，最后通过vpn翻墙以后可以正常安装。</p>
-
-<p>2 安装以后pgAdmin3固定到启动器后不显示图标，解决方法，修改/usr/share/applications目录下的 pgAdmin III.desktop文件，将其中的 Icon值改为“/usr/share/pixmaps/pgadmin3.svg”，搞定。</p>
 ]]></content>
   </entry>
   
