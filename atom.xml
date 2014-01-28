@@ -4,7 +4,7 @@
   <title><![CDATA[杜永文 博客]]></title>
   <link href="http://duyw.github.io/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-01-28T13:05:41+08:00</updated>
+  <updated>2014-01-28T13:09:24+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -31,17 +31,17 @@
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>   (0.1ms)  begin transaction
+</pre></td><td class='code'><pre><code class=''><span class='line'>(0.1ms)  begin transaction
 </span><span class='line'>/home/ivan/work/temp/packagetest/app/models/material_type.rb:7: warning: multiple values for a block parameter (0 for 1)
 </span><span class='line'>from /home/ivan/.rvm/gems/ruby-1.8.7-p371@rails304/gems/activerecord-3.2.13/lib/active_record/connection_adapters/abstract/database_statements.rb:192
-</span><span class='line'>   (0.4ms)  insert into material_types(id,name,code,parent_id,created_at,updated_at) values ('40', '40_name','code', 40, 'Fri Nov 29 11:08:54 +0800 2013', 'Fri Nov 29 11:08:54 +0800 2013')
-</span><span class='line'>   (317.6ms)  commit transaction
+</span><span class='line'>(0.4ms)  insert into material_types(id,name,code,parent_id,created_at,updated_at) values ('40', '40_name','code', 40, 'Fri Nov 29 11:08:54 +0800 2013', 'Fri Nov 29 11:08:54 +0800 2013')
+</span><span class='line'>(317.6ms)  commit transaction
 </span><span class='line'>
-</span><span class='line'>   (0.1ms)  begin transaction
+</span><span class='line'>(0.1ms)  begin transaction
 </span><span class='line'>/home/ivan/work/temp/packagetest/app/models/material_type.rb:7: warning: multiple values for a block parameter (0 for 1)
 </span><span class='line'>from /home/ivan/.rvm/gems/ruby-1.8.7-p371@rails304/gems/activerecord-3.2.13/lib/active_record/connection_adapters/abstract/database_statements.rb:192
-</span><span class='line'>   (0.4ms)  insert into material_types(id,name,code,parent_id,created_at,updated_at) values ('41', '41_name','code', 41, 'Fri Nov 29 11:08:54 +0800 2013', 'Fri Nov 29 11:08:54 +0800 2013')
-</span><span class='line'>   (307.8ms)  commit transaction</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>(0.4ms)  insert into material_types(id,name,code,parent_id,created_at,updated_at) values ('41', '41_name','code', 41, 'Fri Nov 29 11:08:54 +0800 2013', 'Fri Nov 29 11:08:54 +0800 2013')
+</span><span class='line'>(307.8ms)  commit transaction</span></code></pre></td></tr></table></div></figure>
 
 
 <p>每次最耗时的就是这个 commit transaction 了 居然要300ms左右。</p>
