@@ -6,7 +6,7 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content="1. Engine是什么？ Engine 可以被看作是（一个）微型的rails应用程序。其提供（一些额外的）功能给它们的宿主程序（host applications）。 一个 Rails 应用程序实际上就是一个 “加强版”（supercharged） engine，因为 Rails:: &hellip;">
+	<meta name="description" content=" du -sh 查看当前文件夹大小 du -sh * | sort -n 统计当前文件夹(目录)大小，并按文件大小排序 du -sk filename 查看指定文件大小 Jan 27th, 2014 Linux Comments ">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -76,6 +76,320 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/27/linux-cha-kan-wen-jian-jia-da-xiao/">
+		
+			Linux 查看文件夹大小</a>
+	</h2>
+	<div class="entry-content">
+		<p>du -sh 查看当前文件夹大小</p>
+
+<p>du -sh * | sort -n 统计当前文件夹(目录)大小，并按文件大小排序</p>
+
+<p>du -sk filename 查看指定文件大小</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T11:44:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/linux/'>Linux</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/27/linux-cha-kan-wen-jian-jia-da-xiao//blog/page/2/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/26/linux-top-ming-ling/">
+		
+			Linux Top 命令</a>
+	</h2>
+	<div class="entry-content">
+		<p>top命令经常用来监控linux的系统状况，比如cpu、内存的使用.</p>
+
+<p>执行top命令，系统显示如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>top - 19:40:49 up 11:00,  2 users,  load average: 0.24, 0.42, 0.54
+</span><span class='line'>Tasks: 192 total,   1 running, 190 sleeping,   0 stopped,   1 zombie
+</span><span class='line'>Cpu(s):  2.5%us,  1.0%sy,  0.0%ni, 96.4%id,  0.0%wa,  0.0%hi,  0.1%si,  0.0%st
+</span><span class='line'>Mem:   3923984k total,  2716120k used,  1207864k free,   705260k buffers
+</span><span class='line'>Swap:   262140k total,    69596k used,   192544k free,  1385228k cached
+</span><span class='line'>
+</span><span class='line'> PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+</span><span class='line'>1168 root      20   0 90320  22m 7676 S    4  0.6  15:17.95 Xorg
+</span><span class='line'>1947 ivan      20   0  388m  70m  22m S    4  1.8  16:11.03 compiz         
+</span><span class='line'>2116 ivan      20   0  115m  24m  13m S    1  0.6   0:37.49 python         
+</span><span class='line'>7346 ivan      20   0  142m  22m  14m S    1  0.6   0:05.42 gnome-terminal 
+</span><span class='line'>2031 ivan      20   0  106m  25m  12m S    1  0.7   3:50.68 unity-panel-ser
+</span><span class='line'>2113 ivan      20   0 47556 4184 2520 S    1  0.1   0:45.45 ibus-daemon    
+</span><span class='line'>7695 ivan      20   0  413m  99m  42m S    1  2.6   0:12.53 chrome         
+</span><span class='line'>7713 ivan      20   0  389m  62m  15m S    1  1.6   0:09.25 chrome         
+</span><span class='line'>1822 root      20   0 88528 1712 1484 S    0  0.0   2:19.14 mongod         
+</span><span class='line'>1919 ivan      20   0  6968 3108  620 S    0  0.1   1:23.65 dbus-daemon    
+</span><span class='line'>1932 ivan      20   0  238m  13m 9884 S    0  0.3   0:25.07 gnome-settings-
+</span><span class='line'>2033 ivan      20   0 71728 8896 3336 S    0  0.2   0:30.65 hud-service    
+</span><span class='line'>2104 ivan      20   0 42080 5500 4460 S    0  0.1   0:01.97 ubuntu-geoip-pr
+</span><span class='line'>   1 root      20   0  3664 1796 1204 S    0  0.0   0:00.69 init           
+</span><span class='line'>   2 root      20   0     0    0    0 S    0  0.0   0:00.00 kthreadd       
+</span><span class='line'>   3 root      20   0     0    0    0 S    0  0.0   0:03.90 ksoftirqd/0    
+</span><span class='line'>   6 root      RT   0     0    0    0 S    0  0.0   0:00.21 migration/0    
+</span><span class='line'>   7 root      RT   0     0    0    0 S    0  0.0   0:00.15 watchdog/0     
+</span><span class='line'>  20 root       0 -20     0    0    0 S    0  0.0   0:00.00 cpuset         
+</span><span class='line'>  21 root       0 -20     0    0    0 S    0  0.0   0:00.00 khelper        
+</span><span class='line'>  22 root      20   0     0    0    0 S    0  0.0   0:00.00 kdevtmpfs      
+</span><span class='line'>  23 root       0 -20     0    0    0 S    0  0.0   0:00.00 netns          
+</span><span class='line'>  25 root      20   0     0    0    0 S    0  0.0   0:00.13 sync_supers    
+</span><span class='line'>  26 root      20   0     0    0    0 S    0  0.0   0:00.00 bdi-default    
+</span><span class='line'>  27 root       0 -20     0    0    0 S    0  0.0   0:00.00 kintegrityd    </span></code></pre></td></tr></table></div></figure>
+
+
+<h3>第一行：</h3>
+
+<p>19:40:49表明当前系统时间； up 11:00 表明系统持续运行11个小时；2 users：目前两个登录用户；
+load average: 0.24, 0.42, 0.5 ：表明最近的 1、5、15 分钟系统的负载情况</p>
+
+<h3>第二行：进程状态</h3>
+
+<p>Tasks: 192 total,   1 running, 190 sleeping,   0 stopped,   1 zombie :目前进程总数192,其中1个在运行中，190个休眠中，1个僵死；</p>
+
+<h3>第三行： CPU使用情况</h3>
+
+<p>2.5%us： 当前用户CPU占用百分比
+1.0%sy： 系统内核CPU占用百分比
+0.0%ni： 优先继承的CPU占用百分比
+96.4%id：空闲CPU占用百分比
+0.0%wa： IO等待进程CPU占用百分比
+0.0%hi： 硬中断CPU占用百分比
+0.1%si： 软中断CPU占用百分比
+0.0%st</p>
+
+<h3>第四行：内存使用情况</h3>
+
+<p>3923984k total： 物理内存总量（4G）
+2716120k used：  已经使用2.7G
+1207864k free:   空闲物理内存（1.2G）
+705260k buffers：缓存内存量（700兆）</p>
+
+<h3>第五行：swap交换分区</h3>
+
+<p>262140k total：  总共260兆
+69596k used：    已经使用70兆
+192544k free：   剩余190兆
+1385228k cached：缓冲的交换区1.3G</p>
+
+<h3>第六行： 空行</h3>
+
+<p>PID 进程id
+USER 进程所有者
+PR 进程优先级
+NI nice值。负值表示高优先级，正值表示低优先级
+VIRT 进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES
+RES 进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA
+SHR 共享内存大小，单位kb
+S 进程状态。D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程
+%CPU
+%MEM
+TIME+<br/>
+COMMAND</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-26T23:31:00+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/linux/'>Linux</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/26/linux-top-ming-ling//blog/page/2/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/26/bo-ke-hen-jiu-mei-you-geng-xin-liao/">
+		
+			博客很久没有更新了</a>
+	</h2>
+	<div class="entry-content">
+		<p>的确很久没有更新了，回顾2013年，从来没有感觉时间过的如此之快。</p>
+
+<p>我只记得来广联达面试的时候我穿的是羽绒服，再次穿上羽绒服的时候猛然发现一个夏天已经过去了。再后来，不知不觉又到了过年回家抢火车票的时候。</p>
+
+<p>一整年几乎都是在加班与忙碌中度过，难得在家的时候也不得清闲，要帮忙照顾小宝。这一年虽然累，但也算累的充实，工作不忙的时候我也经常会去公司学习，积攒了不少东西，平时为了图方便都记录在为知笔记中，刚好假期中有时间，打算整理到博客中，一是为了回顾学习，二是为了以后方便查询，三是希望能帮助到别人。</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-26T22:50:00+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/others/'>其他</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/26/bo-ke-hen-jiu-mei-you-geng-xin-liao//blog/page/2/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/05/03/install-gem-without-ri-and-rdoc/">
+		
+			Install Gem Without Ri and Rdoc</a>
+	</h2>
+	<div class="entry-content">
+		<p>用 <code>gem install XXX</code> 安装 Gem 包的同时会安装 ri 和 rdoc，但这两个东西一般用不到，另外还严重影响安装速度，介于这两个原因我们一般都会这么做：</p>
+
+<p><code>gem install rails --no-ri --no-rdoc</code></p>
+
+<p>但是每个 Gem 包安装都这么做就太麻烦了，我们可以直接修改配置让 Gem 默认不安装 ri 和 rdoc：</p>
+
+<p>打开 ~/.gemrc   （如果没有这个文件可以自己手动创建）</p>
+
+<p>在文件最后加入 <code>gem: --no-ri --no-rdoc</code> ：</p>
+
+<pre><code>---
+:backtrace: false
+:benchmark: false
+:bulk_threshold: 1000
+:sources:
+- http://ruby.taobao.org
+:update_sources: true
+:verbose: true
+gem: --no-ri --no-rdoc
+</code></pre>
+
+<p>大功告成~</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-03T09:23:00+08:00" pubdate data-updated="true">May 3<span>rd</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gem/'>Gem</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2013/05/03/install-gem-without-ri-and-rdoc//blog/page/2/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">
@@ -945,391 +1259,6 @@ connecting to: test
 </div>
 	
 		<div class="comments"><a href="/blog/2013/04/04/ubuntu12-dot-04an-zhuang-jdk//blog/page/2/index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/04/04/gem-geng-xin/">
-		
-			GEM 更新</a>
-	</h2>
-	<div class="entry-content">
-		<p>更新方法：</p>
-
-<ol>
-<li><p>从低版本升级到高版本</p>
-
-<p><code>gem update –system</code></p></li>
-<li><p>从高版本降到低版本</p></li>
-</ol>
-
-
-<p>  从 <a href="http://rubyforge.org/frs/?group_id=126">RubyForge</a> 下载需要的版本,以tgz格式为例:</p>
-
-<p>  先解压  <code>tar zxf gem_name_xxxxx</code></p>
-
-<p>  cd 进去 <code>ruby setup.rb</code></p>
-
-<p>  查看帮助: <code>ruby setup.rb --help</code></p>
-
-<p>参考：<a href="https://rubygems.org/pages/download">https://rubygems.org/pages/download</a></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-04T21:56:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/gem/'>GEM</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/04/04/gem-geng-xin//blog/page/2/index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-postgresqlhe-pgadmin3/">
-		
-			Ubuntu12.04 安装 PostgreSQL 和 PgAdmin3</a>
-	</h2>
-	<div class="entry-content">
-		<h3>1.安装</h3>
-
-<p>安装：<code>sudo apt-get install postgresql postgresql-client postgresql-server-dev-all</code></p>
-
-<p>或者指定版本号：</p>
-
-<pre><code>sudo apt-get install -y postgresql-9.1 postgresql-client-9.1 postgresql-contrib-9.1 \
-postgresql-server-dev-9.1
-</code></pre>
-
-<p>启动：<code>sudo /etc/init.d/postgresql start</code></p>
-
-<p>停止：<code>sudo /etc/init.d/postgresql stop</code></p>
-
-<p>重启：<code>sudo /etc/init.d/postgresql restart</code></p>
-
-<p>察看状态：<code>sudo /etc/init.d/postgresql status</code></p>
-
-<p>另外，也可以使用命令：<code>sudo service postgresql  [start/stop/restart/status]</code></p>
-
-<p>以上命令将把PostgreSQL安装到以下目录：</p>
-
-<pre><code>/usr/lib/postgresql/9.1/        存放postgresql相关的二进制文件
-/usr/lib/postgresql/9.1/bin/    可执行文件 
-/usr/lib/postgresql/9.1/lib/    共享库文件 
-/etc/postgres/9.1/main/         存放postgresql配置文文件 
-/var/lib/postgresql/            postgres用户的主文件夹
-</code></pre>
-
-
-		
-		<a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-postgresqlhe-pgadmin3/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-04T19:33:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/pgadmin3/'>PgAdmin3</a>, <a class='category' href='/blog/categories/postgresql/'>PostgreSQL</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>, <a class='category' href='/blog/categories/database/'>数据库</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-postgresqlhe-pgadmin3//blog/page/2/index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/03/13/git-chang-yong-ming-ling/">
-		
-			Git 常用命令</a>
-	</h2>
-	<div class="entry-content">
-		<h2>Git 指令结构图</h2>
-
-<p><img src="/images/post/git-transport.png" title="Git 指令结构图" alt="Git 指令结构图" /></p>
-
-<p>图片中展示了Git Repository结构和执行相关Command后数据的变迁流程，Git维护的代码分成三个部分</p>
-
-<ul>
-<li><p>current working directory 当前工作目录 (1)</p></li>
-<li><p>index file 暂存区 (2)</p></li>
-<li><p>git repository 历史仓库 (3)</p></li>
-</ul>
-
-
-
-		
-		<a href="/blog/2013/03/13/git-chang-yong-ming-ling/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-13T14:19:00+08:00" pubdate data-updated="true">Mar 13<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/git/'>Git</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/03/13/git-chang-yong-ming-ling//blog/page/2/index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04/">
-		
-			A Simple Script for Installing RoR on Ubuntu12.04</a>
-	</h2>
-	<div class="entry-content">
-		<p>This is a usful script,I found it here: <a href="http://blog.sudobits.com/2012/05/02/how-to-install-ruby-on-rails-in-ubuntu-12-04-lts/">Sudobits 博客</a></p>
-
-<figure class='code'><figcaption><span>rails-installer.sh </span><a href='https://github.com/rkjha/RailsOnUbuntu/blob/master/rails-installer.sh'>链接到github </a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'><span class="c"># A simple Script for installing Rails on Ubuntu 12.04 LTS / 12.10</span>
-</span><span class='line'><span class="c"># It will also install the dependencies required as well as the RVM</span>
-</span><span class='line'><span class="c"># Author: Ramesh Jha (ramesh@rameshjha.com),(http://blog.sudobits.com)</span>
-</span><span class='line'><span class="c"># License: MIT </span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">RUBY_VERSION</span><span class="o">=</span><span class="s2">&quot;1.9.3&quot;</span>
-</span><span class='line'><span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&quot;$HOME/install.log&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Rails Installer started&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Installing Dependencies</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;.......Updating package cache.....&quot;</span>
-</span><span class='line'>sudo apt-get update &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;......Done..........&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;..........Installing git..........&quot;</span>
-</span><span class='line'>sudo apt-get -y install git &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;..........Done....................&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Installing Curl&quot;</span>
-</span><span class='line'>sudo apt-get -y install curl &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;...........Done...................&quot;</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Install RVM (Ruby Version Manager)</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;.....Installing RVM..............&quot;</span>
-</span><span class='line'>curl -L get.rvm.io | bash -s stable &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># fallback for the above command (in case of certificates errors)</span>
-</span><span class='line'><span class="c">#if ($? !=0)</span>
-</span><span class='line'><span class="c"># then</span>
-</span><span class='line'><span class="c">#  curl -kL get.rvm.io | bash -s stable</span>
-</span><span class='line'><span class="c">#fi  </span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;............DONE..........&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;......Loading RVM..........&quot;</span>
-</span><span class='line'><span class="nb">source</span> ~/.rvm/scripts/rvm &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;...........Done...........&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Install Additional Dependencies</span>
-</span><span class='line'>
-</span><span class='line'>sudo apt-get -y install build-essential openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
-</span><span class='line'>
-</span><span class='line'><span class="c"># Install nodejs from the PPA</span>
-</span><span class='line'>sudo apt-add-repository -y ppa:chris-lea/node.js
-</span><span class='line'>sudo apt-get update
-</span><span class='line'>sudo apt-get -y install nodejs
-</span><span class='line'>
-</span><span class='line'><span class="c"># Install Latest version of Ruby</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;........Installing Ruby v $RUBY_VERSION ...&quot;</span>
-</span><span class='line'>rvm install <span class="nv">$RUBY_VERSION</span> &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;==&gt; Done.........&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;If you want to install another version of ruby e.g 1.8.7&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Then use the command &#39;rvm install 1.8.7&#39; &quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Select and Set latest version of ruby as the default so that</span>
-</span><span class='line'><span class="c"># You won&#39;t have to select each time you start a terminal</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;.......Setting the default version of Ruby...&quot;</span>
-</span><span class='line'>rvm --default use <span class="nv">$RUBY_VERSION</span> &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;==&gt; Done.........&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Now, You are using Ruby $RUBY_VERSION by default&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;if you want to change that then use &#39;rvm --default &lt;ruby_version&gt;&#39; &quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c"># Install Latest version of Rails</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;..........Installing Rails gem................&quot;</span>
-</span><span class='line'>gem install rails &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;.........Done&quot;</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;######################################&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;###### Installation Completed ########&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;######################################&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;if something went wrong then checkout the log file $LOG_FILE&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-04T11:48:00+08:00" pubdate data-updated="true">Mar 4<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>, <a class='category' href='/blog/categories/install/'>安装</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04//blog/page/2/index.html#disqus_thread">Comments</a></div>
 	
 </div></article>
 

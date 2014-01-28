@@ -127,8 +127,26 @@
         <lastmod>2014-01-27T19:13:34+08:00</lastmod>
     </url>
     <url>
+        <loc>http://duyw.github.io/blog/2014/01/27/ruby-de-die-dai-qi/</loc>
+        <lastmod>2014-01-28T12:06:33+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%24/</loc>
+        <lastmod>2014-01-28T12:30:15+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://duyw.github.io/blog/2014/01/28/rubyde-rangelei/</loc>
+        <lastmod>2014-01-28T12:53:04+08:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://duyw.github.io/blog/2014/01/28/railszhong-cao-zuo-sqlite3shu-ju-ku-su-du-man-de-wen-ti/
+        </loc>
+        <lastmod>2014-01-28T13:05:29+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://duyw.github.io/blog/archives/</loc>
-        <lastmod>2014-01-27T19:13:34+08:00</lastmod>
+        <lastmod>2014-01-28T13:05:29+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/about/</loc>
@@ -140,6 +158,6 @@
     </url>
     <url>
         <loc>http://duyw.github.io/</loc>
-        <lastmod>2014-01-27T19:13:34+08:00</lastmod>
+        <lastmod>2014-01-28T13:05:29+08:00</lastmod>
     </url>
 </urlset>

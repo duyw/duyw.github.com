@@ -6,7 +6,18 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content="Reactor 设计模式（也叫反应器模式，或者应答者模式）是一种基于事件驱动的设计模式，这种模式像是一个女仆或者服务员，随时等待你的召唤。 高并发的场景经常使用Reactor模式取代常用的多线程处理模式，以节省系统资源，提高系统的吞吐量。 说到这里到底什么是Reactor模式， &hellip;">
+	<meta name="description" content="项目中要将数据导出到sqlite数据库中，但是速度太慢了，无法接受： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11 (0.1ms) begin transaction
+/home/ivan/work/temp/packagetest/app/models/material_type.rb:7 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -76,6 +87,574 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/28/railszhong-cao-zuo-sqlite3shu-ju-ku-su-du-man-de-wen-ti/">
+		
+			Rails中操作Sqlite3数据库速度慢的问题</a>
+	</h2>
+	<div class="entry-content">
+		<p>项目中要将数据导出到sqlite数据库中，但是速度太慢了，无法接受：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>   (0.1ms)  begin transaction
+</span><span class='line'>/home/ivan/work/temp/packagetest/app/models/material_type.rb:7: warning: multiple values for a block parameter (0 for 1)
+</span><span class='line'>from /home/ivan/.rvm/gems/ruby-1.8.7-p371@rails304/gems/activerecord-3.2.13/lib/active_record/connection_adapters/abstract/database_statements.rb:192
+</span><span class='line'>   (0.4ms)  insert into material_types(id,name,code,parent_id,created_at,updated_at) values ('40', '40_name','code', 40, 'Fri Nov 29 11:08:54 +0800 2013', 'Fri Nov 29 11:08:54 +0800 2013')
+</span><span class='line'>   (317.6ms)  commit transaction
+</span><span class='line'>
+</span><span class='line'>   (0.1ms)  begin transaction
+</span><span class='line'>/home/ivan/work/temp/packagetest/app/models/material_type.rb:7: warning: multiple values for a block parameter (0 for 1)
+</span><span class='line'>from /home/ivan/.rvm/gems/ruby-1.8.7-p371@rails304/gems/activerecord-3.2.13/lib/active_record/connection_adapters/abstract/database_statements.rb:192
+</span><span class='line'>   (0.4ms)  insert into material_types(id,name,code,parent_id,created_at,updated_at) values ('41', '41_name','code', 41, 'Fri Nov 29 11:08:54 +0800 2013', 'Fri Nov 29 11:08:54 +0800 2013')
+</span><span class='line'>   (307.8ms)  commit transaction</span></code></pre></td></tr></table></div></figure>
+
+
+<p>每次最耗时的就是这个 commit transaction 了 居然要300ms左右。</p>
+
+<p>网上查找原因：</p>
+
+<p>SQLite 缺省为每个操作启动一个事务，所以成批插入的时候，每个插入操作都会在一个事务中执行：</p>
+
+<p>这样的花1秒钟才能执行6个插入。如果把所有操作都放在一个事务中，速度能达到1秒几万条，完全不在一个数量级，于是寻求解决方法。</p>
+
+<p>主要思路就是让多个插入操作在一个事务中进行，最后的解决方法是直接使用 SQLite3这个gem，而不通过active_record</p>
+
+<p>方法介绍：</p>
+
+<p>1 连接数据库：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span> <span class="o">=</span> <span class="ss">SQLite3</span><span class="p">:</span><span class="ss">:Database</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="vi">@db_path</span><span class="p">)</span> <span class="c1"># 连接sqlite3数据库</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2 配置</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">results_as_hash</span> <span class="o">=</span> <span class="kp">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>该项默认为false， 设置成true以后返回的结果集是hash结构的，以字段名称作为key，方便读取数据，否则返回一个数组。</p>
+
+<p>3 执行SQL 语句：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;insert into option (release_time, package_type, id, db_name, db_id) ...&quot;</span>
+</span><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">execute</span> <span class="n">sql</span>
+</span><span class='line'><span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;select * from posts where title=? and name=? &quot;</span>
+</span><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="s1">&#39;标题&#39;</span><span class="p">,</span><span class="s1">&#39;名称&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4 遍历结果集</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="s1">&#39;标题&#39;</span><span class="p">,</span><span class="s1">&#39;名称&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">post</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1">#...</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>注意：如果没有找到数据会抛出异常，需要自行处理一下。</p>
+
+<p>5 在单个事务中批量操作</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">transaction</span>
+</span><span class='line'><span class="mi">100</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>  <span class="vi">@db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into post where name = &#39;name_</span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">&#39; &quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">commit</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>或者</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">transaction</span> <span class="k">do</span>
+</span><span class='line'>  <span class="mi">100</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>    <span class="vi">@db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into post where name = &#39;name_</span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">&#39; &quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-28T12:58:00+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/rails/'>Rails </a>, <a class='category' href='/blog/categories/sqlite3/'>Sqlite3</a>, <a class='category' href='/blog/categories/database/'>数据库</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/28/railszhong-cao-zuo-sqlite3shu-ju-ku-su-du-man-de-wen-ti//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/28/rubyde-rangelei/">
+		
+			Ruby的Range类</a>
+	</h2>
+	<div class="entry-content">
+		<p>Range 是ruby范围对象的类。范围对象是由范围操作符 ..或&#8230; 生成的。</p>
+
+<p>..  生成的范围对象包括终点值。</p>
+
+<p>&#8230; 生成的范围对象不包括终点值。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span>  <span class="c1"># 表示 1、2、3</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">3</span> <span class="c1"># 表示 1、2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Range的实例在内存中只存储了起点和终点，因此比数组更节省空间。</p>
+
+<p>Range 的常用方法：</p>
+
+<p>1.通过 to_a 方法可以将Range对象转换成数组：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;c&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span>   <span class="o">=&gt;</span>  <span class="o">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span>       <span class="o">=&gt;</span>  <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2.迭代Range</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">each</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">i</span> <span class="p">}</span> <span class="c1">#依次输出 1、2、3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3.include?</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;c&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4.end 返回范围终点，与是否包含范围终点无关：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;c&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">end</span>    <span class="o">=&gt;</span> <span class="s2">&quot;c&quot;</span>
+</span><span class='line'><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="s1">&#39;c&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">end</span>   <span class="o">=&gt;</span> <span class="s2">&quot;c&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>5.step(s)   以步长s进行迭代：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="nb">p</span> <span class="n">v</span><span class="p">}</span>     <span class="o">=&gt;</span>  <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>6.min 最小值</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">min</span>    <span class="o">=&gt;</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>7.max 最大值</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>    <span class="o">=&gt;</span> <span class="mi">10</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-28T12:33:00+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ruby/'>Ruby</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/28/rubyde-rangelei//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%24/">
+		
+			Ruby 小技巧之 $:</a>
+	</h2>
+	<div class="entry-content">
+		<p>在一些gem里面经常会有这样一句代码：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vg">$:</span><span class="o">.</span><span class="n">unshift</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="bp">__FILE__</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这句话是干什么用的呢？</p>
+
+<p><code>$:</code> 就是ruby的一个全局变量，也叫<code>$LOAD_PATH</code>，功能就是java中的classpath，用来加载类库的，当你require某个文件时，ruby就会从这个变量的值去查找，找不到会报LoadError。这个值其实就是一个包含了类库绝对路径的数组。</p>
+
+<p><code>__FILE__</code>这个变量代表文件自己的文件名，在foo.rb中<code>puts __FILE__</code>，结果就是foo.rb。</p>
+
+<p>File.expand_path可以把路径转换成绝对路径，假设有这样一个文件/Users/kenshin/foo.rb，里面有<code>File.expand_path('..', __FILE__)</code>，返回的结果就是/Users/kenshin。</p>
+
+<p>unshift是数组的一个方法，功能就是把指定的值加到数组的最前面，<code>[3,4].unshift(1,2) =&gt; [1,2,3,4]</code></p>
+
+<p>所以这段代码的意思就是把当前文件所在的目录加到ruby的loadpath的最前面，在require文件时，ruby就会先从当前目录下去查找了。</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-28T12:25:00+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ruby/'>Ruby</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%24//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/27/ruby-de-die-dai-qi/">
+		
+			Ruby 的迭代器</a>
+	</h2>
+	<div class="entry-content">
+		<p>ruby中针对集合（数组、哈希）的迭代器有 each map collect inject，下面将逐一介绍</p>
+
+<h3>1 each用法</h3>
+
+<p>  each方法是最简单也最常用的，它会连续访问集合的所有元素然后传值给bloc执行，比如：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">a</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行结果：</p>
+
+<pre><code> 1
+ 2
+ 3
+ 4
+ 5
+</code></pre>
+
+<h3>2 reverse_each 用法：</h3>
+
+<p> 对比each，从字面上理解reverse_each就是逆序迭代，例如</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">reverse_each</span> <span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">v</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行结果</p>
+
+<pre><code>3
+2
+1
+</code></pre>
+
+<p>a.reverse_each 和 a.reverse.each 有什么区别呢？  功能是一样的，但是效率不同, reverse_each的效率更高</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">001</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="n">now</span> <span class="o">=</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">;</span> <span class="nb">Array</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">30000000</span><span class="p">)</span> <span class="p">{</span><span class="nb">rand</span><span class="p">}</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="n">x</span><span class="o">*</span><span class="mi">2</span><span class="p">};</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">-</span><span class="n">now</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">15</span><span class="o">.</span><span class="mi">705195</span>
+</span><span class='line'><span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">002</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="n">now</span> <span class="o">=</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">;</span> <span class="nb">Array</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">30000000</span><span class="p">)</span> <span class="p">{</span><span class="nb">rand</span><span class="p">}</span><span class="o">.</span><span class="n">reverse_each</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="n">x</span><span class="o">*</span><span class="mi">2</span><span class="p">};</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">-</span><span class="n">now</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">12</span><span class="o">.</span><span class="mi">956333</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3 map用法</h3>
+
+<p>  map也很常用,它从集合中获得各个元素传递给block，block返回的结果生成新的集合，比如：</p>
+
+<p>  <code>[1,2,3,4,5].map{ |a|  a + 1 }  -&gt;  [2, 3, 4, 5, 6]</code></p>
+
+<p>  再比如：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:age</span> <span class="o">=&gt;</span> <span class="mi">20</span><span class="p">)</span>
+</span><span class='line'><span class="n">users</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="p">}</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s1">&#39;zhangsan&#39;</span><span class="p">,</span><span class="s1">&#39;lisi&#39;</span><span class="p">,</span><span class="s1">&#39;wangwu&#39;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>  这个例子可以简写成： <code>users.map(&amp;:name)</code>  ,其运行结果也是一样的</p>
+
+<h3>4 collect用法</h3>
+
+<p>  同map一样。</p>
+
+<h3>5 inject用法</h3>
+
+<p>  inject是最有魅力的一个方法，字面意思是‘注入’，可以理解为是一个具有Combines（联合、合并）功能的迭代器，比如：</p>
+
+<p> <code>[1, 2, 3, 4].inject(0) { |result, element| result + element } # =&gt; 10</code></p>
+
+<p>  inject带有一个参数和block,参数是初始值，另外给block中传递了两个值，第一个result是Combines操作的值，第二个参数element是迭代传入集合的每个元素。reslut在inject第一次执行block时把inject带的参数付值给它，该例中inject一共执行4次block，每次执行block完后，最后语句的结果再付值给result，如此循环，直到遍历数组中所有元素。我们深入这个例子看每一步执行的结果。</p>
+
+<p>  因为数组有4个元素，所以要执行4次block操作：</p>
+
+<p>  第一次操作：result=0，既等于inject带的参数；element=1，既第一个元素；</p>
+
+<p>  执行block后result + element =1，再把这个结果付值给result，所以在执行完第一次block后，result = 1。</p>
+
+<p>  第二次操作:result=1，既上次运行block后的最后一条语句的结果；element=2，既第二个元素；执行block后付值result＝3。</p>
+
+<p>  如此类推，直到最后一次执行完block，生产的值为10。就是inject的返回值了。</p>
+
+<p>  inject可以不带参数，此时result的初始值为数组元素的第一个值,element从第二个元素开始传值。所以上例可改写成：</p>
+
+<p>  <code>[2, 3, 4].inject{ |result, element| result*element } # =&gt; 24</code></p>
+
+<p>  注意：这时block执行的次数是3次！而不是4次。</p>
+
+<p>  再例如：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="o">].</span><span class="n">inject</span><span class="p">(</span><span class="o">[]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">result</span><span class="p">,</span> <span class="n">element</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">element</span><span class="o">.</span><span class="n">to_s</span> <span class="k">if</span> <span class="n">element</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">result</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">array</span> <span class="c1"># =&gt; [&quot;2&quot;, &quot;4&quot;, &quot;6&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>  注意：这个例子中第三行的result不能省略，否则会报错。</p>
+
+<p>  继续举例：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="o">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">]]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># get the union:</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">first</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="p">,</span><span class="n">x</span><span class="o">|</span> <span class="n">f</span> <span class="o">=</span> <span class="n">f</span> <span class="o">|</span> <span class="n">x</span> <span class="p">}</span> <span class="c1"># =&gt; [1, 2, 3, 4, 5]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="p">,</span><span class="n">x</span><span class="o">|</span> <span class="n">f</span> <span class="o">|</span> <span class="n">x</span> <span class="p">}</span>              <span class="c1"># =&gt; [1, 2, 3, 4, 5]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="ss">:|</span><span class="p">)</span>                          <span class="c1"># =&gt; [1, 2, 3, 4, 5]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:|</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># get the intersection:</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">first</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="p">,</span><span class="n">x</span><span class="o">|</span> <span class="n">f</span> <span class="o">&amp;</span> <span class="n">x</span> <span class="p">}</span> <span class="c1"># =&gt; [3]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="p">,</span><span class="n">x</span><span class="o">|</span> <span class="n">f</span> <span class="o">&amp;</span> <span class="n">x</span> <span class="p">}</span>          <span class="c1"># =&gt; [3]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="ss">:&amp;</span><span class="p">)</span>                      <span class="c1"># =&gt; [3]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:&amp;</span><span class="p">)</span>                     <span class="c1"># =&gt; [3]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最后一个例子：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># find the longest word</span>
+</span><span class='line'><span class="n">longest</span> <span class="o">=</span> <span class="sx">%w{ cat sheep bear }</span><span class="o">.</span><span class="n">inject</span> <span class="k">do</span> <span class="o">|</span><span class="n">memo</span><span class="p">,</span><span class="n">word</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">memo</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="p">?</span> <span class="n">memo</span> <span class="p">:</span> <span class="n">word</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">longest</span>    <span class="c1"># =&gt; &quot;sheep&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>其它： all? 和 any?</h3>
+
+<p>all?[{|obj| block } ] → true or false</p>
+
+<p><code>all?</code>方法遍历集合中的每一个元素并传值给block，</p>
+
+<p>如果block返回结果为包含false或nil，all?方法返回false；</p>
+
+<p>如果block返回结果都为true，all?方法返回true；</p>
+
+<p>如果没有给定block，只要集合中有一个值为false或nil，那么最终结果就是false</p>
+
+<p>例如：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">all?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">}</span>   <span class="c1">#=&gt; true</span>
+</span><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">all?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">}</span>   <span class="c1">#=&gt; false</span>
+</span><span class='line'><span class="o">[</span> <span class="kp">nil</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="mi">99</span> <span class="o">].</span><span class="n">all?</span>                            <span class="c1">#=&gt; false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>any?[{|obj| block } ] → true or false</p>
+
+<p>any?方法遍历集合中的每一个元素并传值给block，</p>
+
+<p>如果block返回结果有一个不为false或nil，any?方法返回true；</p>
+
+<p>如果没有给定block，只要集合中有一个值不为false或nil，那么最终结果就是tru</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">any?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">}</span>   <span class="c1">#=&gt; true</span>
+</span><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">any?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">}</span>   <span class="c1">#=&gt; true</span>
+</span><span class='line'><span class="o">[</span> <span class="kp">nil</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="mi">99</span> <span class="o">].</span><span class="n">any?</span>                            <span class="c1">#=&gt; true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T19:19:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ruby/'>Ruby</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/27/ruby-de-die-dai-qi//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">
@@ -570,320 +1149,6 @@ EventMachine、Rev（Ruby）</p>
 </div>
 	
 		<div class="comments"><a href="/blog/2014/01/27/ubuntu-du-xie-windows-wen-jian//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/01/27/linux-cha-kan-wen-jian-jia-da-xiao/">
-		
-			Linux 查看文件夹大小</a>
-	</h2>
-	<div class="entry-content">
-		<p>du -sh 查看当前文件夹大小</p>
-
-<p>du -sh * | sort -n 统计当前文件夹(目录)大小，并按文件大小排序</p>
-
-<p>du -sk filename 查看指定文件大小</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-27T11:44:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/linux/'>Linux</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2014/01/27/linux-cha-kan-wen-jian-jia-da-xiao//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/01/26/linux-top-ming-ling/">
-		
-			Linux Top 命令</a>
-	</h2>
-	<div class="entry-content">
-		<p>top命令经常用来监控linux的系统状况，比如cpu、内存的使用.</p>
-
-<p>执行top命令，系统显示如下：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>top - 19:40:49 up 11:00,  2 users,  load average: 0.24, 0.42, 0.54
-</span><span class='line'>Tasks: 192 total,   1 running, 190 sleeping,   0 stopped,   1 zombie
-</span><span class='line'>Cpu(s):  2.5%us,  1.0%sy,  0.0%ni, 96.4%id,  0.0%wa,  0.0%hi,  0.1%si,  0.0%st
-</span><span class='line'>Mem:   3923984k total,  2716120k used,  1207864k free,   705260k buffers
-</span><span class='line'>Swap:   262140k total,    69596k used,   192544k free,  1385228k cached
-</span><span class='line'>
-</span><span class='line'> PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
-</span><span class='line'>1168 root      20   0 90320  22m 7676 S    4  0.6  15:17.95 Xorg
-</span><span class='line'>1947 ivan      20   0  388m  70m  22m S    4  1.8  16:11.03 compiz         
-</span><span class='line'>2116 ivan      20   0  115m  24m  13m S    1  0.6   0:37.49 python         
-</span><span class='line'>7346 ivan      20   0  142m  22m  14m S    1  0.6   0:05.42 gnome-terminal 
-</span><span class='line'>2031 ivan      20   0  106m  25m  12m S    1  0.7   3:50.68 unity-panel-ser
-</span><span class='line'>2113 ivan      20   0 47556 4184 2520 S    1  0.1   0:45.45 ibus-daemon    
-</span><span class='line'>7695 ivan      20   0  413m  99m  42m S    1  2.6   0:12.53 chrome         
-</span><span class='line'>7713 ivan      20   0  389m  62m  15m S    1  1.6   0:09.25 chrome         
-</span><span class='line'>1822 root      20   0 88528 1712 1484 S    0  0.0   2:19.14 mongod         
-</span><span class='line'>1919 ivan      20   0  6968 3108  620 S    0  0.1   1:23.65 dbus-daemon    
-</span><span class='line'>1932 ivan      20   0  238m  13m 9884 S    0  0.3   0:25.07 gnome-settings-
-</span><span class='line'>2033 ivan      20   0 71728 8896 3336 S    0  0.2   0:30.65 hud-service    
-</span><span class='line'>2104 ivan      20   0 42080 5500 4460 S    0  0.1   0:01.97 ubuntu-geoip-pr
-</span><span class='line'>   1 root      20   0  3664 1796 1204 S    0  0.0   0:00.69 init           
-</span><span class='line'>   2 root      20   0     0    0    0 S    0  0.0   0:00.00 kthreadd       
-</span><span class='line'>   3 root      20   0     0    0    0 S    0  0.0   0:03.90 ksoftirqd/0    
-</span><span class='line'>   6 root      RT   0     0    0    0 S    0  0.0   0:00.21 migration/0    
-</span><span class='line'>   7 root      RT   0     0    0    0 S    0  0.0   0:00.15 watchdog/0     
-</span><span class='line'>  20 root       0 -20     0    0    0 S    0  0.0   0:00.00 cpuset         
-</span><span class='line'>  21 root       0 -20     0    0    0 S    0  0.0   0:00.00 khelper        
-</span><span class='line'>  22 root      20   0     0    0    0 S    0  0.0   0:00.00 kdevtmpfs      
-</span><span class='line'>  23 root       0 -20     0    0    0 S    0  0.0   0:00.00 netns          
-</span><span class='line'>  25 root      20   0     0    0    0 S    0  0.0   0:00.13 sync_supers    
-</span><span class='line'>  26 root      20   0     0    0    0 S    0  0.0   0:00.00 bdi-default    
-</span><span class='line'>  27 root       0 -20     0    0    0 S    0  0.0   0:00.00 kintegrityd    </span></code></pre></td></tr></table></div></figure>
-
-
-<h3>第一行：</h3>
-
-<p>19:40:49表明当前系统时间； up 11:00 表明系统持续运行11个小时；2 users：目前两个登录用户；
-load average: 0.24, 0.42, 0.5 ：表明最近的 1、5、15 分钟系统的负载情况</p>
-
-<h3>第二行：进程状态</h3>
-
-<p>Tasks: 192 total,   1 running, 190 sleeping,   0 stopped,   1 zombie :目前进程总数192,其中1个在运行中，190个休眠中，1个僵死；</p>
-
-<h3>第三行： CPU使用情况</h3>
-
-<p>2.5%us： 当前用户CPU占用百分比
-1.0%sy： 系统内核CPU占用百分比
-0.0%ni： 优先继承的CPU占用百分比
-96.4%id：空闲CPU占用百分比
-0.0%wa： IO等待进程CPU占用百分比
-0.0%hi： 硬中断CPU占用百分比
-0.1%si： 软中断CPU占用百分比
-0.0%st</p>
-
-<h3>第四行：内存使用情况</h3>
-
-<p>3923984k total： 物理内存总量（4G）
-2716120k used：  已经使用2.7G
-1207864k free:   空闲物理内存（1.2G）
-705260k buffers：缓存内存量（700兆）</p>
-
-<h3>第五行：swap交换分区</h3>
-
-<p>262140k total：  总共260兆
-69596k used：    已经使用70兆
-192544k free：   剩余190兆
-1385228k cached：缓冲的交换区1.3G</p>
-
-<h3>第六行： 空行</h3>
-
-<p>PID 进程id
-USER 进程所有者
-PR 进程优先级
-NI nice值。负值表示高优先级，正值表示低优先级
-VIRT 进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES
-RES 进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA
-SHR 共享内存大小，单位kb
-S 进程状态。D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程
-%CPU
-%MEM
-TIME+<br/>
-COMMAND</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-26T23:31:00+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/linux/'>Linux</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2014/01/26/linux-top-ming-ling//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/01/26/bo-ke-hen-jiu-mei-you-geng-xin-liao/">
-		
-			博客很久没有更新了</a>
-	</h2>
-	<div class="entry-content">
-		<p>的确很久没有更新了，回顾2013年，从来没有感觉时间过的如此之快。</p>
-
-<p>我只记得来广联达面试的时候我穿的是羽绒服，再次穿上羽绒服的时候猛然发现一个夏天已经过去了。再后来，不知不觉又到了过年回家抢火车票的时候。</p>
-
-<p>一整年几乎都是在加班与忙碌中度过，难得在家的时候也不得清闲，要帮忙照顾小宝。这一年虽然累，但也算累的充实，工作不忙的时候我也经常会去公司学习，积攒了不少东西，平时为了图方便都记录在为知笔记中，刚好假期中有时间，打算整理到博客中，一是为了回顾学习，二是为了以后方便查询，三是希望能帮助到别人。</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-26T22:50:00+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/others/'>其他</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2014/01/26/bo-ke-hen-jiu-mei-you-geng-xin-liao//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/05/03/install-gem-without-ri-and-rdoc/">
-		
-			Install Gem Without Ri and Rdoc</a>
-	</h2>
-	<div class="entry-content">
-		<p>用 <code>gem install XXX</code> 安装 Gem 包的同时会安装 ri 和 rdoc，但这两个东西一般用不到，另外还严重影响安装速度，介于这两个原因我们一般都会这么做：</p>
-
-<p><code>gem install rails --no-ri --no-rdoc</code></p>
-
-<p>但是每个 Gem 包安装都这么做就太麻烦了，我们可以直接修改配置让 Gem 默认不安装 ri 和 rdoc：</p>
-
-<p>打开 ~/.gemrc   （如果没有这个文件可以自己手动创建）</p>
-
-<p>在文件最后加入 <code>gem: --no-ri --no-rdoc</code> ：</p>
-
-<pre><code>---
-:backtrace: false
-:benchmark: false
-:bulk_threshold: 1000
-:sources:
-- http://ruby.taobao.org
-:update_sources: true
-:verbose: true
-gem: --no-ri --no-rdoc
-</code></pre>
-
-<p>大功告成~</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-03T09:23:00+08:00" pubdate data-updated="true">May 3<span>rd</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/gem/'>Gem</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/05/03/install-gem-without-ri-and-rdoc//index.html#disqus_thread">Comments</a></div>
 	
 </div></article>
 

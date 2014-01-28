@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 数据库 | 杜永文 博客]]></title>
   <link href="http://duyw.github.io/blog/categories/database/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-01-27T19:13:49+08:00</updated>
+  <updated>2014-01-28T13:05:41+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -12,6 +12,106 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails中操作Sqlite3数据库速度慢的问题]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/28/railszhong-cao-zuo-sqlite3shu-ju-ku-su-du-man-de-wen-ti/"/>
+    <updated>2014-01-28T12:58:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/28/railszhong-cao-zuo-sqlite3shu-ju-ku-su-du-man-de-wen-ti</id>
+    <content type="html"><![CDATA[<p>项目中要将数据导出到sqlite数据库中，但是速度太慢了，无法接受：</p>
+
+<p>```
+   (0.1ms)  begin transaction
+/home/ivan/work/temp/packagetest/app/models/material_type.rb:7: warning: multiple values for a block parameter (0 for 1)
+from /home/ivan/.rvm/gems/ruby-1.8.7-p371@rails304/gems/activerecord-3.2.13/lib/active_record/connection_adapters/abstract/database_statements.rb:192
+   (0.4ms)  insert into material_types(id,name,code,parent_id,created_at,updated_at) values ('40', '40_name','code', 40, 'Fri Nov 29 11:08:54 +0800 2013', 'Fri Nov 29 11:08:54 +0800 2013')
+   (317.6ms)  commit transaction</p>
+
+<p>   (0.1ms)  begin transaction
+/home/ivan/work/temp/packagetest/app/models/material_type.rb:7: warning: multiple values for a block parameter (0 for 1)
+from /home/ivan/.rvm/gems/ruby-1.8.7-p371@rails304/gems/activerecord-3.2.13/lib/active_record/connection_adapters/abstract/database_statements.rb:192
+   (0.4ms)  insert into material_types(id,name,code,parent_id,created_at,updated_at) values ('41', '41_name','code', 41, 'Fri Nov 29 11:08:54 +0800 2013', 'Fri Nov 29 11:08:54 +0800 2013')
+   (307.8ms)  commit transaction
+```</p>
+
+<p>每次最耗时的就是这个 commit transaction 了 居然要300ms左右。</p>
+
+<p>网上查找原因：</p>
+
+<p>SQLite 缺省为每个操作启动一个事务，所以成批插入的时候，每个插入操作都会在一个事务中执行：</p>
+
+<p>这样的花1秒钟才能执行6个插入。如果把所有操作都放在一个事务中，速度能达到1秒几万条，完全不在一个数量级，于是寻求解决方法。</p>
+
+<p>主要思路就是让多个插入操作在一个事务中进行，最后的解决方法是直接使用 SQLite3这个gem，而不通过active_record</p>
+
+<p>方法介绍：</p>
+
+<p>1 连接数据库：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span> <span class="o">=</span> <span class="ss">SQLite3</span><span class="p">:</span><span class="ss">:Database</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="vi">@db_path</span><span class="p">)</span> <span class="c1"># 连接sqlite3数据库</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>2 配置
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">results_as_hash</span> <span class="o">=</span> <span class="kp">true</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>该项默认为false， 设置成true以后返回的结果集是hash结构的，以字段名称作为key，方便读取数据，否则返回一个数组。</p>
+
+<p>3 执行SQL 语句：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;insert into option (release_time, package_type, id, db_name, db_id) ...&quot;</span>
+</span><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">execute</span> <span class="n">sql</span>
+</span><span class='line'><span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;select * from posts where title=? and name=? &quot;</span>
+</span><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="s1">&#39;标题&#39;</span><span class="p">,</span><span class="s1">&#39;名称&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>4 遍历结果集
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="s1">&#39;标题&#39;</span><span class="p">,</span><span class="s1">&#39;名称&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">post</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1">#...</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>注意：如果没有找到数据会抛出异常，需要自行处理一下。</p>
+
+<p>5 在单个事务中批量操作
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">transaction</span>
+</span><span class='line'><span class="mi">100</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>  <span class="vi">@db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into post where name = &#39;name_</span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">&#39; &quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">commit</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+或者
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">transaction</span> <span class="k">do</span>
+</span><span class='line'>  <span class="mi">100</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;@db.execute(&quot;insert into post where name = &#39;name_</span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="sr">&#39; &quot;)</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
+</span><span class='line'><span class="sr">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[MongoDB Quick Tips]]></title>
@@ -855,301 +955,6 @@ gem install activerecord-oracle-adapter --source http://gems.rubyonrails.org
 <p>5.修改字段</p>
 
 <p>如果字段值不为空，oracle下不可修改字段类型，mysql下可以，可以用增加临时字段的方式解决。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MySQL 数据库自动备份脚本]]></title>
-    <link href="http://duyw.github.io/blog/2010/11/19/mysql-shu-ju-ku-zi-dong-bei-fen-jiao-ben/"/>
-    <updated>2010-11-19T00:19:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2010/11/19/mysql-shu-ju-ku-zi-dong-bei-fen-jiao-ben</id>
-    <content type="html"><![CDATA[<p>功能及说明：</p>
-
-<ol>
-<li><p>利用Linux的计划任务功能实现mysql数据库的定时备份，也可以手动执行 mysql_backup.sh</p></li>
-<li><p>备份文件名称按照日期存储</p></li>
-<li><p>可以删除旧的备份文件，只保留最近n天的备份数据源。</p></li>
-<li><p>备份过程都将记录到日志文件中，便于查看。</p></li>
-<li><p>提供三种备份方式，</p>
-
-<ul>
-<li><p>mysqldump：将数据导出为sql文件</p></li>
-<li><p>mysqlhotcopy：参看最后面的介绍</p></li>
-<li><p>tar：先停止mysql服务然后将数据库文件打包</p></li>
-</ul>
-</li>
-<li><p>如果已经做了当天的备份，重复执行不会覆盖原有备份，需要手动删除旧备份才可以重新生成备份文件</p></li>
-</ol>
-
-
-<!-- more -->
-
-
-<br>
-
-
-<p>操作步骤：</p>
-
-<h3>第1步  编写定时备份脚本mysql_backup.sh，内容如下：</h3>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>shell脚本: mysql_backup.sh  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;This is a ShellScript For Auto DB Backup&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;2010 -11&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Setting&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;设置数据库名，数据库登录名，密码，备份路径，日志路径，数据文件位置，&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;以及备份方式&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;默认情况下备份方式是tar，还可以是mysqldump,mysqldotcopy&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;默认情况下，用root<span class="o">(</span>空<span class="o">)</span>登录mysql数据库，备份至/root/namexxxxx.tgz&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;DBName <span class="o">=</span> zc
-</span><span class='line'><span class="nv">DBUser</span> <span class="o">=</span> root
-</span><span class='line'><span class="nv">DBPasswd</span> <span class="o">=</span> root
-</span><span class='line'><span class="nv">BackupPath</span> <span class="o">=</span> /root/zc_db_back/
-</span><span class='line'><span class="nv">LogFile</span> <span class="o">=</span> /root/zc_db_back/db.log
-</span><span class='line'><span class="nv">DBPath</span> <span class="o">=</span> /var/lib/mysql/&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;BackupMethod<span class="o">=</span>mysqldump&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;BackupMethod<span class="o">=</span>mysqlhotcopy&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;BackupMethod <span class="o">=</span> tar&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Setting End&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;NewFile <span class="o">=</span> <span class="s2">&quot;$BackupPath&quot;&quot;$DBName&quot;</span> _ <span class="k">$(</span> date +%Y%m%d <span class="k">)</span>.tgz
-</span><span class='line'><span class="nv">DumpFile</span> <span class="o">=</span> <span class="s2">&quot;$BackupPath&quot;&quot;$DBName&quot;</span> _ <span class="k">$(</span> date +%Y%m%d <span class="k">)</span>
-</span><span class='line'><span class="nv">OldFile</span> <span class="o">=</span> <span class="s2">&quot;$BackupPath&quot;&quot;$DBName&quot;</span> _ <span class="k">$(</span> date +%Y%m%d --date <span class="o">=</span> <span class="s1">&#39;3 days ago&#39;</span> <span class="k">)</span>.tgz&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;-------------------------------------------&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>
-</span><span class='line'><span class="nb">echo</span> <span class="k">$(</span> date + <span class="s2">&quot;%Y-%m-%d %H:%M:%S&quot;</span> <span class="k">)</span> &gt;&gt; <span class="nv">$LogFile</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;--------------------------&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Delete Old File&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;if <span class="o">[</span> -f <span class="nv">$OldFile</span> <span class="o">]</span>
-</span><span class='line'><span class="k">then</span>
-</span><span class='line'><span class="k">   </span>rm -f <span class="nv">$OldFile</span> &gt;&gt; <span class="nv">$LogFile</span> 2&gt;&amp;amp;1
-</span><span class='line'>   <span class="nb">echo</span> <span class="s2">&quot;[$OldFile]Delete Old File Success!&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'><span class="k">   </span><span class="nb">echo</span> <span class="s2">&quot;[$OldFile]No Old Backup File!&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>
-</span><span class='line'><span class="k">fi</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;if <span class="o">[</span> -f <span class="nv">$NewFile</span> <span class="o">]</span>
-</span><span class='line'><span class="k">then</span>
-</span><span class='line'><span class="k">   </span><span class="nb">echo</span> <span class="s2">&quot;[$NewFile]The Backup File is exists,Can&#39;t Backup!&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>
-</span><span class='line'><span class="k">else</span>
-</span><span class='line'><span class="k">   case</span> <span class="nv">$BackupMethod</span> in
-</span><span class='line'>   mysqldump <span class="o">)</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;  <span class="k">if</span> <span class="o">[</span> -z <span class="nv">$DBPasswd</span> <span class="o">]</span>
-</span><span class='line'>  <span class="k">then </span>
-</span><span class='line'><span class="k">     </span>mysqldump -u <span class="nv">$DBUser</span> --opt <span class="nv">$DBName</span> &amp;gt; <span class="nv">$DumpFile</span>
-</span><span class='line'>  <span class="k">else </span>
-</span><span class='line'><span class="k">     </span>mysqldump -u <span class="nv">$DBUser</span> -p <span class="nv">$DBPasswd</span> --opt <span class="nv">$DBName</span> &amp;gt; <span class="nv">$DumpFile</span>
-</span><span class='line'>  <span class="k">fi </span>
-</span><span class='line'><span class="k">  </span>tar czvf <span class="nv">$NewFile</span> <span class="nv">$DumpFile</span> &amp;gt;&amp;gt; <span class="nv">$LogFile</span> 2&amp;gt;&amp;amp;1
-</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;[$NewFile]Backup Success!&quot;</span> &amp;gt;&amp;gt; <span class="nv">$LogFile</span>
-</span><span class='line'>  rm -rf <span class="nv">$DumpFile</span>
-</span><span class='line'>  ;;
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;   mysqlhotcopy <span class="o">)</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;  rm -rf <span class="nv">$DumpFile</span>
-</span><span class='line'>  mkdir <span class="nv">$DumpFile</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">[</span> -z <span class="nv">$DBPasswd</span> <span class="o">]</span>
-</span><span class='line'>  <span class="k">then </span>
-</span><span class='line'><span class="k">     </span>mysqlhotcopy -u <span class="nv">$DBUser</span> <span class="nv">$DBName</span> <span class="nv">$DumpFile</span> &amp;gt;&amp;gt; <span class="nv">$LogFile</span> 2&amp;gt;&amp;amp;1
-</span><span class='line'>  <span class="k">else </span>
-</span><span class='line'><span class="k">     </span>mysqlhotcopy -u <span class="nv">$DBUser</span> -p <span class="nv">$DBPasswd</span> <span class="nv">$DBName</span> <span class="nv">$DumpFile</span> &amp;gt;&amp;gt; <span class="nv">$LogFile</span> 2&amp;gt;&amp;amp;1
-</span><span class='line'>  <span class="k">fi </span>
-</span><span class='line'><span class="k">  </span>tar czvf <span class="nv">$NewFile</span> <span class="nv">$DumpFile</span> &amp;gt;&amp;gt; <span class="nv">$LogFile</span> 2&amp;gt;&amp;amp;1
-</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;[$NewFile]Backup Success!&quot;</span> &amp;gt;&amp;gt; <span class="nv">$LogFile</span>
-</span><span class='line'>  rm -rf <span class="nv">$DumpFile</span>
-</span><span class='line'>  ;;
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;ul&gt;
-</span><span class='line'>&lt;li&gt; <span class="o">)</span>
-</span><span class='line'>  service mysql stop &gt;&gt; <span class="nv">$LogFile</span> 2&gt;&amp;amp;1
-</span><span class='line'>  tar czvf <span class="nv">$NewFile</span> <span class="nv">$DBPath$DBName</span> &gt;&gt; <span class="nv">$LogFile</span> 2&gt;&amp;amp;1
-</span><span class='line'>  service mysql start &gt;&gt; <span class="nv">$LogFile</span> 2&gt;&amp;amp;1
-</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;[$NewFile]Backup Success!&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>
-</span><span class='line'>  ;;
-</span><span class='line'><span class="k">esac</span>
-</span><span class='line'><span class="k">fi</span>&lt;/li&gt;
-</span><span class='line'>&lt;/ul&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;-------------------------------------------&quot;</span> &gt;&gt; <span class="nv">$LogFile</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h3>第2步 修改参数</h3>
-
-<p>参数包括：“设置数据库名，数据库登录名，密码，备份路径，日志路径，数据文件位置，备份方式”</p>
-
-<blockquote><p>注意：备份路径必须是存在的路径</p></blockquote>
-
-<h3>第3步  将脚本 mysql_backup.sh 设置为可执行</h3>
-
-<p><code>chmod 755 mysql_backup.sh</code></p>
-
-<h3>第4步 编辑定时任务，在root的crontab中，设置脚本执行周期(每天凌晨3点)</h3>
-
-<p>关闭服务：<code>service crond stop</code></p>
-
-<p>编辑任务列表： <code>crontab -e</code></p>
-
-<p>添加内容： <code>0 3 * * * /root/Desktop/mysql_backup.sh</code></p>
-
-<p>启动服务： <code>service crond start</code></p>
-
-<p>重建加载： <code>service crond reload</code></p>
-
-<h3>5 数据恢复：</h3>
-
-<p>备份文件均为tar包，需要用tar解包，如果要恢复备份的数据，请先关闭mysql服务，</p>
-
-<p>打包 ： <code>tar cvf + 打包后文件名 + 需打包文件夹名</code></p>
-
-<p>解包 ： <code>tar xvf + 包名</code></p>
-
-<p>将解出来的文件复制到mysql 数据库位置然后重新启动mysql服务即可。</p>
-
-<br>
-
-
-<hr />
-
-<br>
-
-
-<p>　　mysqlhotcopy是一个Perl脚本，最初由Tim Bunce编写并提供。它使用LOCK TABLES、FLUSH TABLES和cp或scp来快速备份数据库。它是备份数据库或单个表的最快的途径，但它只能运行在数据库目录所在的机器上。mysqlhotcopy只用于备份MyISAM。它运行在Unix和NetWare中。</p>
-
-<p>mysqlhotcopy与mysqldump比较：</p>
-
-<ol>
-<li><p>前者是一个快速文件意义上的COPY，后者是一个数据库端的SQL语句集合。</p></li>
-<li><p>前者只能运行在数据库目录所在的机器上，后者可以用在远程客户端，不过备份的文件还是保存在服务器上。</p></li>
-<li><p>相同的地方都是在线执行 LOCK TABLES 以及 UNLOCK TABLES</p></li>
-<li><p>前者恢复只需要COPY备份文件到源目录覆盖即可，后者需要导入SQL文件到原库中。(source 或 mysql &lt; bakfile.sql)</p></li>
-<li><p>前者只适用于 MyISAM 引擎，而后则则可同时使用于MyISAM引擎和InodDB引擎.</p></li>
-<li><p>前者在使用前必须安装perl-DBD-mysql包,而后者则不需要.</p></li>
-</ol>
-
 ]]></content>
   </entry>
   

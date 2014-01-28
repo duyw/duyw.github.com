@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | 杜永文 博客]]></title>
   <link href="http://duyw.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-01-27T19:13:49+08:00</updated>
+  <updated>2014-01-28T13:05:41+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -12,6 +12,306 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby的Range类]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/28/rubyde-rangelei/"/>
+    <updated>2014-01-28T12:33:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/28/rubyde-rangelei</id>
+    <content type="html"><![CDATA[<p>Range 是ruby范围对象的类。范围对象是由范围操作符 ..或... 生成的。</p>
+
+<p>..  生成的范围对象包括终点值。</p>
+
+<p>... 生成的范围对象不包括终点值。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span>  <span class="c1"># 表示 1、2、3</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">3</span> <span class="c1"># 表示 1、2</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Range的实例在内存中只存储了起点和终点，因此比数组更节省空间。</p>
+
+<p>Range 的常用方法：</p>
+
+<p>1.通过 to_a 方法可以将Range对象转换成数组：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;c&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span>   <span class="o">=&gt;</span>  <span class="o">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span>       <span class="o">=&gt;</span>  <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>2.迭代Range
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">each</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">i</span> <span class="p">}</span> <span class="c1">#依次输出 1、2、3</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>3.include?
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;c&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>4.end 返回范围终点，与是否包含范围终点无关：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="o">.</span><span class="n">.</span><span class="s1">&#39;c&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">end</span>    <span class="o">=&gt;</span> <span class="s2">&quot;c&quot;</span>
+</span><span class='line'><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="s1">&#39;c&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">end</span>   <span class="o">=&gt;</span> <span class="s2">&quot;c&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>5.step(s)   以步长s进行迭代：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="nb">p</span> <span class="n">v</span><span class="p">}</span>     <span class="o">=&gt;</span>  <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>6.min 最小值
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">min</span>    <span class="o">=&gt;</span> <span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>7.max 最大值
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">max</span>    <span class="o">=&gt;</span> <span class="mi">10</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ruby 小技巧之 $:]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%24/"/>
+    <updated>2014-01-28T12:25:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-$</id>
+    <content type="html"><![CDATA[<p>在一些gem里面经常会有这样一句代码：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vg">$:</span><span class="o">.</span><span class="n">unshift</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="no">FILE</span><span class="o">&lt;</span><span class="sr">/strong&gt;)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>这句话是干什么用的呢？</p>
+
+<p><code>$:</code> 就是ruby的一个全局变量，也叫<code>$LOAD_PATH</code>，功能就是java中的classpath，用来加载类库的，当你require某个文件时，ruby就会从这个变量的值去查找，找不到会报LoadError。这个值其实就是一个包含了类库绝对路径的数组。</p>
+
+<p><code>__FILE__</code>这个变量代表文件自己的文件名，在foo.rb中<code>puts __FILE__</code>，结果就是foo.rb。</p>
+
+<p>File.expand_path可以把路径转换成绝对路径，假设有这样一个文件/Users/kenshin/foo.rb，里面有<code>File.expand_path('..', __FILE__)</code>，返回的结果就是/Users/kenshin。</p>
+
+<p>unshift是数组的一个方法，功能就是把指定的值加到数组的最前面，<code>[3,4].unshift(1,2) =&gt; [1,2,3,4]</code></p>
+
+<p>所以这段代码的意思就是把当前文件所在的目录加到ruby的loadpath的最前面，在require文件时，ruby就会先从当前目录下去查找了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ruby 的迭代器]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/27/ruby-de-die-dai-qi/"/>
+    <updated>2014-01-27T19:19:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/27/ruby-de-die-dai-qi</id>
+    <content type="html"><![CDATA[<p>ruby中针对集合（数组、哈希）的迭代器有 each map collect inject，下面将逐一介绍</p>
+
+<h3>1 each用法</h3>
+
+<p>  each方法是最简单也最常用的，它会连续访问集合的所有元素然后传值给bloc执行，比如：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">a</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>运行结果：</p>
+
+<pre><code> 1
+ 2
+ 3
+ 4
+ 5
+</code></pre>
+
+<h3>2 reverse_each 用法：</h3>
+
+<p> 对比each，从字面上理解reverse_each就是逆序迭代，例如</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">reverse_each</span> <span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">v</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>运行结果</p>
+
+<pre><code>3
+2
+1
+</code></pre>
+
+<p>a.reverse_each 和 a.reverse.each 有什么区别呢？  功能是一样的，但是效率不同, reverse_each的效率更高</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">001</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="n">now</span> <span class="o">=</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">;</span> <span class="nb">Array</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">30000000</span><span class="p">)</span> <span class="p">{</span><span class="nb">rand</span><span class="p">}</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="n">x</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="mi">2</span><span class="p">};</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">-</span><span class="n">now</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">15</span><span class="o">.</span><span class="mi">705195</span>
+</span><span class='line'><span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">002</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="n">now</span> <span class="o">=</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">;</span> <span class="nb">Array</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">30000000</span><span class="p">)</span> <span class="p">{</span><span class="nb">rand</span><span class="p">}</span><span class="o">.</span><span class="n">reverse_each</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="n">x</span><span class="o">&lt;</span><span class="sr">/em&gt;2}; Time.now-now</span>
+</span><span class='line'><span class="sr">=&gt; 12.956333</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>3 map用法</h3>
+
+<p>  map也很常用,它从集合中获得各个元素传递给block，block返回的结果生成新的集合，比如：</p>
+
+<p>  <code>[1,2,3,4,5].map{ |a|  a + 1 }  -&gt;  [2, 3, 4, 5, 6]</code></p>
+
+<p>  再比如：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:age</span> <span class="o">=&gt;</span> <span class="mi">20</span><span class="p">)</span>
+</span><span class='line'><span class="n">users</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="p">}</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s1">&#39;zhangsan&#39;</span><span class="p">,</span><span class="s1">&#39;lisi&#39;</span><span class="p">,</span><span class="s1">&#39;wangwu&#39;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>  这个例子可以简写成： <code>users.map(&amp;:name)</code>  ,其运行结果也是一样的</p>
+
+<h3>4 collect用法</h3>
+
+<p>  同map一样。</p>
+
+<h3>5 inject用法</h3>
+
+<p>  inject是最有魅力的一个方法，字面意思是‘注入’，可以理解为是一个具有Combines（联合、合并）功能的迭代器，比如：</p>
+
+<p> <code>[1, 2, 3, 4].inject(0) { |result, element| result + element } # =&gt; 10</code></p>
+
+<p>  inject带有一个参数和block,参数是初始值，另外给block中传递了两个值，第一个result是Combines操作的值，第二个参数element是迭代传入集合的每个元素。reslut在inject第一次执行block时把inject带的参数付值给它，该例中inject一共执行4次block，每次执行block完后，最后语句的结果再付值给result，如此循环，直到遍历数组中所有元素。我们深入这个例子看每一步执行的结果。</p>
+
+<p>  因为数组有4个元素，所以要执行4次block操作：</p>
+
+<p>  第一次操作：result=0，既等于inject带的参数；element=1，既第一个元素；</p>
+
+<p>  执行block后result + element =1，再把这个结果付值给result，所以在执行完第一次block后，result = 1。</p>
+
+<p>  第二次操作:result=1，既上次运行block后的最后一条语句的结果；element=2，既第二个元素；执行block后付值result＝3。</p>
+
+<p>  如此类推，直到最后一次执行完block，生产的值为10。就是inject的返回值了。</p>
+
+<p>  inject可以不带参数，此时result的初始值为数组元素的第一个值,element从第二个元素开始传值。所以上例可改写成：</p>
+
+<p>  <code>[2, 3, 4].inject{ |result, element| result*element } # =&gt; 24</code></p>
+
+<p>  注意：这时block执行的次数是3次！而不是4次。</p>
+
+<p>  再例如：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="o">].</span><span class="n">inject</span><span class="p">(</span><span class="o">[]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">result</span><span class="p">,</span> <span class="n">element</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">element</span><span class="o">.</span><span class="n">to_s</span> <span class="k">if</span> <span class="n">element</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">result</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">array</span> <span class="c1"># =&gt; [&quot;2&quot;, &quot;4&quot;, &quot;6&quot;]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>  注意：这个例子中第三行的result不能省略，否则会报错。</p>
+
+<p>  继续举例：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="o">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">]]&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;get the union:&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">first</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="p">,</span><span class="n">x</span><span class="o">|</span> <span class="n">f</span> <span class="o">=</span> <span class="n">f</span> <span class="o">|</span> <span class="n">x</span> <span class="p">}</span> <span class="c1"># =&gt; [1, 2, 3, 4, 5]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="p">,</span><span class="n">x</span><span class="o">|</span> <span class="n">f</span> <span class="o">|</span> <span class="n">x</span> <span class="p">}</span>              <span class="c1"># =&gt; [1, 2, 3, 4, 5]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="ss">:|</span><span class="p">)</span>                          <span class="c1"># =&gt; [1, 2, 3, 4, 5]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="ss">:|</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;get the intersection:&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">first</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="p">,</span><span class="n">x</span><span class="o">|</span> <span class="n">f</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="n">x</span> <span class="p">}</span> <span class="c1"># =&gt; [3]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="p">,</span><span class="n">x</span><span class="o">|</span> <span class="n">f</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="n">x</span> <span class="p">}</span>          <span class="c1"># =&gt; [3]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="ss">:&amp;</span><span class="n">amp</span><span class="p">;)</span>                      <span class="c1"># =&gt; [3]&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="ss">:&amp;</span><span class="n">amp</span><span class="p">;)</span>                     <span class="c1"># =&gt; [3]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>最后一个例子：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;find the longest word&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">longest</span> <span class="o">=</span> <span class="sx">%w{ cat sheep bear }</span><span class="o">.</span><span class="n">inject</span> <span class="k">do</span> <span class="o">|</span><span class="n">memo</span><span class="p">,</span><span class="n">word</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">memo</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="p">?</span> <span class="n">memo</span> <span class="p">:</span> <span class="n">word</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">longest</span>    <span class="c1"># =&gt; &quot;sheep&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>其它： all? 和 any?</h3>
+
+<p>all?[{|obj| block } ] → true or false</p>
+
+<p><code>all?</code>方法遍历集合中的每一个元素并传值给block，</p>
+
+<p>如果block返回结果为包含false或nil，all?方法返回false；</p>
+
+<p>如果block返回结果都为true，all?方法返回true；</p>
+
+<p>如果没有给定block，只要集合中有一个值为false或nil，那么最终结果就是false</p>
+
+<p>例如：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">all?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">}</span>   <span class="c1">#=&gt; true</span>
+</span><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">all?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">}</span>   <span class="c1">#=&gt; false</span>
+</span><span class='line'><span class="o">[</span> <span class="kp">nil</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="mi">99</span> <span class="o">].</span><span class="n">all?</span>                            <span class="c1">#=&gt; false</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>any?[{|obj| block } ] → true or false</p>
+
+<p>any?方法遍历集合中的每一个元素并传值给block，</p>
+
+<p>如果block返回结果有一个不为false或nil，any?方法返回true；</p>
+
+<p>如果没有给定block，只要集合中有一个值不为false或nil，那么最终结果就是tru</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">any?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">}</span>   <span class="c1">#=&gt; true</span>
+</span><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">any?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">}</span>   <span class="c1">#=&gt; true</span>
+</span><span class='line'><span class="o">[</span> <span class="kp">nil</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="mi">99</span> <span class="o">].</span><span class="n">any?</span>                            <span class="c1">#=&gt; true</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[A simple Script for installing RoR on Ubuntu12.04]]></title>

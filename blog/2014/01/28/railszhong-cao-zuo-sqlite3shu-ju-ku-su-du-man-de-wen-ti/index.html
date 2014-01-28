@@ -1,0 +1,286 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Rails中操作Sqlite3数据库速度慢的问题 - 杜永文 博客</title>
+	<meta name="author" content="Du Yongwen">
+	
+	<meta name="description" content="项目中要将数据导出到sqlite数据库中，但是速度太慢了，无法接受： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11 (0.1ms) begin transaction
+/home/ivan/work/temp/packagetest/app/models/material_type.rb:7: &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+	<link rel="icon" type="image/gif" href="/animated_favicon1.gif">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">杜永文 博客</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:duyw.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/duyw" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:duyw.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Rails中操作Sqlite3数据库速度慢的问题</h2>
+	<div class="entry-content"><p>项目中要将数据导出到sqlite数据库中，但是速度太慢了，无法接受：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>   (0.1ms)  begin transaction
+</span><span class='line'>/home/ivan/work/temp/packagetest/app/models/material_type.rb:7: warning: multiple values for a block parameter (0 for 1)
+</span><span class='line'>from /home/ivan/.rvm/gems/ruby-1.8.7-p371@rails304/gems/activerecord-3.2.13/lib/active_record/connection_adapters/abstract/database_statements.rb:192
+</span><span class='line'>   (0.4ms)  insert into material_types(id,name,code,parent_id,created_at,updated_at) values ('40', '40_name','code', 40, 'Fri Nov 29 11:08:54 +0800 2013', 'Fri Nov 29 11:08:54 +0800 2013')
+</span><span class='line'>   (317.6ms)  commit transaction
+</span><span class='line'>
+</span><span class='line'>   (0.1ms)  begin transaction
+</span><span class='line'>/home/ivan/work/temp/packagetest/app/models/material_type.rb:7: warning: multiple values for a block parameter (0 for 1)
+</span><span class='line'>from /home/ivan/.rvm/gems/ruby-1.8.7-p371@rails304/gems/activerecord-3.2.13/lib/active_record/connection_adapters/abstract/database_statements.rb:192
+</span><span class='line'>   (0.4ms)  insert into material_types(id,name,code,parent_id,created_at,updated_at) values ('41', '41_name','code', 41, 'Fri Nov 29 11:08:54 +0800 2013', 'Fri Nov 29 11:08:54 +0800 2013')
+</span><span class='line'>   (307.8ms)  commit transaction</span></code></pre></td></tr></table></div></figure>
+
+
+<p>每次最耗时的就是这个 commit transaction 了 居然要300ms左右。</p>
+
+<p>网上查找原因：</p>
+
+<p>SQLite 缺省为每个操作启动一个事务，所以成批插入的时候，每个插入操作都会在一个事务中执行：</p>
+
+<p>这样的花1秒钟才能执行6个插入。如果把所有操作都放在一个事务中，速度能达到1秒几万条，完全不在一个数量级，于是寻求解决方法。</p>
+
+<p>主要思路就是让多个插入操作在一个事务中进行，最后的解决方法是直接使用 SQLite3这个gem，而不通过active_record</p>
+
+<p>方法介绍：</p>
+
+<p>1 连接数据库：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span> <span class="o">=</span> <span class="ss">SQLite3</span><span class="p">:</span><span class="ss">:Database</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="vi">@db_path</span><span class="p">)</span> <span class="c1"># 连接sqlite3数据库</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2 配置</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">results_as_hash</span> <span class="o">=</span> <span class="kp">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>该项默认为false， 设置成true以后返回的结果集是hash结构的，以字段名称作为key，方便读取数据，否则返回一个数组。</p>
+
+<p>3 执行SQL 语句：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;insert into option (release_time, package_type, id, db_name, db_id) ...&quot;</span>
+</span><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">execute</span> <span class="n">sql</span>
+</span><span class='line'><span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;select * from posts where title=? and name=? &quot;</span>
+</span><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="s1">&#39;标题&#39;</span><span class="p">,</span><span class="s1">&#39;名称&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4 遍历结果集</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="s1">&#39;标题&#39;</span><span class="p">,</span><span class="s1">&#39;名称&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">post</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1">#...</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>注意：如果没有找到数据会抛出异常，需要自行处理一下。</p>
+
+<p>5 在单个事务中批量操作</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">transaction</span>
+</span><span class='line'><span class="mi">100</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>  <span class="vi">@db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into post where name = &#39;name_</span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">&#39; &quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">commit</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>或者</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@db</span><span class="o">.</span><span class="n">transaction</span> <span class="k">do</span>
+</span><span class='line'>  <span class="mi">100</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>    <span class="vi">@db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;insert into post where name = &#39;name_</span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">&#39; &quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-28T12:58:00+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/rails/'>Rails </a>, <a class='category' href='/blog/categories/sqlite3/'>Sqlite3</a>, <a class='category' href='/blog/categories/database/'>数据库</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/28/railszhong-cao-zuo-sqlite3shu-ju-ku-su-du-man-de-wen-ti/#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    Du Yongwen
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'duyw';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://duyw.github.io/blog/2014/01/28/railszhong-cao-zuo-sqlite3shu-ju-ku-su-du-man-de-wen-ti/';
+        var disqus_url = 'http://duyw.github.io/blog/2014/01/28/railszhong-cao-zuo-sqlite3shu-ju-ku-su-du-man-de-wen-ti/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
