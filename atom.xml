@@ -4,7 +4,7 @@
   <title><![CDATA[杜永文 博客]]></title>
   <link href="http://duyw.github.io/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-01-28T13:09:24+08:00</updated>
+  <updated>2014-01-29T01:03:01+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -12,6 +12,423 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Postgresql 常用函数]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/29/postgresql-chang-yong-han-shu/"/>
+    <updated>2014-01-29T00:09:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/29/postgresql-chang-yong-han-shu</id>
+    <content type="html"><![CDATA[<h3>一 常用操作符</h3>
+
+<pre><code>%    模      5 % 4      1
+^    幂      2.0 ^ 3.0  8
+|/   平方根  |/ 25.0     5
+||/  立方根  ||/ 27.0    3
+!    阶乘    5 !        120
+!!   阶乘    !! 5       120
+@    绝对值   @ -5.0     5
+</code></pre>
+
+<h3>二 常用数学函数</h3>
+
+<p>取绝对值： <code>abs()</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">abs</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">);</span> <span class="c1">-- 5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>求余数： <code>mod(x,y)</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">mod</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span> <span class="c1">--1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>平方根： <code>sqrt()</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span> <span class="c1">-- 2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>立方根： <code>cbrt()</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">cbrt</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span> <span class="c1">--2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>随机数： <code>random()</code>, 0.0 到 1.0 之间</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">random</span><span class="p">();</span> <span class="c1">-- 0.527410356327891</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>不小于参数的最小的整数： <code>cell()</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">cell</span><span class="p">(</span><span class="o">-</span><span class="mi">42</span><span class="p">.</span><span class="mi">8</span><span class="p">);</span> <span class="c1">-- -42</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>不大于参数的最大整数: <code>floor()</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">floor</span><span class="p">(</span><span class="o">-</span><span class="mi">42</span><span class="p">.</span><span class="mi">8</span><span class="p">);</span> <span class="c1">-- -43`</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>三 字符串函数</h3>
+
+<p>字符串连接： <code>string || string</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="s1">&#39;ruby&#39;</span> <span class="o">||</span> <span class="s1">&#39;china&#39;</span> <span class="p">;</span> <span class="c1">-- rubychina</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>字符串长度： <code>length()</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">length</span><span class="p">(</span><span class="s1">&#39;i love you&#39;</span><span class="p">)</span> <span class="p">;</span> <span class="c1">-- 10</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>字符串转小写： <code>lower()</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">lower</span><span class="p">(</span><span class="s1">&#39;RUBY&#39;</span><span class="p">);</span> <span class="c1">-- ruby</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>字符串转大写： <code>upper()</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">upper</span><span class="p">(</span><span class="s1">&#39;rails&#39;</span><span class="p">);</span> <span class="c1">-- RAILS</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>字符串每个单词的第一个子母转为大写： <code>initcap()</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">initcap</span><span class="p">(</span><span class="s1">&#39;ruby on rails&#39;</span><span class="p">);</span> <span class="c1">-- Ruby on Rails</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>字符串替换： <code>overlay(string placing string from int [for int])</code> 和</p>
+
+<p><code>replace(string text, from text, to text)</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">overlay</span><span class="p">(</span><span class="s1">&#39;Ruby_______Rails&#39;</span> <span class="k">placing</span> <span class="s1">&#39; on &#39;</span> <span class="k">from</span> <span class="mi">5</span> <span class="k">for</span> <span class="mi">7</span><span class="p">)</span><span class="err">；</span><span class="c1">-- Ruby on Rails</span>
+</span><span class='line'><span class="k">select</span> <span class="k">replace</span><span class="p">(</span><span class="s1">&#39;Ruby_______Rails&#39;</span><span class="p">,</span> <span class="s1">&#39;_______&#39;</span><span class="p">,</span> <span class="s1">&#39; on &#39;</span><span class="p">);</span> <span class="c1">-- Ruby on Rails`</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>截取字符串： <code>substring(string [from int] [for int])</code> 和 <code>substr(string, from [, count])</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">substring</span><span class="p">(</span><span class="s1">&#39;Ruby on Rails&#39;</span> <span class="k">from</span> <span class="mi">1</span> <span class="k">for</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">-- Ruby</span>
+</span><span class='line'><span class="k">select</span> <span class="k">substring</span><span class="p">(</span><span class="s1">&#39;Ruby on Rails&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>        <span class="c1">-- Ruby</span>
+</span><span class='line'><span class="k">select</span> <span class="n">substr</span><span class="p">(</span><span class="s1">&#39;Ruby on Rails&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>           <span class="c1">-- Ruby</span>
+</span><span class='line'><span class="k">select</span> <span class="n">substr</span><span class="p">(</span><span class="s1">&#39;Ruby on Rails&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>              <span class="c1">-- on Rails</span>
+</span><span class='line'><span class="k">select</span> <span class="k">substring</span><span class="p">(</span><span class="s1">&#39;foobar&#39;</span> <span class="k">from</span> <span class="s1">&#39;%#&quot;o_b#&quot;%&#39;</span> <span class="k">FOR</span> <span class="s1">&#39;#&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">-- oob  (这里#是转义符，双引号内的模式是返回部分)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>子字符串位置 <code>position(substring in string)</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">position</span><span class="p">(</span><span class="s1">&#39;ruby-china&#39;</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">-- 5 (利用这个特性可以用于判断字符串中是否包含某个子字符串)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>去除首位空格：<code>trim(string)</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">trim</span><span class="p">(</span><span class="s1">&#39;    ruby    &#39;</span><span class="p">);</span>  <span class="c1">-- &#39;ruby&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>去除左边空格/字符： <code>ltrim(string text [, characters text])</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">ltrim</span><span class="p">(</span><span class="s1">&#39;    ruby&#39;</span><span class="p">)</span> <span class="c1">-- ruby</span>
+</span><span class='line'><span class="k">select</span> <span class="n">ltrim</span><span class="p">(</span><span class="s1">&#39;__ruby&#39;</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="c1">-- ruby</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>去除右边空格/字符： <code>rtrim(string text [, characters text])</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">rtrim</span><span class="p">(</span><span class="s1">&#39;ruby    &#39;</span><span class="p">)</span>    <span class="c1">-- ruby</span>
+</span><span class='line'><span class="k">select</span> <span class="n">rtrim</span><span class="p">(</span><span class="s1">&#39;ruby__&#39;</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>  <span class="c1">-- ruby</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>获取字符串的 MD5 值：<code>md5()</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">md5</span><span class="p">(</span><span class="s1">&#39;ruby&#39;</span><span class="p">);</span> <span class="c1">-- 58e53d1324eef6265fdb97b08ed9aadf</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>字符串分割： <code>split_part(string text, delimiter text, field int)</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">split_part</span><span class="p">(</span><span class="s1">&#39;i||love||you&#39;</span><span class="p">,</span> <span class="s1">&#39;||&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">-- love</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>四 模式匹配</h3>
+
+<h4>Like</h4>
+
+<p>用法举例</p>
+
+<pre><code>'abc' LIKE 'abc'    true
+'abc' LIKE 'a%'     true
+'abc' LIKE '_b_'    true
+'abc' LIKE 'c'      false  
+</code></pre>
+
+<p>下划线(_)代表匹配任何单个字符，而一个百分号(%)匹配任何零或更多字符，如：</p>
+
+<h4>SIMILAR TO正则表达式</h4>
+
+<p>SIMILAR TO根据模式是否匹配给定的字符串而返回真或者假。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">string</span> <span class="k">SIMILAR</span> <span class="k">TO</span> <span class="n">pattern</span> <span class="p">[</span><span class="k">ESCAPE</span> <span class="k">escape</span><span class="o">-</span><span class="nb">character</span><span class="p">]</span>
+</span><span class='line'><span class="n">string</span> <span class="k">NOT</span> <span class="k">SIMILAR</span> <span class="k">TO</span> <span class="n">pattern</span> <span class="p">[</span><span class="k">ESCAPE</span> <span class="k">escape</span><span class="o">-</span><span class="nb">character</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>它和LIKE非常类似，支持LIKE的通配符(&#8216;_&#8217;和&#8217;%&#8217;)且保持其原意。除此之外，SIMILAR TO还支持一些自己独有的元字符，如：</p>
+
+<ol>
+<li><p>| 标识选择(两个候选之一)。</p></li>
+<li><ul>
+<li>表示重复前面的项零次或更多次。</li>
+</ul>
+</li>
+<li><ul>
+<li>表示重复前面的项一次或更多次。</li>
+</ul>
+</li>
+<li><p>可以使用圆括弧()把项组合成一个逻辑项。</p></li>
+<li><p>一个方括弧表达式[&#8230;]声明一个字符表，就像POSIX正则表达式一样。</p></li>
+</ol>
+
+
+<p>见如下示例：</p>
+
+<pre><code>'abc' SIMILAR TO 'abc'            -- true
+'abc' SIMILAR TO 'a'              -- false
+'abc' SIMILAR TO '%(b|d)%'        -- true
+'abc' SIMILAR TO '(b|c)%'         -- false
+</code></pre>
+
+<p>带三个参数的substring，substring(string from pattern for escape-character)，提供了一个从字串中抽取一个匹配SQL正则表达式模式的子字串的函数。和SIMILAR TO一样，声明的模式必须匹配整个数据串，否则函数失效并返回NULL。为了标识在成功的时候应该返回的模式部分，模式必须出现后跟双引号(&#8220;)的两个转 义字符。匹配这两个标记之间的模式的字串将被返回，如：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SELECT</span> <span class="k">substring</span><span class="p">(</span><span class="s1">&#39;foobar&#39;</span> <span class="k">from</span> <span class="s1">&#39;%#&quot;o_b#&quot;%&#39;</span> <span class="k">FOR</span> <span class="s1">&#39;#&#39;</span><span class="p">);</span> <span class="c1">-- oob</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>用于日期/时间格式化的模式</h4>
+
+<pre><code>模式    描述
+HH     一天的小时数(01-12)
+HH12   一天的小时数(01-12)
+HH24   一天的小时数(00-23)
+MI     分钟(00-59)
+SS     秒(00-59)
+MS     毫秒(000-999)
+US     微秒(000000-999999)
+AM     正午标识(大写)
+Y,YYY  带逗号的年(4和更多位)
+YYYY   年(4和更多位)
+YYY    年的后三位
+YY     年的后两位
+Y      年的最后一位
+MONTH  全长大写月份名(空白填充为9字符)
+Month  全长混合大小写月份名(空白填充为9字符)
+month  全长小写月份名(空白填充为9字符)
+MON    大写缩写月份名(3字符)
+Mon    缩写混合大小写月份名(3字符)
+mon    小写缩写月份名(3字符)
+MM     月份号(01-12)
+DAY    全长大写日期名(空白填充为9字符)
+Day    全长混合大小写日期名(空白填充为9字符)
+day    全长小写日期名(空白填充为9字符)
+DY     缩写大写日期名(3字符)
+Dy     缩写混合大小写日期名(3字符)
+dy     缩写小写日期名(3字符)
+DDD    一年里的日子(001-366)
+DD     一个月里的日子(01-31)
+D      一周里的日子(1-7；周日是1)
+W      一个月里的周数(1-5)(第一周从该月第一天开始)
+WW     一年里的周数(1-53)(第一周从该年的第一天开始)
+</code></pre>
+
+<h3>五 日期/时间函数</h3>
+
+<p>当前时间： <code>localtime</code>, <code>localtimestamp</code>, <code>now()</code>, <code>current_time</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">localtime</span><span class="p">,</span> <span class="k">localtimestamp</span><span class="p">,</span> <span class="n">now</span><span class="p">(),</span> <span class="k">current_time</span><span class="p">;</span>
+</span><span class='line'><span class="c1">--00:06:12.109832 | 2014-01-29 00:06:12.109832 | 2014-01-29 00:06:12.109832+08 | 00:06:12.109832+08</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当前日期： <code>current_date</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">current_date</span><span class="p">;</span> <span class="c1">-- 2014-01-28</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当前日期和时间： <code>current_timestamp</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">current_timestamp</span><span class="p">;</span> <span class="c1">-- 2014-01-28 23:40:14.761216+08</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>获取子域： <code>date_part(text, timestamp)</code>, 等同于 <code>extract(field from timestamp)</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">,</span>   <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 2014</span>
+</span><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;month&#39;</span><span class="p">,</span>  <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 1</span>
+</span><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;day&#39;</span><span class="p">,</span>    <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 28</span>
+</span><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;week&#39;</span><span class="p">,</span>   <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 5</span>
+</span><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;hour&#39;</span><span class="p">,</span>   <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 23</span>
+</span><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;minute&#39;</span><span class="p">,</span> <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 40</span>
+</span><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;second&#39;</span><span class="p">,</span> <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 14.761216</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">select</span> <span class="k">extract</span><span class="p">(</span><span class="k">year</span> <span class="k">from</span> <span class="k">timestamp</span> <span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span>  <span class="c1">-- 2014</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>截断成指定的精度: <code>date_trunc(text, timestamp)</code></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">date_trunc</span><span class="p">(</span><span class="s1">&#39;hour&#39;</span><span class="p">,</span> <span class="k">timestamp</span> <span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="c1">-- 2014-01-28 23:00:00</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Tips</h3>
+
+<hr />
+
+<p>1 BETWEEN</p>
+
+<p><code>a BETWEEN x AND y</code> 等效于 <code>a &gt;= x AND a &lt;= y</code></p>
+
+<p><code>a NOT BETWEEN x AND y</code> 等效于 <code>a &lt; x OR a &gt; y</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Postgresql 字段分割分组]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/28/postgresql-zi-duan-fen-ge-fen-zu/"/>
+    <updated>2014-01-28T20:43:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/28/postgresql-zi-duan-fen-ge-fen-zu</id>
+    <content type="html"><![CDATA[<p>原始： 在import_products中的location_prices字段存储内容：</p>
+
+<pre><code> id  | location_prices  
+-----|---------------------
+  1  | 北京:200.0;河南:100.0
+  2  | 河南;100.0
+</code></pre>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">id</span> <span class="p">,</span>
+</span><span class='line'>  <span class="n">split_part</span><span class="p">(</span><span class="k">unnest</span><span class="p">(</span><span class="n">string_to_array</span><span class="p">(</span><span class="n">location_prices</span><span class="p">,</span><span class="s1">&#39;;&#39;</span><span class="p">)),</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="n">area_name</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">split_part</span><span class="p">(</span><span class="k">unnest</span><span class="p">(</span><span class="n">string_to_array</span><span class="p">(</span><span class="n">location_prices</span><span class="p">,</span><span class="s1">&#39;;&#39;</span><span class="p">)),</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="n">price</span>
+</span><span class='line'><span class="k">from</span> <span class="n">import_products</span>
+</span><span class='line'><span class="k">where</span> <span class="n">id</span> <span class="k">in</span> <span class="p">(</span><span class="mi">542796</span><span class="p">,</span><span class="mi">542797</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>结果：</p>
+
+<pre><code> id  | area_name | price  
+-----|-----------|-------
+  1  |    北京    | 200.0
+  1  |    河南    | 100.0
+  2  |    河南    | 100.0
+</code></pre>
+
+<p>知识点：</p>
+
+<h3>1. string_to_array</h3>
+
+<p>string_to_array函数的作用是将string类型的字符串分割成数组。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">string_to_array</span><span class="p">(</span><span class="s1">&#39;i|love|you&#39;</span><span class="p">,</span><span class="s1">&#39;|&#39;</span><span class="p">)</span> <span class="p">;</span>  <span class="c1">-- {i,love,you}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2. unnest</h3>
+
+<p>unnest 函数的作用是将数组转换成行。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">unnest</span><span class="p">(</span><span class="nb">array</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">,</span><span class="s1">&#39;love&#39;</span><span class="p">,</span><span class="s1">&#39;you&#39;</span><span class="p">]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>unnest  
+-------
+  i
+ love
+  you
+</code></pre>
+
+<h3>3. split_part</h3>
+
+<p>split_part 函数作用是将字符串按照另一个字符串进行分割，并返回分隔以后的</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">split_part</span><span class="p">(</span><span class="s1">&#39;i||love||you&#39;</span><span class="p">,</span> <span class="s1">&#39;||&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span><span class="o">`</span> <span class="c1">-- love</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails中操作Sqlite3数据库速度慢的问题]]></title>
@@ -1826,138 +2243,6 @@ path '/newdir/newsubdir '
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>sudo mysqladmin -u root password newpassword</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ubuntu12.04 安装 Sublime Text 2 ]]></title>
-    <link href="http://duyw.github.io/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2/"/>
-    <updated>2013-04-04T22:41:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2</id>
-    <content type="html"><![CDATA[<p>Sublime Text 2 是一款非常优秀的编辑器，可以媲美苹果系统下的TextMate，用Sublime Text 2 进行RoR开发是一件很惬意的事，在Ubuntu12.04系统下安装步骤如下：</p>
-
-<ol>
-<li><p>到<a href="http://www.sublimetext.com/2">官网</a>下载软件包： “Sublime Text 2.0.1.tar.bz2”。</p></li>
-<li><p>复制到安装目录。</p></li>
-<li><p>解压缩。</p></li>
-<li><p>进入目录，创建desktop文件（sublime-text.desktop），并赋予可执行权限，启动sublime text 2 就直接运行该文件，这样就可以锁定在启动器，内容如下：</p>
-
-<pre><code> #!/usr/bin/env xdg-open
-
- [Desktop Entry]
- Name=Sublime Text 2
- Comment=Sublime Text 2
- Exec=/home/ivan/apps/"Sublime Text 2"/sublime_text
- Icon=/home/ivan/apps/Sublime Text 2/Icon/256x256/sublime_text.png
- Terminal=false
- Type=Application
- Categories=Application;Development;
- StartupNotify=true
- Name[zh_CN]=sublime-text
-</code></pre>
-
-<p> 如果将文件复制到<code>/usr/share/applications/</code>目录下，就可以在Dash中被搜索到。</p></li>
-</ol>
-
-
-<!-- more -->
-
-
-<ol>
-<li><p>破解：</p>
-
-<p> 首先备份安装目录下的sublime_text文件<code>cp sublime_text sublime_text.bak</code></p>
-
-<p> 使用vim打开：<code>vim sublime_text</code> (如果没有安装vim，可以通过命令<code>sudo apt-get install vim</code>安装。)</p>
-
-<p> 将文件转化成16进制,在vim中输入：<code>:%!xxd</code></p>
-
-<p> 查找要修改的地方,在vim中输入： <code>/4333 3342</code></p>
-
-<p> 将3342修改为3242</p>
-
-<p> 将文件转换回去,在vim中输入： <code>:%!xxd -r</code></p>
-
-<p> 保存文件、退出,在vim中输入： <code>:wq</code></p>
-
-<p> 打开sublime text 2 编辑器，将下面的Licence填入即可大功告成：</p>
-
-<pre><code> —–BEGIN LICENSE—–
- China
- Unlimited User License
- EA7E-2861
- BE67D2175D3569FDAB9EB5340FAD2822
- E7B56B3397A76AA9FBE8AC3D3C65918B
- DFC28F2EA158140D9E07853D594818EB
- 3A237B2E8E98ED257C269548F50EDA34
- EF0C7F72D8917DB538A0245E46BFD6B1
- 85F4EDE331F253530ED67A5C19E92399
- 04C5F4A1AF4AF3DB5EC49C1FEE17CA76
- 7E369F8AAE4AC6C6E756B5882E1608B9
- —–END LICENSE—–
-</code></pre></li>
-<li><p>创建链接，这样就可以直接在命令行中通过 sub 命令启动</p>
-
-<p> <code>sudo ln -s /home/ivan/apps/Sublime\ Text\ 2/sublime_text /usr/bin/sub</code></p></li>
-<li><p>安装插件安装管理工具“package control”</p>
-
-<p> 打开 Sublime Text 2，按下 Control + ` 调出 Console，输入以下内容，回车执行：</p>
-
-<pre><code> import urllib2,os;pf='Package Control.sublime-package';ipp=sublime.installed_packages_path();os.makedirs(ipp) if not os.path.exists(ipp) else None;open(os.path.join(ipp,pf),'wb').write(urllib2.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read())
-</code></pre></li>
-<li><p>解决ubuntu12.04系统下中文输入问题：</p>
-
-<p> 需要通过安装InputHelper插件来实现中文输入：</p>
-
-<p> <code>cd ~/.config/sublime-text-2/Packages/</code></p>
-
-<p> <code>git clone https://github.com/xgenvn/InputHelper.git</code></p>
-
-<p> 也可以通过 package control 来安装.</p>
-
-<p> 使用方法：重启 Sublime Text 2 ,通过快捷键 Shift ＋ Ctrl ＋ Z 来呼出输入窗口，可在其中输入汉字，输入完成直接回车即可。</p></li>
-<li><p>相关插件介绍</p>
-
-<p> 待续&#8230;</p></li>
-</ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ubuntu12.04 安装 JDK]]></title>
-    <link href="http://duyw.github.io/blog/2013/04/04/ubuntu12-dot-04an-zhuang-jdk/"/>
-    <updated>2013-04-04T22:30:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/04/04/ubuntu12-dot-04an-zhuang-jdk</id>
-    <content type="html"><![CDATA[<p>很多软件运行需要JRE环境，下面的方法用于在Ubuntu中安装JDK：</p>
-
-<ol>
-<li><p>首先下载JDK，点击<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6downloads-1902814.html">这里</a>下载（以“jdk-6u26-linux-i586.bin”为例）下载好以后放到安装位置（以<code>~/apps</code>目录为例）。</p></li>
-<li><p>设置安装文件权限： <code>chmod u+x ./jdk-6u26-linux-i586.bin</code></p></li>
-<li><p>安装：<code>sudo -s ./jdk-6u26-linux-i586.bin</code></p></li>
-<li><p>配置环境变量：</p>
-
-<p> <code>sudo gedit /etc/profile</code></p>
-
-<p> 在文件末尾写入以下内容：</p>
-
-<pre><code> #set java environment    
-
- JAVA_HOME=/home/ivan/apps/jdk1.6.0_26   
-
- export JRE_HOME=/home/ivan/apps/jdk1.6.0_26/jre   
-
- export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH   
-
- export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH 
-
- #set java environment
-</code></pre></li>
-<li><p>测试：</p>
-
-<p> 重启terminal,执行： <code>java -version</code> ，输出版本信息，说明安装成功。</p></li>
-</ol>
 
 ]]></content>
   </entry>

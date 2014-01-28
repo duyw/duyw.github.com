@@ -6,7 +6,7 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content=" du -sh 查看当前文件夹大小 du -sh * | sort -n 统计当前文件夹(目录)大小，并按文件大小排序 du -sk filename 查看指定文件大小 Jan 27th, 2014 Linux Comments ">
+	<meta name="description" content="rails 命令行工具 整理一些不常用的但是很有用的命令行工具： 1 rails c &#8211;sandbox 在沙盒模式下启动rails命令行，再此所做的对数据的修改都会会滚。 2 rails runner &#8220;puts User.first.id&#8221; &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -76,6 +76,148 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/27/rails-ming-ling-xing-gong-ju/">
+		
+			Rails 命令行工具</a>
+	</h2>
+	<div class="entry-content">
+		<p>rails 命令行工具</p>
+
+<p>整理一些不常用的但是很有用的命令行工具：</p>
+
+<p>1 rails c &#8211;sandbox</p>
+
+<p>在沙盒模式下启动rails命令行，再此所做的对数据的修改都会会滚。</p>
+
+<p>2 rails runner &#8220;puts User.first.id&#8221;</p>
+
+<p>在rails环境下执行ruby代码，无需启动应用服务。</p>
+
+<p>3 rails dbconsole</p>
+
+<p>启动数据库的命令行，无需数据用户名密码，支持MySQL, PostgreSQL, SQLite and SQLite3.</p>
+
+<p>4 rails destroy</p>
+
+<p>回滚 rails g 对项目的改变。</p>
+
+<p>5 rake -T</p>
+
+<p>查看所有的rake任务。</p>
+
+<p>6 rake about</p>
+
+<p>查看rails应用的环境，包括ruby版本，rails版本等。</p>
+
+<p>7 rake notes</p>
+
+<p>查看项目中的 TODO（待完成）、FIXME（待修复）、OPTIMIZE（待优化）</p>
+
+<p>8 rails g</p>
+
+<p>用于生成脚手架、控制器、模型、数据库迁移任务等。  如果加一个 <code>-p</code> 参数，只输出生成的文件列表，而不是真的创建文件</p>
+
+<p>参考资料：</p>
+
+<p>http://guides.ruby-china.org/command_line.html[http://guides.ruby-china.org/command_line.html]</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T11:58:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/rails/'>Rails</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/27/rails-ming-ling-xing-gong-ju//blog/page/2/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/27/ubuntu-du-xie-windows-wen-jian/">
+		
+			Ubuntu 读写 Windows 文件</a>
+	</h2>
+	<div class="entry-content">
+		<p>前提：windows系统电脑和ubuntu在同一个局域网内。</p>
+
+<p>在图形模式下：</p>
+
+<ol>
+<li><p>打开任意一个文件浏览器</p></li>
+<li><p>输入 Ctrl + l</p></li>
+<li><p>输入windows电脑地址：smb://192.168.71.34</p></li>
+<li><p>在弹出界面输入 windows 电脑的用户名、密码、工作组等信息</p></li>
+<li><p>搞定~！</p></li>
+</ol>
+
+
+<p>在命令行模式下：
+命令：<code>mount //192.168.10.56/share -o user=DOMIAN\\user,pass=passwd /mnt</code></p>
+
+<p>注意有两点</p>
+
+<p>（1）domain这里是域名，并且要大写</p>
+
+<p>（2）这里有两个\,其中第一个是转义符，第二个是\</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T11:50:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/27/ubuntu-du-xie-windows-wen-jian//blog/page/2/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">
@@ -1122,143 +1264,6 @@ connecting to: test
 </div>
 	
 		<div class="comments"><a href="/blog/2013/04/05/ubuntu12-dot-04-an-zhuang-mysql//blog/page/2/index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2/">
-		
-			Ubuntu12.04 安装 Sublime Text 2</a>
-	</h2>
-	<div class="entry-content">
-		<p>Sublime Text 2 是一款非常优秀的编辑器，可以媲美苹果系统下的TextMate，用Sublime Text 2 进行RoR开发是一件很惬意的事，在Ubuntu12.04系统下安装步骤如下：</p>
-
-<ol>
-<li><p>到<a href="http://www.sublimetext.com/2">官网</a>下载软件包： “Sublime Text 2.0.1.tar.bz2”。</p></li>
-<li><p>复制到安装目录。</p></li>
-<li><p>解压缩。</p></li>
-<li><p>进入目录，创建desktop文件（sublime-text.desktop），并赋予可执行权限，启动sublime text 2 就直接运行该文件，这样就可以锁定在启动器，内容如下：</p>
-
-<pre><code> #!/usr/bin/env xdg-open
-
- [Desktop Entry]
- Name=Sublime Text 2
- Comment=Sublime Text 2
- Exec=/home/ivan/apps/"Sublime Text 2"/sublime_text
- Icon=/home/ivan/apps/Sublime Text 2/Icon/256x256/sublime_text.png
- Terminal=false
- Type=Application
- Categories=Application;Development;
- StartupNotify=true
- Name[zh_CN]=sublime-text
-</code></pre>
-
-<p> 如果将文件复制到<code>/usr/share/applications/</code>目录下，就可以在Dash中被搜索到。</p></li>
-</ol>
-
-
-
-		
-		<a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-04T22:41:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/sublime text 2/'>Sublime Text 2</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/04/04/ubuntu12-dot-04-an-zhuang-sublime-text-2//blog/page/2/index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/04/04/ubuntu12-dot-04an-zhuang-jdk/">
-		
-			Ubuntu12.04 安装 JDK</a>
-	</h2>
-	<div class="entry-content">
-		<p>很多软件运行需要JRE环境，下面的方法用于在Ubuntu中安装JDK：</p>
-
-<ol>
-<li><p>首先下载JDK，点击<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6downloads-1902814.html">这里</a>下载（以“jdk-6u26-linux-i586.bin”为例）下载好以后放到安装位置（以<code>~/apps</code>目录为例）。</p></li>
-<li><p>设置安装文件权限： <code>chmod u+x ./jdk-6u26-linux-i586.bin</code></p></li>
-<li><p>安装：<code>sudo -s ./jdk-6u26-linux-i586.bin</code></p></li>
-<li><p>配置环境变量：</p>
-
-<p> <code>sudo gedit /etc/profile</code></p>
-
-<p> 在文件末尾写入以下内容：</p>
-
-<pre><code> #set java environment    
-
- JAVA_HOME=/home/ivan/apps/jdk1.6.0_26   
-
- export JRE_HOME=/home/ivan/apps/jdk1.6.0_26/jre   
-
- export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH   
-
- export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH 
-
- #set java environment
-</code></pre></li>
-<li><p>测试：</p>
-
-<p> 重启terminal,执行： <code>java -version</code> ，输出版本信息，说明安装成功。</p></li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-04T22:30:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/jdk/'>JDK</a>, <a class='category' href='/blog/categories/java/'>Java</a>, <a class='category' href='/blog/categories/ubuntu/'>Ubuntu</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/04/04/ubuntu12-dot-04an-zhuang-jdk//blog/page/2/index.html#disqus_thread">Comments</a></div>
 	
 </div></article>
 

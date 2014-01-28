@@ -1,0 +1,238 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Postgresql 字段分割分组 - 杜永文 博客</title>
+	<meta name="author" content="Du Yongwen">
+	
+	<meta name="description" content="原始： 在import_products中的location_prices字段存储内容： id | location_prices -----|--------------------- 1 | 北京:200.0;河南:100.0 2 | 河南;100.0 1
+2
+3
+4
+5
+select id &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.ico" rel="shortcut icon">
+	<link rel="icon" type="image/gif" href="/animated_favicon1.gif">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">杜永文 博客</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/about">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:duyw.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+		<a class="github" href="https://github.com/duyw" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:duyw.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Postgresql 字段分割分组</h2>
+	<div class="entry-content"><p>原始： 在import_products中的location_prices字段存储内容：</p>
+
+<pre><code> id  | location_prices  
+-----|---------------------
+  1  | 北京:200.0;河南:100.0
+  2  | 河南;100.0
+</code></pre>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">id</span> <span class="p">,</span>
+</span><span class='line'>  <span class="n">split_part</span><span class="p">(</span><span class="k">unnest</span><span class="p">(</span><span class="n">string_to_array</span><span class="p">(</span><span class="n">location_prices</span><span class="p">,</span><span class="s1">&#39;;&#39;</span><span class="p">)),</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="n">area_name</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">split_part</span><span class="p">(</span><span class="k">unnest</span><span class="p">(</span><span class="n">string_to_array</span><span class="p">(</span><span class="n">location_prices</span><span class="p">,</span><span class="s1">&#39;;&#39;</span><span class="p">)),</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="n">price</span>
+</span><span class='line'><span class="k">from</span> <span class="n">import_products</span>
+</span><span class='line'><span class="k">where</span> <span class="n">id</span> <span class="k">in</span> <span class="p">(</span><span class="mi">542796</span><span class="p">,</span><span class="mi">542797</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>结果：</p>
+
+<pre><code> id  | area_name | price  
+-----|-----------|-------
+  1  |    北京    | 200.0
+  1  |    河南    | 100.0
+  2  |    河南    | 100.0
+</code></pre>
+
+<p>知识点：</p>
+
+<h3>1. string_to_array</h3>
+
+<p>string_to_array函数的作用是将string类型的字符串分割成数组。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">string_to_array</span><span class="p">(</span><span class="s1">&#39;i|love|you&#39;</span><span class="p">,</span><span class="s1">&#39;|&#39;</span><span class="p">)</span> <span class="p">;</span>  <span class="c1">-- {i,love,you}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2. unnest</h3>
+
+<p>unnest 函数的作用是将数组转换成行。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">unnest</span><span class="p">(</span><span class="nb">array</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">,</span><span class="s1">&#39;love&#39;</span><span class="p">,</span><span class="s1">&#39;you&#39;</span><span class="p">]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>unnest  
+-------
+  i
+ love
+  you
+</code></pre>
+
+<h3>3. split_part</h3>
+
+<p>split_part 函数作用是将字符串按照另一个字符串进行分割，并返回分隔以后的</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">split_part</span><span class="p">(</span><span class="s1">&#39;i||love||you&#39;</span><span class="p">,</span> <span class="s1">&#39;||&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span><span class="o">`</span> <span class="c1">-- love</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-28T20:43:00+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/postgresql/'>Postgresql</a>, <a class='category' href='/blog/categories/database/'>数据库</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/28/postgresql-zi-duan-fen-ge-fen-zu/#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	<a class="addthis_button_tweet"></a>
+	
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    Du Yongwen
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'duyw';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://duyw.github.io/blog/2014/01/28/postgresql-zi-duan-fen-ge-fen-zu/';
+        var disqus_url = 'http://duyw.github.io/blog/2014/01/28/postgresql-zi-duan-fen-ge-fen-zu/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -6,7 +6,7 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content="　　公司一个现有项目是用 ruby 1.8.6 + rails1.2.6 做的，之前的客户服务器都是linux系统，这次客户服务器用的是windows，所以研究了一下部署方案，从网上各方搜集资料，最后配置成功，整理在此： 1. mongrel 安装 由于默认的gem版本为0.9.4，版本太旧了， &hellip;">
+	<meta name="description" content="我的环境如下： ruby 1.8.7 rails 2.3.8 本机安装 Oracle 11g客户端 另一台电脑安装 Oracle 11g的服务器端 需要用到的gem包： ruby-oci8 activerecord-oracle-adapter 操作步骤： activerecord-oracle &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -76,6 +76,155 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2010/12/29/rails-lian-jie-oracle/">
+		
+			Rails 连接 Oracle</a>
+	</h2>
+	<div class="entry-content">
+		<p>我的环境如下：</p>
+
+<pre><code>ruby 1.8.7
+
+rails 2.3.8 
+
+本机安装 Oracle 11g客户端
+
+另一台电脑安装 Oracle 11g的服务器端
+</code></pre>
+
+<p>需要用到的gem包：</p>
+
+<pre><code>ruby-oci8
+
+activerecord-oracle-adapter
+</code></pre>
+
+<h3>操作步骤：</h3>
+
+<p> activerecord-oracle-adapter插件的使用说明：<a href="http://github.com/rsim/oracle-enhanced/wiki/Usage">跳转</a></p>
+
+<h4>1.首先将oracle客户端添加到系统环境变量中。</h4>
+
+<pre><code>注意：
+
+* Oracle 的密码不能为纯数字，否则报错。
+
+* 安装好客户端后要确保安装无误，可以访问到服务器。
+</code></pre>
+
+<h4>2.安装需要的gem包</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install ruby-oci8-2.0.4-x86-mingw32.gem
+</span><span class='line'>gem install activerecord-oracle-adapter --source http://gems.rubyonrails.org</span></code></pre></td></tr></table></div></figure>
+
+
+<p>注意：安装好 oci8 后要测试 是否安装正确 方法是打开 irb 输入 require ‘oci8’ 如果不报错说明安装成功。</p>
+
+<p>另外可以用oci8测试 查询：</p>
+
+<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">OCI8</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;dyw1&#39;</span><span class="p">,</span><span class="s1">&#39;123456&#39;</span><span class="p">,</span><span class="s1">&#39;192.168.23.162/orcl&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s1">&#39;select * from journals&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">r</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+
+		
+		<a href="/blog/2010/12/29/rails-lian-jie-oracle/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-29T14:06:00+08:00" pubdate data-updated="true">Dec 29<span>th</span>, 2010</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/oracle/'>Oracle</a>, <a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/database/'>数据库</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2010/12/29/rails-lian-jie-oracle//blog/page/4/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2010/11/25/ruby-tu-pian-fen-lei-gui-dang-xiao-cheng-xu/">
+		
+			Ruby 图片分类归档小程序</a>
+	</h2>
+	<div class="entry-content">
+		<p>需求简述：</p>
+
+<p>1 处理某个目录下EMS快递单扫描图片，文件名格式：“20100702111538015-EF000000000CS.jpg”。</p>
+
+<p>2 连接SQL Server 数据库，表中已有EMS编号，将匹配的图片移动到指定目录。重复扫描的图片只保留最新一张，其余错误文件移动到指定目录。</p>
+
+<p>3 将匹配正确的图片名称存储到数据库。</p>
+
+<p>4 程序定时执行，并记录日志。</p>
+
+<p>程序代码如下：</p>
+
+
+		
+		<a href="/blog/2010/11/25/ruby-tu-pian-fen-lei-gui-dang-xiao-cheng-xu/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-25T10:50:00+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2010</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ruby/'>Ruby</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2010/11/25/ruby-tu-pian-fen-lei-gui-dang-xiao-cheng-xu//blog/page/4/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">
