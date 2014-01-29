@@ -68,6 +68,8 @@ users.map{|user| user.name } -> ['zhangsan','lisi','wangwu']
 
   这个例子可以简写成： `users.map(&:name)`  ,其运行结果也是一样的
 
+<!-- more -->
+
 ### 4 collect用法  
 
   同map一样。

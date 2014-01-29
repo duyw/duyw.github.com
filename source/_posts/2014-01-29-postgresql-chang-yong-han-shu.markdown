@@ -9,7 +9,7 @@ categories:
 ---
 
 
-### 一 常用操作符
+### 一 常用数学操作符
 
     %    模      5 % 4      1
     ^    幂      2.0 ^ 3.0  8
@@ -59,10 +59,11 @@ select floor(-42.8); -- -43`
 ### 三 字符串函数
 
 字符串连接： `string || string`
-
 {% codeblock lang:sql %}
 select 'ruby' || 'china' ; -- rubychina
 {% endcodeblock %}
+
+<!-- more -->
 
 字符串长度： `length()`
 {% codeblock lang:sql %}
@@ -265,4 +266,6 @@ select date_trunc('hour', timestamp '2014-01-28 23:40:14.761216+08');
 
 `a NOT BETWEEN x AND y` 等效于 `a < x OR a > y`
 
+2 拼接多条记录的值
 
+`select array_to_string( array(select nickname from users where id < 100), ';')`:

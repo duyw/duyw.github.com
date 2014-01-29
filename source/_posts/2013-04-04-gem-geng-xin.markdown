@@ -4,7 +4,7 @@ title: "GEM 更新"
 date: 2013-04-04 21:56
 comments: true
 categories: 
-- GEM{gem}
+- Gem{gem}
 ---
 
 更新方法：
