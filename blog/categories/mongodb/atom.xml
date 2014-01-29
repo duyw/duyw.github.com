@@ -4,7 +4,7 @@
   <title><![CDATA[Category: MongoDB | 杜永文 博客]]></title>
   <link href="http://duyw.github.io/blog/categories/mongodb/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-01-29T01:03:01+08:00</updated>
+  <updated>2014-01-29T20:49:33+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -43,6 +43,9 @@
 <h4>索引</h4>
 
 <p>　　mongodb可以对某个字段建立索引，可以建立组合索引、唯一索引，也可以删除索引，建立索引就意味着增加空间开销。默认情况下每个表都会有一个唯一索引：<em>id，如果插入数据时没有指定</em>id，服务会自动生成一个<em>id，为了充分利用已有索引，减少空间开销，最好是自己指定一个unique的key为</em>id，通常用对象的ID比较合适，比如商品的ID。</p>
+
+<!-- more -->
+
 
 <h3>2. 安装</h3>
 

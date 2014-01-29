@@ -4,7 +4,7 @@
   <title><![CDATA[杜永文 博客]]></title>
   <link href="http://duyw.github.io/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-01-29T01:03:01+08:00</updated>
+  <updated>2014-01-29T20:49:33+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -14,11 +14,362 @@
 
   
   <entry>
+    <title type="html"><![CDATA[正确使用label标签]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/29/zheng-que-shi-yong-labelbiao-qian/"/>
+    <updated>2014-01-29T20:34:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/29/zheng-que-shi-yong-labelbiao-qian</id>
+    <content type="html"><![CDATA[<p>表单中使用 checkbox 的时候，经常见到这样这样的写法：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span><span class="nt">&gt;</span> Click Me!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这种写法选择的时候只能点击复选框，如果要实现点击文字“Click Me!” 也能进行选择操作，应该这么写：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;label&gt;&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span><span class="nt">&gt;</span> Click Me!<span class="nt">&lt;/label&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>或者</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span> <span class="na">id=</span><span class="s">&quot;ckbx&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">ckbx&quot;</span><span class="nt">&gt;</span>Click Me!<span class="nt">&lt;/label&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我有强迫症，看到项目中不规范的写法就忍不住会给改过来，在一次内部分享中我专门分享了这点，但是还有人这么写，抓狂！</p>
+
+<p>偶然一次发现京东商城的登陆页面有个“自动登录”的checkbox，点击文字的时候就没有选中，每次上京东都会去点一下看改过来没有，即使自动登录了我也会退出重新登陆，持续了快一年了&#8230;&#8230;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails 导出CSV]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/29/rails-dao-chu-csv/"/>
+    <updated>2014-01-29T20:21:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/29/rails-dao-chu-csv</id>
+    <content type="html"><![CDATA[<p>rails项目中经常有生成Excel文件需求，完成这一功能的可选插件也很多，比较常用的有 roo ，spreadsheet 等，如果遇到导出大量数据的场景，这些插件就捉襟见肘了，捉襟见肘 因为速度实在无法忍受。比较好的解决法案是生成csv文件，这样做的好处是文件体积小，生成速度快，不受行数限制，此外csv文件可以用excel打开。</p>
+
+<p>注意点：</p>
+
+<p>1 导出的UTF-8格式的csv直接用excle打开会出现乱码，需要进行转码操作，如果在导出之前转码，速度也很慢，比较好的做法是生成以后再转码（可以用windows的文本编辑器另存为ANSI编码）。</p>
+
+<p>2 尽量避免将大量数据读取到ruby对象中，应该使用<code>find_each</code>方法,<code>:batch_size</code>参数默认是1000，这个值的设置对速度也有很大影响，我笔记本测试350较快，应该和机器配置User对象复杂程度等有关,需要测试。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">find_each</span><span class="p">(</span><span class="ss">:start</span><span class="o">=&gt;</span><span class="mi">5000</span><span class="p">,</span><span class="ss">:batch_size</span> <span class="o">=&gt;</span> <span class="mi">350</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">u</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1"># do something</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3 生成的csv的时候注意设置分隔符，目的是方便用excel直接打开</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">CSV</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">clo_sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">row_sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">data</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">data</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="s2">&quot;姓名&quot;</span><span class="p">,</span><span class="s2">&quot;电话&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="no">Users</span><span class="o">.</span><span class="n">find_by_sql</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">data</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">user</span><span class="o">.</span><span class="n">phone</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下面是从网上找到一个现成例子，使用了 fastercsv 生成csv：</p>
+
+<figure class='code'><figcaption><span>在String类中增加一些转换字符集的方法,  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">String</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">utf8_to_gb2321</span>
+</span><span class='line'>    <span class="n">encode_convert</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s2">&quot;gb2321&quot;</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">gb2321_to_utf8</span>
+</span><span class='line'>    <span class="n">encode_convert</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">,</span> <span class="s2">&quot;gb2321&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">utf8_to_utf16</span>
+</span><span class='line'>    <span class="n">encode_convert</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s2">&quot;UTF-16LE&quot;</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">utf8?</span>
+</span><span class='line'>    <span class="k">begin</span>
+</span><span class='line'>      <span class="n">utf8_arr</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s1">&#39;U*&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="kp">true</span> <span class="k">if</span> <span class="n">utf8_arr</span> <span class="o">&amp;&amp;</span> <span class="n">utf8_arr</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">rescue</span>
+</span><span class='line'>      <span class="kp">false</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">encode_convert</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">from</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">require</span> <span class="s1">&#39;iconv&#39;</span>
+</span><span class='line'>    <span class="k">begin</span>
+</span><span class='line'>      <span class="n">converter</span> <span class="o">=</span> <span class="no">Iconv</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">to</span><span class="p">,</span> <span class="n">from</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">converter</span><span class="o">.</span><span class="n">iconv</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">rescue</span>
+</span><span class='line'>      <span class="n">s</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>导出CVS,  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">export_csv</span>
+</span><span class='line'>  <span class="nb">require</span> <span class="s1">&#39;fastercsv&#39;</span>
+</span><span class='line'>  <span class="n">records</span> <span class="o">=</span> <span class="no">Amodel</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="ss">:all</span><span class="p">,</span> <span class="ss">:limit</span> <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">csv_string</span> <span class="o">=</span> <span class="no">FasterCSV</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="ss">:col_sep</span> <span class="o">=&gt;</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="ss">:row_sep</span> <span class="o">=&gt;</span> <span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">csv</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="s1">&#39;field_name1&#39;</span><span class="p">,</span> <span class="s1">&#39;field_name2&#39;</span><span class="p">,</span> <span class="s1">&#39;field_name3&#39;</span><span class="o">]</span>
+</span><span class='line'>    <span class="n">records</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">r</span><span class="o">.</span><span class="n">field1</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">field2</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">field3</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;export.csv&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">file</span><span class="o">.</span><span class="n">syswrite</span> <span class="s2">&quot;FFFE&quot;</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/\s/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;H*&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">csv_string</span><span class="o">.</span><span class="n">utf8_to_utf16</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>railscasts中有两个视频可以供学习：</p>
+
+<p><a href="http://railscasts.com/episodes/362-exporting-csv-and-excel?autoplay=true">http://railscasts.com/episodes/362-exporting-csv-and-excel?autoplay=true</a></p>
+
+<p><a href="http://railscasts.com/episodes/396-importing-csv-and-excel?autoplay=true">http://railscasts.com/episodes/396-importing-csv-and-excel?autoplay=true</a></p>
+
+<p>其他资料：</p>
+
+<p><a href="http://hlee.iteye.com/blog/356507">http://hlee.iteye.com/blog/356507</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[如何制作gem包]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/29/ru-he-zhi-zuo-gembao/"/>
+    <updated>2014-01-29T19:45:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/29/ru-he-zhi-zuo-gembao</id>
+    <content type="html"><![CDATA[<p>Rails 支持多种形式的拓展，像plugin、gem或者干脆直接将通用工具类代码放置到lib目录下。plugin已经不推荐使用了，目前来看，最好的方式就是写成gem，本文是我学习gem制作整理的笔记，文中以手动添加一个helper方法为例。</p>
+
+<h3>第一步：安装 bundler</h3>
+
+<p>首先通过 <code>gem list</code> 命令查看如果已经安装了bundler就可以跳过此步。</p>
+
+<p>安装命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install bundler</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>第二步：使用 bundler 生成一个基础gem结构</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundle gem my_gem</span></code></pre></td></tr></table></div></figure>
+
+
+<p>执行以后会看到以下输出：</p>
+
+<pre><code>create  my_gem/Gemfile
+create  my_gem/Rakefile
+create  my_gem/LICENSE.txt
+create  my_gem/README.md
+create  my_gem/.gitignore
+create  my_gem/my_gem.gemspec
+create  my_gem/lib/my_gem.rb
+create  my_gem/lib/my_gem/version.rb
+Initializating git repo in /home/ivan/private/my_gem
+</code></pre>
+
+<p>说明：</p>
+
+<ol>
+<li><p><code>my_gem.gemspec</code> 文件相当于gem的说明书（specification），其中定义了Gem的内容、作者、描述、主页等信息。将来打包的时候会依赖这个文件。</p></li>
+<li><p>Gem的代码主要放置在<code>lib</code>目录下。</p></li>
+<li><p>整个项目加入了Git版本控制。</p></li>
+<li><p>如果gem本身需要引入其他依赖的包，需要在<code>.gemspec</code>文件中指明例如:</p>
+
+<p> <code>spec.add_development_dependency "rake"</code>  引入开发依赖</p>
+
+<p> <code>spec.add_development_dependency "rails"</code> 引入运行依赖</p></li>
+<li><p>项目中有Gemfile文件，可将其中的 source 替换成淘宝源 &#8220;http://ruby.taobao.org&#8221;。</p></li>
+<li><p>另外，在Gemfile有一行内容是&#8221;gemspec&#8221;,表明该项目依赖的gem包在<code>.gemspec</code>文件中指出，这就解释了为什么会有上面第4条。</p></li>
+<li><p>my_gem/lib/my_gem/version.rb 文件中可以填写gem的版本信息。</p></li>
+</ol>
+
+
+<h3>第三步：编写gem要实现的功能</h3>
+
+<p>这里我们实现一个helper方法，在页面输出一段Html代码。</p>
+
+<ol>
+<li>新建文件 helper.rb , 路径： lib/my_gem/helper.rb</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># coding: utf-8
+</span><span class='line'>module MyGem
+</span><span class='line'>  module MyHelper
+</span><span class='line'>    def my_helper
+</span><span class='line'>      time = DateTime.parse(Time.now.to_s).strftime('%H:%M:%S').to_s
+</span><span class='line'>      date = DateTime.parse(Time.now.to_s).strftime('%Y-%m-%d').to_s
+</span><span class='line'>      html =  []
+</span><span class='line'>      html &lt;&lt; '&lt;div id="mydiv"&gt;'
+</span><span class='line'>      html &lt;&lt; '&lt;div id="time"&gt;' + time + '&lt;/div&gt;'
+</span><span class='line'>      html &lt;&lt; '&lt;div id="date"&gt;' + date + '&lt;/div&gt;'
+</span><span class='line'>      html &lt;&lt; '&lt;/div&gt;'
+</span><span class='line'>      raw html.join("\n")
+</span><span class='line'>    end
+</span><span class='line'>  end
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>引入刚才写的helper</li>
+</ol>
+
+
+<p>修改 lib/my_gem.rb 文件，首行添加：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>require "my_gem/helper"</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>将helper正真拓展到rails中去</li>
+</ol>
+
+
+<p>修改 lib/my_gem.rb 文件，尾行添加：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ActionView::Base.send :include, MyGem::MyHelper</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>第四步：提交代码</h3>
+
+<p>将项目提交到Git仓库，用到的命令：</p>
+
+<pre><code>git add *
+
+git commit -m "finish my gem"
+</code></pre>
+
+<p>这一步很重要，因为在<code>.gemspec</code>文件中有这么一行：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>spec.files         = `git ls-files`.split($/)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>它调用了 <code>git ls-files</code> 命令来获取需要打包的文件，而这一命令只会返回Git仓库中的所有的文件，如果我们不提交代码那么项目中新建的文件就不会被打包进来。</p>
+
+<h3>第五步：打包</h3>
+
+<p>在项目下执行命令 <code>gem build my_gem.gemspec</code></p>
+
+<pre><code>WARNING:  no homepage specified
+  Successfully built RubyGem
+  Name: my_gem
+  Version: 0.0.1
+  File: my_gem-0.0.1.gem
+</code></pre>
+
+<p>这里有一个警告，提醒我们填写homepage，这里只是练习不做理会。</p>
+
+<h3>第六步：使用</h3>
+
+<p>使用方法和其他gem包一样,需要注意的是我们的gem包并没有发布到rubygems.org，所以 gem install 的时候在my_gem-0.0.1.gem 文件所在的目录执行就ok了。</p>
+
+<ol>
+<li><p>安装： <code>gem install my_gem-0.0.1.gem</code></p></li>
+<li><p>在rails项目的Gemfile中添加 <code>gem "my_gem"</code></p></li>
+<li><p>在rails项目下运行命令 &#8216;bundle&#8217;</p></li>
+<li><p>在erb页面直接调用： <code>&lt;%= my_helper %&gt;</code> 。</p></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Postgresql 常用函数]]></title>
     <link href="http://duyw.github.io/blog/2014/01/29/postgresql-chang-yong-han-shu/"/>
     <updated>2014-01-29T00:09:00+08:00</updated>
     <id>http://duyw.github.io/blog/2014/01/29/postgresql-chang-yong-han-shu</id>
-    <content type="html"><![CDATA[<h3>一 常用操作符</h3>
+    <content type="html"><![CDATA[<h3>一 常用数学操作符</h3>
 
 <pre><code>%    模      5 % 4      1
 ^    幂      2.0 ^ 3.0  8
@@ -87,6 +438,11 @@
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="s1">&#39;ruby&#39;</span> <span class="o">||</span> <span class="s1">&#39;china&#39;</span> <span class="p">;</span> <span class="c1">-- rubychina</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
 
 
 <p>字符串长度： <code>length()</code></p>
@@ -352,6 +708,10 @@ WW     一年里的周数(1-53)(第一周从该年的第一天开始)
 <p><code>a BETWEEN x AND y</code> 等效于 <code>a &gt;= x AND a &lt;= y</code></p>
 
 <p><code>a NOT BETWEEN x AND y</code> 等效于 <code>a &lt; x OR a &gt; y</code></p>
+
+<p>2 拼接多条记录的值</p>
+
+<p><code>select array_to_string( array(select nickname from users where id &lt; 100), ';')</code>:</p>
 ]]></content>
   </entry>
   
@@ -728,6 +1088,9 @@ WW     一年里的周数(1-53)(第一周从该年的第一天开始)
 
 
 <p>  这个例子可以简写成： <code>users.map(&amp;:name)</code>  ,其运行结果也是一样的</p>
+
+<!-- more -->
+
 
 <h3>4 collect用法</h3>
 
@@ -1372,878 +1735,6 @@ gem: --no-ri --no-rdoc
 <p><code>--full</code>:  创建一个完整的，等同rails项目的目录结构。</p>
 
 <p><code>--mountable</code>: 选项告诉创建器去挂载 engine 到在 engine 中的 test/dummy 的模拟（dummy）测试程序。在dummy的 config/routes.rb 加入内容：<code>mount MyEngine::Engine =&gt; "/my_engine"</code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MongoDB Quick Tips]]></title>
-    <link href="http://duyw.github.io/blog/2013/05/02/mongodb-quick-tips/"/>
-    <updated>2013-05-02T11:04:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/05/02/mongodb-quick-tips</id>
-    <content type="html"><![CDATA[<h3>1. 介绍</h3>
-
-<p>　　一个mongod服务可以有建立多个数据库，每个数据库可以有多张表，这里的表名叫collection，每个collection可以存放多个文档（document），每个文档都以BSON（binary json）的形式存放于硬盘中，因此可以存储比较复杂的数据类型。它是以单文档为单位存储的，你可以任意给一个或一批文档新增或删除字段，而不会对其它文档造成影响，这就是所谓的schema-free，这也是文档型数据库最主要的优点。跟一般的key-value数据库不一样的是，它的value中存储了结构信息，所以你又可以像关系型数据库那样对某些域进行读写、统计等操作。Mongo最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。Mongo还可以解决海量数据的查询效率，根据官方文档，当数据量达到50GB以上数据时，Mongo数据库访问速度是MySQL10 倍以上。</p>
-
-<h4>BSON</h4>
-
-<p>　　BSON是Binary JSON 的简称，是一个JSON文档对象的二进制编码格式。BSON同JSON一样支持往其它文档对象和数组中再插入文档对象和数组，同时扩展了JSON的数据类型。如：BSON有Date类型和BinDate类型。</p>
-
-<p>　　BSON被比作二进制的交换格式，如同Protocol Buffers，但BSON比它更“schema-less”，非常好的灵活性但空间占用稍微大一点。</p>
-
-<p>BSON有以下三个特点：</p>
-
-<p>1． 轻量级</p>
-
-<p>2． 跨平台</p>
-
-<p>3． 效率高</p>
-
-<h4>命名空间</h4>
-
-<p>　　MongoDB存储BSON对象到collections,这一系列的数据库名和collection名被称为一个命名空间。如同：java.util.List;用来管理数据库中的数据。</p>
-
-<h4>索引</h4>
-
-<p>　　mongodb可以对某个字段建立索引，可以建立组合索引、唯一索引，也可以删除索引，建立索引就意味着增加空间开销。默认情况下每个表都会有一个唯一索引：<em>id，如果插入数据时没有指定</em>id，服务会自动生成一个<em>id，为了充分利用已有索引，减少空间开销，最好是自己指定一个unique的key为</em>id，通常用对象的ID比较合适，比如商品的ID。</p>
-
-<h3>2. 安装</h3>
-
-<p>Linux系统下有两种安装方式:</p>
-
-<h4>第一种：下载二进制包，然后解压到相应目录即可。</h4>
-
-<ol>
-<li><p>直接到<a href="http://www.mongodb.org/downloads">官网</a>下载二进制包，下载以后是一个tgz文件。</p>
-
-<p> <code>curl http://downloads.mongodb.org/linux/mongodb-linux-i686-2.4.3.tgz &gt; mongodb.tgz</code></p></li>
-<li><p>将文件解压到指定目录</p>
-
-<p><code>tar -zxvf mongodb.tgz</code></p>
-
-<p>重命名：</p>
-
-<p><code>cp -R -n  mongodb-linux-????-??-??/ mongodb</code></p></li>
-</ol>
-
-
-<p>在 mongodb/bin 目录下可以看到和MongoDB相关的一些二进制文件包括 mongod 等。</p>
-
-<p>到此为止MongoDB已经安装完成，接下来开始使用MongoDB：</p>
-
-<p>在第一次启动mongdod的时候，需要创建存放数据文件的目录，默认的目录是 <code>/data/db/</code></p>
-
-<p>首先创建这个目录： <code>mkdir -p /data/db</code></p>
-
-<blockquote><p>注意：</p>
-
-<p>要确保运行 mongod 进程的系统用户对改目录拥有读写权限。</p>
-
-<p>如果 mongod 运行在 mongo 用户帐号下，可以使用 <code>chown mongo /data/db</code> 命令来更改该目录的拥有者。</p></blockquote>
-
-<p>至此，我们已经可以运行 mongod ，也可以通过 mongo 命令来链接到数据库，前提是这两个命令要在 MongoDB 的安装目录下的bin目录下执行。</p>
-
-<p>如果要直接使用这两个命令，需要将它们添加到系统的环境变量里面去，方法是在bin目录下执行</p>
-
-<p><code>sudo cp mongo /usr/bin/</code></p>
-
-<p>之后就可以在任意目录使用 mongo 命令了。</p>
-
-<p>将mongodb 加入到开机启动,</p>
-
-<p><code>sudo gedit /etc/rc.local</code></p>
-
-<p>编辑 rc.local 加入</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#add mongonDB service 
-</span><span class='line'>
-</span><span class='line'>rm -rf /data/mongodb_data/* && /usr/local/mongodb/bin/mongod –dbpath=/data/mongodb_data/ –logpath=/data/mongodb_log/mongodb.log –logappend& </span></code></pre></td></tr></table></div></figure>
-
-
-<p>注意.地址可能需要修改。</p>
-
-<h4>第二种：通过命令行安装。</h4>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install mongodb</span></code></pre></td></tr></table></div></figure>
-
-
-<p>该命令会安装以下软件包：</p>
-
-<pre><code>mongodb-clients
-mongodb-dev
-mongodb-server
-mongodb
-</code></pre>
-
-<p>安装完成以后会生成以下文件：</p>
-
-<pre><code>数据文件： /var/lib/mongodb
-日志文件： /var/log/mongodb/mongodb.log
-服务脚本： /etc/init.d/mongodb
-配置文件： /etc/mongodb.conf
-</code></pre>
-
-<p>如果要修改启动选项可以直接修改这个文件。</p>
-
-<p>安装完成以后会在系统中新建一个用户 mongodb，会用这个用户帐号来启动 MongodDB，</p>
-
-<p>MongodDB默认使用27017端口,通过 <code>netstat -tlunp | grep 27017</code> 可以查看到进程。</p>
-
-<p>如果要以其他用户来运行Mongodb，需要修改 /var/lib/mongodb 和 /var/log/mongodb的权限。</p>
-
-<p>可以通过命令 <code>sudo service mongodb start/stop/restart/status</code> 来控制mongod进程。</p>
-
-<h3>3. 使用</h3>
-
-<p>打开终端，输入 mongo 命令，连接到MongoDB数据库：</p>
-
-<pre><code>╭─# ivan@ubuntu in ~/work ‹ruby-1.8.7@rails304›  
-╰─$ mongo
-MongoDB shell version: 2.0.4
-connecting to: test
-&gt; 
-</code></pre>
-
-<h3>简单操作命令：</h3>
-
-<ul>
-<li>进入数据库 admin：</li>
-</ul>
-
-
-<p><code>use admin</code></p>
-
-<ul>
-<li>增加或修改用户密码：</li>
-</ul>
-
-
-<p><code>db.addUser('name','pwd')</code></p>
-
-<ul>
-<li>查看用户列表</li>
-</ul>
-
-
-<p><code>db.system.users.find()</code></p>
-
-<ul>
-<li>用户认证</li>
-</ul>
-
-
-<p><code>db.auth('name','pwd')</code></p>
-
-<ul>
-<li>删除用户</li>
-</ul>
-
-
-<p><code>db.removeUser('name')</code></p>
-
-<ul>
-<li>查看所有用户</li>
-</ul>
-
-
-<p><code>show users</code></p>
-
-<ul>
-<li>查看所有数据库</li>
-</ul>
-
-
-<p><code>show dbs</code></p>
-
-<ul>
-<li>查看所有的 collection</li>
-</ul>
-
-
-<p><code>show collections</code></p>
-
-<ul>
-<li>查看各 collection 的状态</li>
-</ul>
-
-
-<p><code>db.printCollectionStats()</code></p>
-
-<ul>
-<li>查看主从复制状态</li>
-</ul>
-
-
-<p><code>db.printReplicationInfo()</code></p>
-
-<ul>
-<li>修复数据库</li>
-</ul>
-
-
-<p><code>db.repairDatabase()</code></p>
-
-<ul>
-<li>设置记录 profiling，0=off 1=slow 2=all</li>
-</ul>
-
-
-<p><code>db.setProfilingLevel(1)</code></p>
-
-<ul>
-<li>查看profiling</li>
-</ul>
-
-
-<p><code>show profile</code></p>
-
-<ul>
-<li>拷贝数据库</li>
-</ul>
-
-
-<p><code>db.copyDatabase('mail_addr','mail_addr_tmp')</code></p>
-
-<ul>
-<li>删除 collection</li>
-</ul>
-
-
-<p><code>db.mail_addr.drop()</code></p>
-
-<ul>
-<li>删除当前的数据库</li>
-</ul>
-
-
-<p><code>db.dropDatabase()</code></p>
-
-<h3>增删改</h3>
-
-<ul>
-<li>存储嵌套的对象</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.save({'name':'ysz','address':{'city':'beijing','post':100096},'phone':[138,139]})</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>存储数组对象</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.user_addr.save({'Uid':'yushunzhi@sohu.com','Al':['test-1@sohu.com','test-2@sohu.com']})</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>根据query条件修改，如果不存在则插入，允许修改多条记录</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.update({'yy':5},{'$set':{'xx':2}},upsert=true,multi=true)</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>删除yy=5的记录</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.remove({'yy':5})</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>删除所有的记录</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.remove()</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>索引</h3>
-
-<ul>
-<li>增加索引：1(ascending),-1(descending)</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.ensureIndex({firstname: 1, lastname: 1}, {unique: true});</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>索引子对象</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.user_addr.ensureIndex({'Al.Em': 1})</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>查看索引信息</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.getIndexes()
-</span><span class='line'>db.foo.getIndexKeys()</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>根据索引名删除索引</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.user_addr.dropIndex('Al.Em_1')</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>查询</h3>
-
-<ul>
-<li>查找所有</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.find()</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>查找一条记录</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.findOne()</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>根据条件检索10条记录</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.find({'msg':'Hello 1'}).limit(10)</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>sort排序</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.deliver_status.find({'From':'ixigua@sina.com'}).sort({'Dt',-1})
-</span><span class='line'>db.deliver_status.find().sort({'Ct':-1}).limit(1)</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>count操作</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.user_addr.count()</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>distinct操作,查询指定列，去重复</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.distinct('msg')</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>”>=”操作</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.find({"timestamp": {"$gte" : 2}})</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>子对象的查找</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.find({'address.city':'beijing'})</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>管理</h3>
-
-<ul>
-<li>查看collection数据的大小</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.deliver_status.dataSize()</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>查看colleciont状态</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.deliver_status.stats()</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>查询所有索引的大小</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.deliver_status.totalIndexSize()</span></code></pre></td></tr></table></div></figure>
-
-
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ubuntu12.04下 SVN 安装和配置]]></title>
-    <link href="http://duyw.github.io/blog/2013/04/05/ubuntu12-dot-04xia-svn-an-zhuang-he-pei-zhi/"/>
-    <updated>2013-04-05T20:30:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/04/05/ubuntu12-dot-04xia-svn-an-zhuang-he-pei-zhi</id>
-    <content type="html"><![CDATA[<h3>1. 安装</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install subversion</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>2. 将最新版本文件签出到本地</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn checkout repository_path local_path --username 用户名  --password 密码</span></code></pre></td></tr></table></div></figure>
-
-
-<p>例如：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ svn checkout svn://192.168.1.1/pro  --username 用户名 --password 密码</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ svn checkout http://192.168.1.1/pro --username 用户名 --password 密码</span></code></pre></td></tr></table></div></figure>
-
-
-<p>简写：<code>$ svn co svn://192.168.1.1/pro</code>或者 <code>$ svn co http://192.168.1.1/pro</code></p>
-
-<p>注：&#8211;password 参数传输密码的话，会提示输入密码。local_path  参数如果为空的话，会签出到当前目录。</p>
-
-<h3>3. 导出(导出一个干净的不带.svn文件夹的目录树)</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn export [-r 版本号] http://路径(目录或文件的全路径) [本地目录全路径] --username 用户名
-</span><span class='line'>svn export [-r 版本号] svn://路径(目录或文件的全路径)  [本地目录全路径] --username 用户名
-</span><span class='line'>svn export 本地检出的(即带有.svn文件夹的)目录全路径  要导出的本地目录全路径 </span></code></pre></td></tr></table></div></figure>
-
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn export svn://192.168.0.3/测试工具 /home/testtools --username ivan
-</span><span class='line'>svn export http://192.168.0.3/test/testapp --username ivan
-</span><span class='line'>svn export /home/testapp /home/testtools</span></code></pre></td></tr></table></div></figure>
-
-
-<p>注：</p>
-
-<p>第一种从版本库导出干净工作目录树的形式是指定URL，如果指定了修订版本号，会导出相应的版本，如果没有指定修订版本，则会导出最新的，导出到指定位置。</p>
-
-<p>如果省略 本地目录全路径，URL的最后一部分会作为本地目录的名字。</p>
-
-<p>第二种形式是指定 本地检出的目录全路径 到 要导出的本地目录全路径，所有的本地修改将会保留，但是不在版本控制下(即没提交的新文件，因为.svn文件夹里没有与之相关的信息记录)的文件不会拷贝。</p>
-
-<!-- more -->
-
-
-<h3>4. 往版本库中添加新的文件</h3>
-
-<p><code>$ svn add file</code> 告诉SVN服务器要添加文件了，还要用<code>svn commint -m</code>真实的上传上去！</p>
-
-<p>例如：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ svn add test.php   #(添加test.php)   
-</span><span class='line'>$ svn add *.php      #(添加当前目录下所有的php文件) </span></code></pre></td></tr></table></div></figure>
-
-
-<h3>5. 提交</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn commit -m “提交备注信息文本“ [-N] [--no-unlock] 文件名
-</span><span class='line'>svn ci     -m “提交备注信息文本“ [-N] [--no-unlock] 文件名</span></code></pre></td></tr></table></div></figure>
-
-
-<p>必须带上-m参数，参数可以为空，但是必须写上-m</p>
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn commit -m “提交当前目录下的全部在版本控制下的文件“ *    #注意这个*表示全部文件 
-</span><span class='line'>svn commit -m “提交我的测试用test.php“ test.php 
-</span><span class='line'>svn commit -m “提交我的测试用test.php“ -N --no-unlock test.php    #保持锁就用–no-unlock开关 </span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn ci -m “提交当前目录下的全部在版本控制下的文件“ *    #注意这个*表示全部文件 
-</span><span class='line'>svn ci -m “提交我的测试用test.php“ test.php 
-</span><span class='line'>svn ci -m “提交我的测试用test.php“ -N --no-unlock test.php    #保持锁就用–no-unlock开关</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>6. 更新文件</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn update 
-</span><span class='line'>svn update -r 修正版本 文件名 
-</span><span class='line'>svn update 文件名 </span></code></pre></td></tr></table></div></figure>
-
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn update                    # 后面没有目录，默认将当前目录以及子目录下的所有文件都更新到最新版本 
-</span><span class='line'>svn update -r 200 test.cpp    # 将版本库中的文件 test.cpp 还原到修正版本（revision）200 
-</span><span class='line'>svn update test.php           # 更新与版本库同步。</span></code></pre></td></tr></table></div></figure>
-
-
-<p>注：提交的时候提示过期冲突，需要先 update 修改文件，然后清除 svn resolved，最后再commit。</p>
-
-<h3>7. 删除文件</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn delete svn://路径(目录或文件的全路径) -m “删除备注信息文本” </span></code></pre></td></tr></table></div></figure>
-
-
-<p>推荐如下操作：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn delete 文件名  svn ci -m “删除备注信息文本”</span></code></pre></td></tr></table></div></figure>
-
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn delete svn://192.168.1.1/testapp/test.php -m “删除测试文件test.php” </span></code></pre></td></tr></table></div></figure>
-
-
-<p>推荐如下操作：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn delete test.php  svn ci -m “删除测试文件test.php”</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>8. 加锁/解锁</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn lock -m “加锁备注信息文本“ [--force] 文件名  
-</span><span class='line'>svn unlock 文件名 </span></code></pre></td></tr></table></div></figure>
-
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn lock -m “锁信测试用test.php文件“ test.php  
-</span><span class='line'>svn unlock test.php </span></code></pre></td></tr></table></div></figure>
-
-
-<h3>9. 比较差异</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn diff 文件名  
-</span><span class='line'>svn diff -r 修正版本号m:修正版本号n 文件名 </span></code></pre></td></tr></table></div></figure>
-
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn diff test.php              # 将修改的文件与基础版本比较 
-</span><span class='line'>svn diff -r 200:201 test.php   # 对 修正版本号200 和 修正版本号201 比较差异</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>10. 查看文件或者目录状态</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn st     目录路径/名 
-</span><span class='line'>svn status 目录路径/名   #目录下的文件和子目录的状态，正常状态不显示</span></code></pre></td></tr></table></div></figure>
-
-
-<p>说明：  ?：不在svn的控制中；  M：内容被修改；C：发生冲突； A：预定加入到版本库；K：被锁定</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn  -v 目录路径/名 
-</span><span class='line'>svn status -v 目录路径/名    #显示文件和子目录状态</span></code></pre></td></tr></table></div></figure>
-
-
-<p>说明：第一列保持相同，第二列显示工作版本号，第三和第四列显示最后一次修改的版本号和修改人</p>
-
-<p>注：
-svn status、svn diff 和 svn revert 这三条命令在没有网络的情况下也可以执行的，原因是svn在本地的.svn中保留了本地版本的原始拷贝（但不是所有历史版本的拷贝，这点和GIT是不同的）。</p>
-
-<h3>11. 查看日志</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn log 文件名 </span></code></pre></td></tr></table></div></figure>
-
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn log test.php  #显示这个文件的所有修改记录，及其版本号的变化</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>12. 查看文件详细信息</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn info 文件名 </span></code></pre></td></tr></table></div></figure>
-
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn info test.php</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>13. SVN 帮助</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn help          # 全部功能选项 
-</span><span class='line'>svn help ci      # 具体功能的说明</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>14. 查看版本库下的文件和目录列表</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn list svn://路径(目录或文件的全路径) 
-</span><span class='line'>svn ls   svn://路径(目录或文件的全路径) </span></code></pre></td></tr></table></div></figure>
-
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn list svn://192.168.0.3/test 
-</span><span class='line'>svn ls   svn://192.168.0.3/test   # 显示svn://192.168.0.3/test目录下的所有属于版本库的文件和目录 </span></code></pre></td></tr></table></div></figure>
-
-
-<h3>15. 创建纳入版本控制下的新目录</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn mkdir 目录名 
-</span><span class='line'>svn mkdir -m "新增目录备注文本" http://目录全路径 </span></code></pre></td></tr></table></div></figure>
-
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn mkdir newdir 
-</span><span class='line'>svn mkdir -m "Making a new dir." http://192.168.0.3/test/newdir  </span></code></pre></td></tr></table></div></figure>
-
-
-<p>注：添加完子目录后，一定要回到根目录更新一下，不然在该目录下提交文件会提示“提交失败”</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn update </span></code></pre></td></tr></table></div></figure>
-
-
-<p>注：如果手工在checkout出来的目录里创建了一个新文件夹newsubdir，再用svn mkdir newsubdir命令后，SVN会提示：</p>
-
-<pre><code>svn: 尝试用 “svn add”或 “svn add --non-recursive”代替？
-svn: 无法创建目录“hello”: 文件已经存在
-</code></pre>
-
-<p>此时，用如下命令解决：<code>svn add --non-recursive newsubdir</code></p>
-
-<p>再次进入这个newsubdir文件夹，用<code>ls -a</code>查看它下面的全部目录与文件，会发现多了：.svn目录</p>
-
-<p>再用 <code>svn mkdir -m "添hello功能模块文件" svn://192.168.0.3/test/newdir/newsubdir</code> 命令，SVN提示：</p>
-
-<pre><code>svn: File already exists: filesystem '/data/svnroot/test/db', transaction '4541-1',
-path '/newdir/newsubdir '
-</code></pre>
-
-<h3>16. 恢复本地修改</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn revert [--recursive] 文件名 </span></code></pre></td></tr></table></div></figure>
-
-
-<p>注意: 本子命令不会存取网络，并且会解除冲突的状况。但是它不会恢复被删除的目录。</p>
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn revert foo.c            # 丢弃对一个文件的修改
-</span><span class='line'>svn revert --recursive .    # 恢复一整个目录的文件，. 为当前目录</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>17. 把工作拷贝更新到别的URL</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn switch http://目录全路径 本地目录全路径 </span></code></pre></td></tr></table></div></figure>
-
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn switch http://192.163.0.3/test/456 . #(原为123的分支)当前所在目录分支到192.163.0.3/test/456</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>18. 解决冲突</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn resolved [本地目录全路径] </span></code></pre></td></tr></table></div></figure>
-
-
-<p>例子：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ svn update 
-</span><span class='line'>C foo.c 
-</span><span class='line'>Updated to revision 31. </span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果你在更新时得到冲突，你的工作拷贝会产生三个新的文件：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ ls 
-</span><span class='line'>foo.c 
-</span><span class='line'>foo.c.mine 
-</span><span class='line'>foo.c.r30 
-</span><span class='line'>foo.c.r31 </span></code></pre></td></tr></table></div></figure>
-
-
-<p>当你解决了foo.c的冲突，并且准备提交，运行svn resolved让你的工作拷贝知道你已经完成了所有事情。 你可以仅仅删除冲突的文件并且提交，但是svn resolved除了删除冲突文件，还修正了一些记录在工作拷贝管理区域的记录数据，所以我们推荐你使用这个命令。</p>
-
-<h3>19. 不checkout而查看输出特定文件或URL的内容</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn cat http://文件全路径 </span></code></pre></td></tr></table></div></figure>
-
-
-<p>例子： <code>svn cat http://192.168.0.3/test/readme.txt</code></p>
-
-<p>另外，在Linxu下，可视化SVN客户端可以用 Rabbitvcs 。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ubuntu12.04 安装 MySQL]]></title>
-    <link href="http://duyw.github.io/blog/2013/04/05/ubuntu12-dot-04-an-zhuang-mysql/"/>
-    <updated>2013-04-05T20:15:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/04/05/ubuntu12-dot-04-an-zhuang-mysql</id>
-    <content type="html"><![CDATA[<h3>第一步：卸载mysql</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get autoremove --purge mysql-server-5.0
-</span><span class='line'>sudo apt-get remove mysql-server
-</span><span class='line'>sudo apt-get autoremove mysql-server
-</span><span class='line'>sudo apt-get remove mysql-common (非常重要)</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>第二步：清理残留数据</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>dpkg -l |grep ^rc|awk '{print $2}' |sudo xargs dpkg -P</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>第三步：安装 mysql</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install mysql-server
-</span><span class='line'>sudo apt-get install mysql-client
-</span><span class='line'>sudo apt-get install php5-mysql(安装php5-mysql 是将php和mysql连接起来 )</span></code></pre></td></tr></table></div></figure>
-
-
-<p>一旦安装完成，MySQL 服务器应该自动启动。您可以在终端提示符后运行以下命令来检查 MySQL 服务器是否正在运行：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo netstat -tap | grep mysql</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当您运行该命令时，您可以看到类似下面的行：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>tcp 0 0 localhost.localdomain:mysql *:* LISTEN -</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果服务器不能正常运行，您可以通过下列命令启动它：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo /etc/init.d/mysql restart</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>第四步：配置管理员密码</h3>
-
-<p>进入mysql</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$mysql -uroot -p 管理员密码</span></code></pre></td></tr></table></div></figure>
-
-
-<p>配置 MySQL 的管理员密码：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo mysqladmin -u root password newpassword</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   

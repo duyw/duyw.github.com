@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: HTML  | 杜永文 博客]]></title>
+  <link href="http://duyw.github.io/blog/categories/html/atom.xml" rel="self"/>
+  <link href="http://duyw.github.io/"/>
+  <updated>2014-01-29T20:49:33+08:00</updated>
+  <id>http://duyw.github.io/</id>
+  <author>
+    <name><![CDATA[Du Yongwen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[正确使用label标签]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/29/zheng-que-shi-yong-labelbiao-qian/"/>
+    <updated>2014-01-29T20:34:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/29/zheng-que-shi-yong-labelbiao-qian</id>
+    <content type="html"><![CDATA[<p>表单中使用 checkbox 的时候，经常见到这样这样的写法：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span><span class="nt">&gt;</span> Click Me!
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>这种写法选择的时候只能点击复选框，如果要实现点击文字“Click Me!” 也能进行选择操作，应该这么写：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;label&gt;&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span><span class="nt">&gt;</span> Click Me!<span class="nt">&lt;/label&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>或者</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span> <span class="na">id=</span><span class="s">&quot;ckbx&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">ckbx&quot;</span><span class="nt">&gt;</span>Click Me!<span class="nt">&lt;/label&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>我有强迫症，看到项目中不规范的写法就忍不住会给改过来，在一次内部分享中我专门分享了这点，但是还有人这么写，抓狂！</p>
+
+<p>偶然一次发现京东商城的登陆页面有个“自动登录”的checkbox，点击文字的时候就没有选中，每次上京东都会去点一下看改过来没有，即使自动登录了我也会退出重新登陆，持续了快一年了......</p>
+]]></content>
+  </entry>
+  
+</feed>

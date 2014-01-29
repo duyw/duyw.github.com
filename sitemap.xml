@@ -58,7 +58,7 @@
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2013/04/04/gem-geng-xin/</loc>
-        <lastmod>2013-04-04T22:10:36+08:00</lastmod>
+        <lastmod>2014-01-29T19:49:22+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2013/04/04/ubuntu12-dot-04an-zhuang-jdk/</loc>
@@ -80,7 +80,7 @@
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2013/05/02/mongodb-quick-tips/</loc>
-        <lastmod>2013-06-13T00:06:21+08:00</lastmod>
+        <lastmod>2014-01-29T19:39:04+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2013/05/02/rails-engine/</loc>
@@ -128,7 +128,7 @@
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2014/01/27/ruby-de-die-dai-qi/</loc>
-        <lastmod>2014-01-28T12:06:33+08:00</lastmod>
+        <lastmod>2014-01-29T19:37:47+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%24/</loc>
@@ -150,11 +150,23 @@
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2014/01/29/postgresql-chang-yong-han-shu/</loc>
-        <lastmod>2014-01-29T01:02:56+08:00</lastmod>
+        <lastmod>2014-01-29T20:09:54+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://duyw.github.io/blog/2014/01/29/ru-he-zhi-zuo-gembao/</loc>
+        <lastmod>2014-01-29T20:00:55+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://duyw.github.io/blog/2014/01/29/rails-dao-chu-csv/</loc>
+        <lastmod>2014-01-29T20:32:21+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://duyw.github.io/blog/2014/01/29/zheng-que-shi-yong-labelbiao-qian/</loc>
+        <lastmod>2014-01-29T20:48:37+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/blog/archives/</loc>
-        <lastmod>2014-01-29T01:02:56+08:00</lastmod>
+        <lastmod>2014-01-29T20:48:37+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/about/</loc>
@@ -166,6 +178,6 @@
     </url>
     <url>
         <loc>http://duyw.github.io/</loc>
-        <lastmod>2014-01-29T01:02:56+08:00</lastmod>
+        <lastmod>2014-01-29T20:48:37+08:00</lastmod>
     </url>
 </urlset>

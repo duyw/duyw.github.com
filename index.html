@@ -6,14 +6,9 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content="一 常用操作符 % 模 5 % 4 1
-^ 幂 2.0 ^ 3.0 8
-|/ 平方根 |/ 25.0 5
-||/ 立方根 ||/ 27.0 3
-! 阶乘 5 ! 120
-!! 阶乘 !! 5 120
-@ 绝对值 @ -5.0 5 二 常用数学函数 取绝对值： abs() 1
-select abs &hellip;">
+	<meta name="description" content="表单中使用 checkbox 的时候，经常见到这样这样的写法： 1
+&lt;input type=&quot;checkbox&quot;&gt; Click Me! 这种写法选择的时候只能点击复选框，如果要实现点击文字“Click Me!” 也能进行选择操作，应该这么写： 1
+&lt; &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -88,12 +83,462 @@ select abs &hellip;">
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2014/01/29/zheng-que-shi-yong-labelbiao-qian/">
+		
+			正确使用label标签</a>
+	</h2>
+	<div class="entry-content">
+		<p>表单中使用 checkbox 的时候，经常见到这样这样的写法：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span><span class="nt">&gt;</span> Click Me!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这种写法选择的时候只能点击复选框，如果要实现点击文字“Click Me!” 也能进行选择操作，应该这么写：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;label&gt;&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span><span class="nt">&gt;</span> Click Me!<span class="nt">&lt;/label&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>或者</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span> <span class="na">id=</span><span class="s">&quot;ckbx&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">ckbx&quot;</span><span class="nt">&gt;</span>Click Me!<span class="nt">&lt;/label&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我有强迫症，看到项目中不规范的写法就忍不住会给改过来，在一次内部分享中我专门分享了这点，但是还有人这么写，抓狂！</p>
+
+<p>偶然一次发现京东商城的登陆页面有个“自动登录”的checkbox，点击文字的时候就没有选中，每次上京东都会去点一下看改过来没有，即使自动登录了我也会退出重新登陆，持续了快一年了&#8230;&#8230;</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-29T20:34:00+08:00" pubdate data-updated="true">Jan 29<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/html/'>HTML </a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/29/zheng-que-shi-yong-labelbiao-qian//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/29/rails-dao-chu-csv/">
+		
+			Rails 导出CSV</a>
+	</h2>
+	<div class="entry-content">
+		<p>rails项目中经常有生成Excel文件需求，完成这一功能的可选插件也很多，比较常用的有 roo ，spreadsheet 等，如果遇到导出大量数据的场景，这些插件就捉襟见肘了，捉襟见肘 因为速度实在无法忍受。比较好的解决法案是生成csv文件，这样做的好处是文件体积小，生成速度快，不受行数限制，此外csv文件可以用excel打开。</p>
+
+<p>注意点：</p>
+
+<p>1 导出的UTF-8格式的csv直接用excle打开会出现乱码，需要进行转码操作，如果在导出之前转码，速度也很慢，比较好的做法是生成以后再转码（可以用windows的文本编辑器另存为ANSI编码）。</p>
+
+<p>2 尽量避免将大量数据读取到ruby对象中，应该使用<code>find_each</code>方法,<code>:batch_size</code>参数默认是1000，这个值的设置对速度也有很大影响，我笔记本测试350较快，应该和机器配置User对象复杂程度等有关,需要测试。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">find_each</span><span class="p">(</span><span class="ss">:start</span><span class="o">=&gt;</span><span class="mi">5000</span><span class="p">,</span><span class="ss">:batch_size</span> <span class="o">=&gt;</span> <span class="mi">350</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">u</span><span class="o">|</span>
+</span><span class='line'>  <span class="c1"># do something</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3 生成的csv的时候注意设置分隔符，目的是方便用excel直接打开</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">CSV</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">clo_sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">row_sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">data</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">data</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="s2">&quot;姓名&quot;</span><span class="p">,</span><span class="s2">&quot;电话&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="no">Users</span><span class="o">.</span><span class="n">find_by_sql</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">data</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">user</span><span class="o">.</span><span class="n">phone</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下面是从网上找到一个现成例子，使用了 fastercsv 生成csv：</p>
+
+<figure class='code'><figcaption><span>在String类中增加一些转换字符集的方法,  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">String</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">utf8_to_gb2321</span>
+</span><span class='line'>    <span class="n">encode_convert</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s2">&quot;gb2321&quot;</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">gb2321_to_utf8</span>
+</span><span class='line'>    <span class="n">encode_convert</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">,</span> <span class="s2">&quot;gb2321&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">utf8_to_utf16</span>
+</span><span class='line'>    <span class="n">encode_convert</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="s2">&quot;UTF-16LE&quot;</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">utf8?</span>
+</span><span class='line'>    <span class="k">begin</span>
+</span><span class='line'>      <span class="n">utf8_arr</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s1">&#39;U*&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="kp">true</span> <span class="k">if</span> <span class="n">utf8_arr</span> <span class="o">&amp;&amp;</span> <span class="n">utf8_arr</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="k">rescue</span>
+</span><span class='line'>      <span class="kp">false</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">encode_convert</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">from</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">require</span> <span class="s1">&#39;iconv&#39;</span>
+</span><span class='line'>    <span class="k">begin</span>
+</span><span class='line'>      <span class="n">converter</span> <span class="o">=</span> <span class="no">Iconv</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">to</span><span class="p">,</span> <span class="n">from</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">converter</span><span class="o">.</span><span class="n">iconv</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">rescue</span>
+</span><span class='line'>      <span class="n">s</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>导出CVS,  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">export_csv</span>
+</span><span class='line'>  <span class="nb">require</span> <span class="s1">&#39;fastercsv&#39;</span>
+</span><span class='line'>  <span class="n">records</span> <span class="o">=</span> <span class="no">Amodel</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="ss">:all</span><span class="p">,</span> <span class="ss">:limit</span> <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">csv_string</span> <span class="o">=</span> <span class="no">FasterCSV</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="ss">:col_sep</span> <span class="o">=&gt;</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="ss">:row_sep</span> <span class="o">=&gt;</span> <span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">csv</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="s1">&#39;field_name1&#39;</span><span class="p">,</span> <span class="s1">&#39;field_name2&#39;</span><span class="p">,</span> <span class="s1">&#39;field_name3&#39;</span><span class="o">]</span>
+</span><span class='line'>    <span class="n">records</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">r</span><span class="o">.</span><span class="n">field1</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">field2</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">field3</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;export.csv&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">file</span><span class="o">.</span><span class="n">syswrite</span> <span class="s2">&quot;FFFE&quot;</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/\s/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;H*&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">csv_string</span><span class="o">.</span><span class="n">utf8_to_utf16</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>railscasts中有两个视频可以供学习：</p>
+
+<p><a href="http://railscasts.com/episodes/362-exporting-csv-and-excel?autoplay=true">http://railscasts.com/episodes/362-exporting-csv-and-excel?autoplay=true</a></p>
+
+<p><a href="http://railscasts.com/episodes/396-importing-csv-and-excel?autoplay=true">http://railscasts.com/episodes/396-importing-csv-and-excel?autoplay=true</a></p>
+
+<p>其他资料：</p>
+
+<p><a href="http://hlee.iteye.com/blog/356507">http://hlee.iteye.com/blog/356507</a></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-29T20:21:00+08:00" pubdate data-updated="true">Jan 29<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/csv/'>CSV</a>, <a class='category' href='/blog/categories/rails/'>Rails</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/29/rails-dao-chu-csv//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/29/ru-he-zhi-zuo-gembao/">
+		
+			如何制作gem包</a>
+	</h2>
+	<div class="entry-content">
+		<p>Rails 支持多种形式的拓展，像plugin、gem或者干脆直接将通用工具类代码放置到lib目录下。plugin已经不推荐使用了，目前来看，最好的方式就是写成gem，本文是我学习gem制作整理的笔记，文中以手动添加一个helper方法为例。</p>
+
+<h3>第一步：安装 bundler</h3>
+
+<p>首先通过 <code>gem list</code> 命令查看如果已经安装了bundler就可以跳过此步。</p>
+
+<p>安装命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install bundler</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>第二步：使用 bundler 生成一个基础gem结构</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundle gem my_gem</span></code></pre></td></tr></table></div></figure>
+
+
+<p>执行以后会看到以下输出：</p>
+
+<pre><code>create  my_gem/Gemfile
+create  my_gem/Rakefile
+create  my_gem/LICENSE.txt
+create  my_gem/README.md
+create  my_gem/.gitignore
+create  my_gem/my_gem.gemspec
+create  my_gem/lib/my_gem.rb
+create  my_gem/lib/my_gem/version.rb
+Initializating git repo in /home/ivan/private/my_gem
+</code></pre>
+
+<p>说明：</p>
+
+<ol>
+<li><p><code>my_gem.gemspec</code> 文件相当于gem的说明书（specification），其中定义了Gem的内容、作者、描述、主页等信息。将来打包的时候会依赖这个文件。</p></li>
+<li><p>Gem的代码主要放置在<code>lib</code>目录下。</p></li>
+<li><p>整个项目加入了Git版本控制。</p></li>
+<li><p>如果gem本身需要引入其他依赖的包，需要在<code>.gemspec</code>文件中指明例如:</p>
+
+<p> <code>spec.add_development_dependency "rake"</code>  引入开发依赖</p>
+
+<p> <code>spec.add_development_dependency "rails"</code> 引入运行依赖</p></li>
+<li><p>项目中有Gemfile文件，可将其中的 source 替换成淘宝源 &#8220;http://ruby.taobao.org&#8221;。</p></li>
+<li><p>另外，在Gemfile有一行内容是&#8221;gemspec&#8221;,表明该项目依赖的gem包在<code>.gemspec</code>文件中指出，这就解释了为什么会有上面第4条。</p></li>
+<li><p>my_gem/lib/my_gem/version.rb 文件中可以填写gem的版本信息。</p></li>
+</ol>
+
+
+<h3>第三步：编写gem要实现的功能</h3>
+
+<p>这里我们实现一个helper方法，在页面输出一段Html代码。</p>
+
+<ol>
+<li>新建文件 helper.rb , 路径： lib/my_gem/helper.rb</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># coding: utf-8
+</span><span class='line'>module MyGem
+</span><span class='line'>  module MyHelper
+</span><span class='line'>    def my_helper
+</span><span class='line'>      time = DateTime.parse(Time.now.to_s).strftime('%H:%M:%S').to_s
+</span><span class='line'>      date = DateTime.parse(Time.now.to_s).strftime('%Y-%m-%d').to_s
+</span><span class='line'>      html =  []
+</span><span class='line'>      html &lt;&lt; '&lt;div id="mydiv"&gt;'
+</span><span class='line'>      html &lt;&lt; '&lt;div id="time"&gt;' + time + '&lt;/div&gt;'
+</span><span class='line'>      html &lt;&lt; '&lt;div id="date"&gt;' + date + '&lt;/div&gt;'
+</span><span class='line'>      html &lt;&lt; '&lt;/div&gt;'
+</span><span class='line'>      raw html.join("\n")
+</span><span class='line'>    end
+</span><span class='line'>  end
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>引入刚才写的helper</li>
+</ol>
+
+
+<p>修改 lib/my_gem.rb 文件，首行添加：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>require "my_gem/helper"</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>将helper正真拓展到rails中去</li>
+</ol>
+
+
+<p>修改 lib/my_gem.rb 文件，尾行添加：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ActionView::Base.send :include, MyGem::MyHelper</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>第四步：提交代码</h3>
+
+<p>将项目提交到Git仓库，用到的命令：</p>
+
+<pre><code>git add *
+
+git commit -m "finish my gem"
+</code></pre>
+
+<p>这一步很重要，因为在<code>.gemspec</code>文件中有这么一行：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>spec.files         = `git ls-files`.split($/)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>它调用了 <code>git ls-files</code> 命令来获取需要打包的文件，而这一命令只会返回Git仓库中的所有的文件，如果我们不提交代码那么项目中新建的文件就不会被打包进来。</p>
+
+<h3>第五步：打包</h3>
+
+<p>在项目下执行命令 <code>gem build my_gem.gemspec</code></p>
+
+<pre><code>WARNING:  no homepage specified
+  Successfully built RubyGem
+  Name: my_gem
+  Version: 0.0.1
+  File: my_gem-0.0.1.gem
+</code></pre>
+
+<p>这里有一个警告，提醒我们填写homepage，这里只是练习不做理会。</p>
+
+<h3>第六步：使用</h3>
+
+<p>使用方法和其他gem包一样,需要注意的是我们的gem包并没有发布到rubygems.org，所以 gem install 的时候在my_gem-0.0.1.gem 文件所在的目录执行就ok了。</p>
+
+<ol>
+<li><p>安装： <code>gem install my_gem-0.0.1.gem</code></p></li>
+<li><p>在rails项目的Gemfile中添加 <code>gem "my_gem"</code></p></li>
+<li><p>在rails项目下运行命令 &#8216;bundle&#8217;</p></li>
+<li><p>在erb页面直接调用： <code>&lt;%= my_helper %&gt;</code> 。</p></li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-29T19:45:00+08:00" pubdate data-updated="true">Jan 29<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gem/'>Gem</a>, <a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/29/ru-he-zhi-zuo-gembao//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2014/01/29/postgresql-chang-yong-han-shu/">
 		
 			Postgresql 常用函数</a>
 	</h2>
 	<div class="entry-content">
-		<h3>一 常用操作符</h3>
+		<h3>一 常用数学操作符</h3>
 
 <pre><code>%    模      5 % 4      1
 ^    幂      2.0 ^ 3.0  8
@@ -164,272 +609,11 @@ select abs &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>字符串长度： <code>length()</code></p>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">length</span><span class="p">(</span><span class="s1">&#39;i love you&#39;</span><span class="p">)</span> <span class="p">;</span> <span class="c1">-- 10</span>
-</span></code></pre></td></tr></table></div></figure>
 
-
-<p>字符串转小写： <code>lower()</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">lower</span><span class="p">(</span><span class="s1">&#39;RUBY&#39;</span><span class="p">);</span> <span class="c1">-- ruby</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>字符串转大写： <code>upper()</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">upper</span><span class="p">(</span><span class="s1">&#39;rails&#39;</span><span class="p">);</span> <span class="c1">-- RAILS</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>字符串每个单词的第一个子母转为大写： <code>initcap()</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">initcap</span><span class="p">(</span><span class="s1">&#39;ruby on rails&#39;</span><span class="p">);</span> <span class="c1">-- Ruby on Rails</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>字符串替换： <code>overlay(string placing string from int [for int])</code> 和</p>
-
-<p><code>replace(string text, from text, to text)</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">overlay</span><span class="p">(</span><span class="s1">&#39;Ruby_______Rails&#39;</span> <span class="k">placing</span> <span class="s1">&#39; on &#39;</span> <span class="k">from</span> <span class="mi">5</span> <span class="k">for</span> <span class="mi">7</span><span class="p">)</span><span class="err">；</span><span class="c1">-- Ruby on Rails</span>
-</span><span class='line'><span class="k">select</span> <span class="k">replace</span><span class="p">(</span><span class="s1">&#39;Ruby_______Rails&#39;</span><span class="p">,</span> <span class="s1">&#39;_______&#39;</span><span class="p">,</span> <span class="s1">&#39; on &#39;</span><span class="p">);</span> <span class="c1">-- Ruby on Rails`</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>截取字符串： <code>substring(string [from int] [for int])</code> 和 <code>substr(string, from [, count])</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">substring</span><span class="p">(</span><span class="s1">&#39;Ruby on Rails&#39;</span> <span class="k">from</span> <span class="mi">1</span> <span class="k">for</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">-- Ruby</span>
-</span><span class='line'><span class="k">select</span> <span class="k">substring</span><span class="p">(</span><span class="s1">&#39;Ruby on Rails&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>        <span class="c1">-- Ruby</span>
-</span><span class='line'><span class="k">select</span> <span class="n">substr</span><span class="p">(</span><span class="s1">&#39;Ruby on Rails&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>           <span class="c1">-- Ruby</span>
-</span><span class='line'><span class="k">select</span> <span class="n">substr</span><span class="p">(</span><span class="s1">&#39;Ruby on Rails&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>              <span class="c1">-- on Rails</span>
-</span><span class='line'><span class="k">select</span> <span class="k">substring</span><span class="p">(</span><span class="s1">&#39;foobar&#39;</span> <span class="k">from</span> <span class="s1">&#39;%#&quot;o_b#&quot;%&#39;</span> <span class="k">FOR</span> <span class="s1">&#39;#&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">-- oob  (这里#是转义符，双引号内的模式是返回部分)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>子字符串位置 <code>position(substring in string)</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">position</span><span class="p">(</span><span class="s1">&#39;ruby-china&#39;</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">-- 5 (利用这个特性可以用于判断字符串中是否包含某个子字符串)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>去除首位空格：<code>trim(string)</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">trim</span><span class="p">(</span><span class="s1">&#39;    ruby    &#39;</span><span class="p">);</span>  <span class="c1">-- &#39;ruby&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>去除左边空格/字符： <code>ltrim(string text [, characters text])</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">ltrim</span><span class="p">(</span><span class="s1">&#39;    ruby&#39;</span><span class="p">)</span> <span class="c1">-- ruby</span>
-</span><span class='line'><span class="k">select</span> <span class="n">ltrim</span><span class="p">(</span><span class="s1">&#39;__ruby&#39;</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="c1">-- ruby</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>去除右边空格/字符： <code>rtrim(string text [, characters text])</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">rtrim</span><span class="p">(</span><span class="s1">&#39;ruby    &#39;</span><span class="p">)</span>    <span class="c1">-- ruby</span>
-</span><span class='line'><span class="k">select</span> <span class="n">rtrim</span><span class="p">(</span><span class="s1">&#39;ruby__&#39;</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>  <span class="c1">-- ruby</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>获取字符串的 MD5 值：<code>md5()</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">md5</span><span class="p">(</span><span class="s1">&#39;ruby&#39;</span><span class="p">);</span> <span class="c1">-- 58e53d1324eef6265fdb97b08ed9aadf</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>字符串分割： <code>split_part(string text, delimiter text, field int)</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">split_part</span><span class="p">(</span><span class="s1">&#39;i||love||you&#39;</span><span class="p">,</span> <span class="s1">&#39;||&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">-- love</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>四 模式匹配</h3>
-
-<h4>Like</h4>
-
-<p>用法举例</p>
-
-<pre><code>'abc' LIKE 'abc'    true
-'abc' LIKE 'a%'     true
-'abc' LIKE '_b_'    true
-'abc' LIKE 'c'      false  
-</code></pre>
-
-<p>下划线(_)代表匹配任何单个字符，而一个百分号(%)匹配任何零或更多字符，如：</p>
-
-<h4>SIMILAR TO正则表达式</h4>
-
-<p>SIMILAR TO根据模式是否匹配给定的字符串而返回真或者假。</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">string</span> <span class="k">SIMILAR</span> <span class="k">TO</span> <span class="n">pattern</span> <span class="p">[</span><span class="k">ESCAPE</span> <span class="k">escape</span><span class="o">-</span><span class="nb">character</span><span class="p">]</span>
-</span><span class='line'><span class="n">string</span> <span class="k">NOT</span> <span class="k">SIMILAR</span> <span class="k">TO</span> <span class="n">pattern</span> <span class="p">[</span><span class="k">ESCAPE</span> <span class="k">escape</span><span class="o">-</span><span class="nb">character</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>它和LIKE非常类似，支持LIKE的通配符(&#8216;_&#8217;和&#8217;%&#8217;)且保持其原意。除此之外，SIMILAR TO还支持一些自己独有的元字符，如：</p>
-
-<ol>
-<li><p>| 标识选择(两个候选之一)。</p></li>
-<li><ul>
-<li>表示重复前面的项零次或更多次。</li>
-</ul>
-</li>
-<li><ul>
-<li>表示重复前面的项一次或更多次。</li>
-</ul>
-</li>
-<li><p>可以使用圆括弧()把项组合成一个逻辑项。</p></li>
-<li><p>一个方括弧表达式[&#8230;]声明一个字符表，就像POSIX正则表达式一样。</p></li>
-</ol>
-
-
-<p>见如下示例：</p>
-
-<pre><code>'abc' SIMILAR TO 'abc'            -- true
-'abc' SIMILAR TO 'a'              -- false
-'abc' SIMILAR TO '%(b|d)%'        -- true
-'abc' SIMILAR TO '(b|c)%'         -- false
-</code></pre>
-
-<p>带三个参数的substring，substring(string from pattern for escape-character)，提供了一个从字串中抽取一个匹配SQL正则表达式模式的子字串的函数。和SIMILAR TO一样，声明的模式必须匹配整个数据串，否则函数失效并返回NULL。为了标识在成功的时候应该返回的模式部分，模式必须出现后跟双引号(&#8220;)的两个转 义字符。匹配这两个标记之间的模式的字串将被返回，如：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SELECT</span> <span class="k">substring</span><span class="p">(</span><span class="s1">&#39;foobar&#39;</span> <span class="k">from</span> <span class="s1">&#39;%#&quot;o_b#&quot;%&#39;</span> <span class="k">FOR</span> <span class="s1">&#39;#&#39;</span><span class="p">);</span> <span class="c1">-- oob</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>用于日期/时间格式化的模式</h4>
-
-<pre><code>模式    描述
-HH     一天的小时数(01-12)
-HH12   一天的小时数(01-12)
-HH24   一天的小时数(00-23)
-MI     分钟(00-59)
-SS     秒(00-59)
-MS     毫秒(000-999)
-US     微秒(000000-999999)
-AM     正午标识(大写)
-Y,YYY  带逗号的年(4和更多位)
-YYYY   年(4和更多位)
-YYY    年的后三位
-YY     年的后两位
-Y      年的最后一位
-MONTH  全长大写月份名(空白填充为9字符)
-Month  全长混合大小写月份名(空白填充为9字符)
-month  全长小写月份名(空白填充为9字符)
-MON    大写缩写月份名(3字符)
-Mon    缩写混合大小写月份名(3字符)
-mon    小写缩写月份名(3字符)
-MM     月份号(01-12)
-DAY    全长大写日期名(空白填充为9字符)
-Day    全长混合大小写日期名(空白填充为9字符)
-day    全长小写日期名(空白填充为9字符)
-DY     缩写大写日期名(3字符)
-Dy     缩写混合大小写日期名(3字符)
-dy     缩写小写日期名(3字符)
-DDD    一年里的日子(001-366)
-DD     一个月里的日子(01-31)
-D      一周里的日子(1-7；周日是1)
-W      一个月里的周数(1-5)(第一周从该月第一天开始)
-WW     一年里的周数(1-53)(第一周从该年的第一天开始)
-</code></pre>
-
-<h3>五 日期/时间函数</h3>
-
-<p>当前时间： <code>localtime</code>, <code>localtimestamp</code>, <code>now()</code>, <code>current_time</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">localtime</span><span class="p">,</span> <span class="k">localtimestamp</span><span class="p">,</span> <span class="n">now</span><span class="p">(),</span> <span class="k">current_time</span><span class="p">;</span>
-</span><span class='line'><span class="c1">--00:06:12.109832 | 2014-01-29 00:06:12.109832 | 2014-01-29 00:06:12.109832+08 | 00:06:12.109832+08</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当前日期： <code>current_date</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">current_date</span><span class="p">;</span> <span class="c1">-- 2014-01-28</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当前日期和时间： <code>current_timestamp</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">current_timestamp</span><span class="p">;</span> <span class="c1">-- 2014-01-28 23:40:14.761216+08</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>获取子域： <code>date_part(text, timestamp)</code>, 等同于 <code>extract(field from timestamp)</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">,</span>   <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 2014</span>
-</span><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;month&#39;</span><span class="p">,</span>  <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 1</span>
-</span><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;day&#39;</span><span class="p">,</span>    <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 28</span>
-</span><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;week&#39;</span><span class="p">,</span>   <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 5</span>
-</span><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;hour&#39;</span><span class="p">,</span>   <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 23</span>
-</span><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;minute&#39;</span><span class="p">,</span> <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 40</span>
-</span><span class='line'><span class="k">select</span> <span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;second&#39;</span><span class="p">,</span> <span class="k">timestamp</span><span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span> <span class="c1">-- 14.761216</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">select</span> <span class="k">extract</span><span class="p">(</span><span class="k">year</span> <span class="k">from</span> <span class="k">timestamp</span> <span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span>  <span class="c1">-- 2014</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>截断成指定的精度: <code>date_trunc(text, timestamp)</code></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">date_trunc</span><span class="p">(</span><span class="s1">&#39;hour&#39;</span><span class="p">,</span> <span class="k">timestamp</span> <span class="s1">&#39;2014-01-28 23:40:14.761216+08&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="c1">-- 2014-01-28 23:00:00</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Tips</h3>
-
-<hr />
-
-<p>1 BETWEEN</p>
-
-<p><code>a BETWEEN x AND y</code> 等效于 <code>a &gt;= x AND a &lt;= y</code></p>
-
-<p><code>a NOT BETWEEN x AND y</code> 等效于 <code>a &lt; x OR a &gt; y</code></p>
 
 		
-		
+		<a href="/blog/2014/01/29/postgresql-chang-yong-han-shu/" class="more-link">Continue reading &rarr;</a>
 	</div>
 
 
@@ -969,143 +1153,9 @@ WW     一年里的周数(1-53)(第一周从该年的第一天开始)
 
 <p>  这个例子可以简写成： <code>users.map(&amp;:name)</code>  ,其运行结果也是一样的</p>
 
-<h3>4 collect用法</h3>
-
-<p>  同map一样。</p>
-
-<h3>5 inject用法</h3>
-
-<p>  inject是最有魅力的一个方法，字面意思是‘注入’，可以理解为是一个具有Combines（联合、合并）功能的迭代器，比如：</p>
-
-<p> <code>[1, 2, 3, 4].inject(0) { |result, element| result + element } # =&gt; 10</code></p>
-
-<p>  inject带有一个参数和block,参数是初始值，另外给block中传递了两个值，第一个result是Combines操作的值，第二个参数element是迭代传入集合的每个元素。reslut在inject第一次执行block时把inject带的参数付值给它，该例中inject一共执行4次block，每次执行block完后，最后语句的结果再付值给result，如此循环，直到遍历数组中所有元素。我们深入这个例子看每一步执行的结果。</p>
-
-<p>  因为数组有4个元素，所以要执行4次block操作：</p>
-
-<p>  第一次操作：result=0，既等于inject带的参数；element=1，既第一个元素；</p>
-
-<p>  执行block后result + element =1，再把这个结果付值给result，所以在执行完第一次block后，result = 1。</p>
-
-<p>  第二次操作:result=1，既上次运行block后的最后一条语句的结果；element=2，既第二个元素；执行block后付值result＝3。</p>
-
-<p>  如此类推，直到最后一次执行完block，生产的值为10。就是inject的返回值了。</p>
-
-<p>  inject可以不带参数，此时result的初始值为数组元素的第一个值,element从第二个元素开始传值。所以上例可改写成：</p>
-
-<p>  <code>[2, 3, 4].inject{ |result, element| result*element } # =&gt; 24</code></p>
-
-<p>  注意：这时block执行的次数是3次！而不是4次。</p>
-
-<p>  再例如：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">array</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="o">].</span><span class="n">inject</span><span class="p">(</span><span class="o">[]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">result</span><span class="p">,</span> <span class="n">element</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">element</span><span class="o">.</span><span class="n">to_s</span> <span class="k">if</span> <span class="n">element</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="n">result</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="n">array</span> <span class="c1"># =&gt; [&quot;2&quot;, &quot;4&quot;, &quot;6&quot;]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>  注意：这个例子中第三行的result不能省略，否则会报错。</p>
-
-<p>  继续举例：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="o">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">]]</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># get the union:</span>
-</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">first</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="p">,</span><span class="n">x</span><span class="o">|</span> <span class="n">f</span> <span class="o">=</span> <span class="n">f</span> <span class="o">|</span> <span class="n">x</span> <span class="p">}</span> <span class="c1"># =&gt; [1, 2, 3, 4, 5]</span>
-</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="p">,</span><span class="n">x</span><span class="o">|</span> <span class="n">f</span> <span class="o">|</span> <span class="n">x</span> <span class="p">}</span>              <span class="c1"># =&gt; [1, 2, 3, 4, 5]</span>
-</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="ss">:|</span><span class="p">)</span>                          <span class="c1"># =&gt; [1, 2, 3, 4, 5]</span>
-</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:|</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># get the intersection:</span>
-</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">first</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="p">,</span><span class="n">x</span><span class="o">|</span> <span class="n">f</span> <span class="o">&amp;</span> <span class="n">x</span> <span class="p">}</span> <span class="c1"># =&gt; [3]</span>
-</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="p">,</span><span class="n">x</span><span class="o">|</span> <span class="n">f</span> <span class="o">&amp;</span> <span class="n">x</span> <span class="p">}</span>          <span class="c1"># =&gt; [3]</span>
-</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="ss">:&amp;</span><span class="p">)</span>                      <span class="c1"># =&gt; [3]</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:&amp;</span><span class="p">)</span>                     <span class="c1"># =&gt; [3]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>最后一个例子：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># find the longest word</span>
-</span><span class='line'><span class="n">longest</span> <span class="o">=</span> <span class="sx">%w{ cat sheep bear }</span><span class="o">.</span><span class="n">inject</span> <span class="k">do</span> <span class="o">|</span><span class="n">memo</span><span class="p">,</span><span class="n">word</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">memo</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="p">?</span> <span class="n">memo</span> <span class="p">:</span> <span class="n">word</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="n">longest</span>    <span class="c1"># =&gt; &quot;sheep&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>其它： all? 和 any?</h3>
-
-<p>all?[{|obj| block } ] → true or false</p>
-
-<p><code>all?</code>方法遍历集合中的每一个元素并传值给block，</p>
-
-<p>如果block返回结果为包含false或nil，all?方法返回false；</p>
-
-<p>如果block返回结果都为true，all?方法返回true；</p>
-
-<p>如果没有给定block，只要集合中有一个值为false或nil，那么最终结果就是false</p>
-
-<p>例如：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">all?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">}</span>   <span class="c1">#=&gt; true</span>
-</span><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">all?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">}</span>   <span class="c1">#=&gt; false</span>
-</span><span class='line'><span class="o">[</span> <span class="kp">nil</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="mi">99</span> <span class="o">].</span><span class="n">all?</span>                            <span class="c1">#=&gt; false</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>any?[{|obj| block } ] → true or false</p>
-
-<p>any?方法遍历集合中的每一个元素并传值给block，</p>
-
-<p>如果block返回结果有一个不为false或nil，any?方法返回true；</p>
-
-<p>如果没有给定block，只要集合中有一个值不为false或nil，那么最终结果就是tru</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">any?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">}</span>   <span class="c1">#=&gt; true</span>
-</span><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">any?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">}</span>   <span class="c1">#=&gt; true</span>
-</span><span class='line'><span class="o">[</span> <span class="kp">nil</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="mi">99</span> <span class="o">].</span><span class="n">any?</span>                            <span class="c1">#=&gt; true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
 
 		
-		
+		<a href="/blog/2014/01/27/ruby-de-die-dai-qi/" class="more-link">Continue reading &rarr;</a>
 	</div>
 
 
@@ -1198,294 +1248,6 @@ EventMachine、Rev（Ruby）</p>
 </div>
 	
 		<div class="comments"><a href="/blog/2014/01/27/reactor-mo-shi//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/01/27/rails-dai-li-fang-fa-delegate/">
-		
-			Rails 代理方法 Delegate</a>
-	</h2>
-	<div class="entry-content">
-		<p>通过delegate方法，在Foo对象中可以直接引用Greeter对象的方法：</p>
-
-<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Greeter</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">hello</span>
-</span><span class='line'>    <span class="s2">&quot;hello&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">goodbye</span>
-</span><span class='line'>    <span class="s2">&quot;goodbye&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Foo</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:greeter</span>
-</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:greeter</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">hello</span>   <span class="c1"># =&gt; &quot;hello&quot;</span>
-</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">goodbye</span> <span class="c1"># =&gt; NoMethodError: undefined method `goodbye&#39; for #&lt;Foo:0x1af30c&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Multiple delegates to the same target are allowed:</p>
-
-<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:greeter</span>
-</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:goodbye</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:greeter</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">hello</span>   <span class="c1"># =&gt; &quot;hello&quot;</span>
-</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">goodbye</span> <span class="c1"># =&gt; &quot;goodbye&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>delegate方法首先检查传入的参数，正确参数形式为:method1, :method2, &#8230;, :methodN, :to => klass[, :prefix => prefix]</p>
-
-<p>delegate要求参数的最后必须是一个Hash，
-:to表示需要代理的类，:prefix表示代理的方法是否要加前缀，
-如果:prefix => true，则代理的方法名为klass_method1, klass_method2, &#8230;, klass_methodN，</p>
-
-<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'> <span class="n">delegate</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:goodbye</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:greeter</span><span class="p">,</span> <span class="ss">:prefix</span> <span class="o">=&gt;</span> <span class="kp">true</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">greeter_hello</span>   <span class="c1"># =&gt; &quot;hello&quot;  </span>
-</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">greeter_goodbye</span> <span class="c1"># =&gt; &quot;goodbye&quot;  </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果:prefix => prefix (prefix为string)，则代理的方法名为prefix_method1, prefix_method2, &#8230;, prefix_methodN。</p>
-
-<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Foo</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
-</span><span class='line'>  <span class="n">delegate</span> <span class="ss">:hello</span><span class="p">,</span> <span class="ss">:goodbye</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="ss">:greeter</span><span class="p">,</span> <span class="ss">:prefix</span> <span class="o">=&gt;</span> <span class="ss">:foo</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">foo_hello</span>   <span class="c1"># =&gt; &quot;hello&quot;  </span>
-</span><span class='line'><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">foo_goodbye</span> <span class="c1"># =&gt; &quot;goodbye&quot;  </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-27T18:58:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>Rails</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2014/01/27/rails-dai-li-fang-fa-delegate//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/01/27/controller-zhong-shi-yong-helper/">
-		
-			Controller 中使用 Helper</a>
-	</h2>
-	<div class="entry-content">
-		<p>helper方法默认只能在view层调用（比如strip_tags方法）。如果想要在controller或model中使用，有两中方法：</p>
-
-<h3>方法一：</h3>
-
-<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>    <span class="ss">ActionController</span><span class="p">:</span><span class="ss">:Base</span><span class="o">.</span><span class="n">helpers</span><span class="o">.</span><span class="n">strip_tags</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>方法二：</h3>
-
-<p>用代理delegate</p>
-
-<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="n">delegate</span> <span class="s2">&quot;strip_tags&quot;</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">&quot;ActionController::Base.helpers&quot;</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
-</span><span class='line'>    <span class="n">strip_tags</span><span class="p">(</span><span class="s2">&quot;html...&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-27T18:54:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>Rails</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2014/01/27/controller-zhong-shi-yong-helper//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/01/27/rails-xiao-keng/">
-		
-			Rails 小坑</a>
-	</h2>
-	<div class="entry-content">
-		<p>我在一个controller中定义了一个action，在这个action的最后：</p>
-
-<figure class='code'><figcaption><span>Ruby代码: </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">redirect_to</span> <span class="ss">:action</span> <span class="o">=&gt;</span> <span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="ss">:id</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:term_id</span><span class="o">]</span> <span class="p">,</span> <span class="ss">:data_type</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:data_type</span><span class="o">]</span><span class="p">,</span> <span class="ss">:specialty</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:specialty</span><span class="o">]</span><span class="p">,</span>
-</span><span class='line'>                <span class="ss">:norm_series</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:norm_series</span><span class="o">]</span><span class="p">,</span> <span class="ss">:range_from</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:range_from</span><span class="o">]</span><span class="p">,</span> <span class="ss">:range_to</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:range_to</span><span class="o">]</span><span class="p">,</span>
-</span><span class='line'>                <span class="ss">:top_type</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:top_type</span><span class="o">]</span><span class="p">,</span> <span class="ss">:sub_type</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:sub_type</span><span class="o">]</span><span class="p">,</span> <span class="ss">:review_type</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:review_type</span><span class="o">]</span><span class="p">,</span>
-</span><span class='line'>                <span class="ss">:status</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:status</span><span class="o">]</span><span class="p">,</span> <span class="ss">:page_size</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:page_size</span><span class="o">]</span> <span class="o">||</span> <span class="mi">20</span><span class="p">,</span> <span class="ss">:page</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:page</span><span class="o">]</span> <span class="o">||</span> <span class="mi">1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当这个页面执行完以后，没有转到‘show’页面，却进入了一个空白的页面，这个页面只有一句话：</p>
-
-<p>You are being redirected.</p>
-
-<p>点击 &#8216;redirected&#8217; 以后，页面才跳转到&#8217;show&#8217; 页面，百思不得其姐。</p>
-
-<p>最后通过查资料和自己思考终于知道原因了，关键在于后面的堆参数，其中有个 status 变量。哈哈~</p>
-
-<p>说到这里你应该能猜到原因了吧。</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-27T12:03:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>Rails</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2014/01/27/rails-xiao-keng//index.html#disqus_thread">Comments</a></div>
 	
 </div></article>
 
