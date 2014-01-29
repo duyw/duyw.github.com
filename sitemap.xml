@@ -83,10 +83,6 @@
         <lastmod>2014-01-29T19:39:04+08:00</lastmod>
     </url>
     <url>
-        <loc>http://duyw.github.io/blog/2013/05/02/rails-engine/</loc>
-        <lastmod>2013-05-02T17:29:08+08:00</lastmod>
-    </url>
-    <url>
         <loc>http://duyw.github.io/blog/2013/05/03/install-gem-without-ri-and-rdoc/</loc>
         <lastmod>2013-07-31T18:17:13+08:00</lastmod>
     </url>
@@ -142,15 +138,15 @@
         <loc>
             http://duyw.github.io/blog/2014/01/28/railszhong-cao-zuo-sqlite3shu-ju-ku-su-du-man-de-wen-ti/
         </loc>
-        <lastmod>2014-01-28T13:09:16+08:00</lastmod>
+        <lastmod>2014-01-30T00:25:42+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2014/01/28/postgresql-zi-duan-fen-ge-fen-zu/</loc>
-        <lastmod>2014-01-28T20:54:34+08:00</lastmod>
+        <lastmod>2014-01-30T00:20:05+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2014/01/29/postgresql-chang-yong-han-shu/</loc>
-        <lastmod>2014-01-29T20:09:54+08:00</lastmod>
+        <lastmod>2014-01-30T00:18:27+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2014/01/29/ru-he-zhi-zuo-gembao/</loc>
@@ -162,11 +158,11 @@
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2014/01/29/zheng-que-shi-yong-labelbiao-qian/</loc>
-        <lastmod>2014-01-29T20:48:37+08:00</lastmod>
+        <lastmod>2014-01-30T00:26:08+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/blog/archives/</loc>
-        <lastmod>2014-01-29T20:48:37+08:00</lastmod>
+        <lastmod>2014-01-30T00:26:08+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/about/</loc>
@@ -178,6 +174,6 @@
     </url>
     <url>
         <loc>http://duyw.github.io/</loc>
-        <lastmod>2014-01-29T20:48:37+08:00</lastmod>
+        <lastmod>2014-01-30T00:26:08+08:00</lastmod>
     </url>
 </urlset>

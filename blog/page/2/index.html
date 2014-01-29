@@ -842,35 +842,40 @@ gem: --no-ri --no-rdoc
     <article class="post">
 	<h2 class="title">
 		
-		<a href="/blog/2013/05/02/rails-engine/">
+		<a href="/blog/2013/05/02/mongodb-quick-tips/">
 		
-			Rails Engine</a>
+			MongoDB Quick Tips</a>
 	</h2>
 	<div class="entry-content">
-		<h3>1. Engine是什么？</h3>
+		<h3>1. 介绍</h3>
 
-<p>Engine 可以被看作是（一个）微型的rails应用程序。其提供（一些额外的）功能给它们的宿主程序（host applications）。</p>
+<p>　　一个mongod服务可以有建立多个数据库，每个数据库可以有多张表，这里的表名叫collection，每个collection可以存放多个文档（document），每个文档都以BSON（binary json）的形式存放于硬盘中，因此可以存储比较复杂的数据类型。它是以单文档为单位存储的，你可以任意给一个或一批文档新增或删除字段，而不会对其它文档造成影响，这就是所谓的schema-free，这也是文档型数据库最主要的优点。跟一般的key-value数据库不一样的是，它的value中存储了结构信息，所以你又可以像关系型数据库那样对某些域进行读写、统计等操作。Mongo最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。Mongo还可以解决海量数据的查询效率，根据官方文档，当数据量达到50GB以上数据时，Mongo数据库访问速度是MySQL10 倍以上。</p>
 
-<p>一个 Rails 应用程序实际上就是一个 “加强版”（supercharged） engine，因为 Rails::Application 继承了来自 Rails::Engine 的更多习惯。</p>
+<h4>BSON</h4>
 
-<p>Engine 也可以与他们的宿主程序相互隔离。controllers， models 和 table也是名称空间化的。</p>
+<p>　　BSON是Binary JSON 的简称，是一个JSON文档对象的二进制编码格式。BSON同JSON一样支持往其它文档对象和数组中再插入文档对象和数组，同时扩展了JSON的数据类型。如：BSON有Date类型和BinDate类型。</p>
 
-<p>可以简单的理解为 Engine 是对宿主程序的一个拓展、加强。典型的Engine案例有<a href="https://github.com/plataformatec/devise">Devise</a>、<a href="https://github.com/radar/forem">Forem</a>、<a href="https://github.com/resolve/refinerycms">Refinerycms</a>等。</p>
+<p>　　BSON被比作二进制的交换格式，如同Protocol Buffers，但BSON比它更“schema-less”，非常好的灵活性但空间占用稍微大一点。</p>
 
-<h3>2. 创建一个Engine</h3>
+<p>BSON有以下三个特点：</p>
 
-<p>本文以创建一个基于 rails3.2 的 Engine 为例，命令：</p>
+<p>1． 轻量级</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rails plugin new my_engine --full --mountable</span></code></pre></td></tr></table></div></figure>
+<p>2． 跨平台</p>
 
+<p>3． 效率高</p>
 
-<p><code>--full</code>:  创建一个完整的，等同rails项目的目录结构。</p>
+<h4>命名空间</h4>
 
-<p><code>--mountable</code>: 选项告诉创建器去挂载 engine 到在 engine 中的 test/dummy 的模拟（dummy）测试程序。在dummy的 config/routes.rb 加入内容：<code>mount MyEngine::Engine =&gt; "/my_engine"</code></p>
+<p>　　MongoDB存储BSON对象到collections,这一系列的数据库名和collection名被称为一个命名空间。如同：java.util.List;用来管理数据库中的数据。</p>
+
+<h4>索引</h4>
+
+<p>　　mongodb可以对某个字段建立索引，可以建立组合索引、唯一索引，也可以删除索引，建立索引就意味着增加空间开销。默认情况下每个表都会有一个唯一索引：<em>id，如果插入数据时没有指定</em>id，服务会自动生成一个<em>id，为了充分利用已有索引，减少空间开销，最好是自己指定一个unique的key为</em>id，通常用对象的ID比较合适，比如商品的ID。</p>
+
 
 		
-		
+		<a href="/blog/2013/05/02/mongodb-quick-tips/" class="more-link">Continue reading &rarr;</a>
 	</div>
 
 
@@ -887,16 +892,16 @@ gem: --no-ri --no-rdoc
   
 
 
-<time datetime="2013-05-02T15:55:00+08:00" pubdate data-updated="true">May 2<span>nd</span>, 2013</time></div>
+<time datetime="2013-05-02T11:04:00+08:00" pubdate data-updated="true">May 2<span>nd</span>, 2013</time></div>
 	<div class="tags">
 
 
-	<a class='category' href='/blog/categories/engine/'>Engine</a>, <a class='category' href='/blog/categories/rails engine/'>Rails Engine</a>, <a class='category' href='/blog/categories/rails/'>Rails</a>
+	<a class='category' href='/blog/categories/mongodb/'>MongoDB</a>, <a class='category' href='/blog/categories/database/'>数据库</a>
 
 
 </div>
 	
-		<div class="comments"><a href="/blog/2013/05/02/rails-engine//blog/page/2/index.html#disqus_thread">Comments</a></div>
+		<div class="comments"><a href="/blog/2013/05/02/mongodb-quick-tips//blog/page/2/index.html#disqus_thread">Comments</a></div>
 	
 </div></article>
 
