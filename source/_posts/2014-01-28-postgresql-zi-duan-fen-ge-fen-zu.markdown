@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "Postgresql 字段分割分组"
+title: "PostgreSQL 字段分割分组"
 date: 2014-01-28 20:43
 comments: true
 categories: 
 - 数据库{database}
-- Postgresql{postgresql}
+- PostgreSQL{postgresql}
 ---
 
 原始： 在import_products中的location_prices字段存储内容：

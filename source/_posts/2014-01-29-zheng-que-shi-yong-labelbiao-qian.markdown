@@ -4,7 +4,7 @@ title: "正确使用label标签"
 date: 2014-01-29 20:34
 comments: true
 categories: 
-- HTML {html}
+- HTML{html}
 ---
 
 表单中使用 checkbox 的时候，经常见到这样这样的写法：

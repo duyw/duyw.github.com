@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "Postgresql 常用函数"
+title: "PostgreSQL 常用函数"
 date: 2014-01-29 00:09
 comments: true
 categories: 
 - 数据库{database}
-- Postgresql{postgresql}
+- PostgreSQL{postgresql}
 ---
 
 

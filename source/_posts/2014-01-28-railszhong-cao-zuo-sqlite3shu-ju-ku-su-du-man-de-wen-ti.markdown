@@ -4,7 +4,7 @@ title: "Rails中操作Sqlite3数据库速度慢的问题"
 date: 2014-01-28 12:58
 comments: true
 categories: 
-- Rails {rails}
+- Rails{rails}
 - 数据库{database}
 - Sqlite3{sqlite3}
 ---
