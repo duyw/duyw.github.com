@@ -5,7 +5,7 @@ date: 2013-04-04 22:41
 comments: true
 categories: 
 - Ubuntu{ubuntu}
-- Sublime Text 2{sublime text 2}
+- Sublime Text 2{sublime_text_2}
 ---
 
 Sublime Text 2 是一款非常优秀的编辑器，可以媲美苹果系统下的TextMate，用Sublime Text 2 进行RoR开发是一件很惬意的事，在Ubuntu12.04系统下安装步骤如下：
