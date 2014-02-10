@@ -4,7 +4,7 @@
   <title><![CDATA[杜永文 博客]]></title>
   <link href="http://duyw.github.io/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-01-30T00:26:13+08:00</updated>
+  <updated>2014-02-10T18:51:08+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -12,6 +12,317 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[RubyGems 笔记之一]]></title>
+    <link href="http://duyw.github.io/blog/2014/02/10/rubygems-bi-ji-zhi-yi/"/>
+    <updated>2014-02-10T18:46:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/02/10/rubygems-bi-ji-zhi-yi</id>
+    <content type="html"><![CDATA[<h2>简介：</h2>
+
+<hr />
+
+<ol>
+<li><p>ruby的软件包称为 &#8216;gem&#8217;, 类似与java的jar包。ruby的gem包用来拓展或修改ruby应用程序的函数，通常将一些可复用的函数打包成gem，作为库与方便与其他开发者共享。有的gem提供了命令行工具来实现 automate tasks ，提升你的工作效率。</p></li>
+<li><p>RubyGems是用于管理gem工具，可以方便的下载、安装、使用和卸载gem。</p></li>
+<li><p><code>gem</code> 命令用于管理RubyGems。Ruby1.9 以及后来的版本都默认集成了RubyGmes，安装完ruby以后，就可以直接使用 gem 命令。</p></li>
+</ol>
+
+
+<h2>使用</h2>
+
+<hr />
+
+<h3>一、 查找Gems：</h3>
+
+<p><code>search</code> 命令用于查找远程的gem包。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>╭─# ivan@ubuntu in ~/private/19wu ‹ruby-2.0.0@19wu›  
+</span><span class='line'>╰─$ gem searc\^rails  
+</span><span class='line'>
+</span><span class='line'>*** REMOTE GEMS ***
+</span><span class='line'>
+</span><span class='line'>rails (4.0.2)
+</span><span class='line'>rails-3-settings (0.1.1)
+</span><span class='line'>rails-action-args (0.1.1)
+</span><span class='line'>rails-admin (0.0.0)
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>-d</code> 参数可以查看更加详细的信息：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>╭─# ivan@ubuntu in ~/private/19wu ‹ruby-2.0.0@19wu›  
+</span><span class='line'>╰─$ gem search  \^rails\$ -d
+</span><span class='line'>
+</span><span class='line'>*** REMOTE GEMS ***
+</span><span class='line'>
+</span><span class='line'>rails (4.0.2)
+</span><span class='line'>    Author: David Heinemeier Hansson
+</span><span class='line'>    Homepage: http://www.rubyonrails.org
+</span><span class='line'>
+</span><span class='line'>    Full-stack web application framework.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其他参数， 参考 <code>gem search --help</code></p>
+
+<h3>二、 安装Gems</h3>
+
+<p><code>install</code> 命令用于安装gems。</p>
+
+<p>例如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install rails -v= 4.0 --no-rdoc --no-ri</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>三、Requiring code</h3>
+
+<p>RubyGems 修改了Ruby的加载路径，并且控制如何查找require进来的ruby代码。当require一个gem的时候，会将这个gem的路径添加到全局变量<code>$LOAD_PATH</code>中。</p>
+
+<p>在启动irb的时候，通过 <code>-r</code> 参数可以指定要加载的gem：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>╭─# ivan@ubuntu in ~/private/19wu ‹ruby-2.0.0@19wu›  
+</span><span class='line'>╰─$ irb -rpp 
+</span><span class='line'>irb(main):001:0&gt;  pp $LOAD_PATH
+</span><span class='line'>["/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/site_ruby/2.0.0",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/site_ruby/2.0.0/i686-linux",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/site_ruby",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/vendor_ruby/2.0.0",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/vendor_ruby/2.0.0/i686-linux",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/vendor_ruby",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/2.0.0",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/2.0.0/i686-linux"]
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>默认只加载几个必要的标准库，如果要加载指定的gem：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>╭─# ivan@ubuntu in ~/private/19wu ‹ruby-2.0.0@19wu›  
+</span><span class='line'>╰─$ irb -rpp 
+</span><span class='line'>irb(main):001:0&gt; require 'rails'
+</span><span class='line'>=&gt; true
+</span><span class='line'>irb(main):002:0&gt;  pp $LOAD_PATH
+</span><span class='line'>["/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/i18n-0.6.5/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/multi_json-1.7.9/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/tzinfo-0.3.37/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/atomic-1.1.12/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/thread_safe-0.1.2/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/activesupport-4.0.0/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/builder-3.1.4/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/rack-1.5.2/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/rack-test-0.6.2/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/erubis-2.7.0/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/actionpack-4.0.0/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/thor-0.18.1/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/railties-4.0.0/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/json-1.8.0/lib",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/site_ruby/2.0.0",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/site_ruby/2.0.0/i686-linux",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/site_ruby",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/vendor_ruby/2.0.0",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/vendor_ruby/2.0.0/i686-linux",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/vendor_ruby",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/2.0.0",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/2.0.0/i686-linux"]
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>注意： 如果您使用的是 ruby 1.8 版本，在引入任何gem之前，需要先引入 rubygems： <code>require 'rubygems'</code>，在某gem所在目录的lib目录下，必须存在一个rb文件和一个目录，要求名称和gem的名称一致。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>% tree freewill/
+</span><span class='line'>freewill/
+</span><span class='line'>└── lib/
+</span><span class='line'>    ├── freewill/
+</span><span class='line'>    │   ├── user.rb
+</span><span class='line'>    │   ├── widget.rb
+</span><span class='line'>    │   └── ...
+</span><span class='line'>    └── freewill.rb</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>四、 列举出所有已经安装好的gem</h3>
+
+<p><code>list</code> 命令可以列举出所有已经安装好个gem</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>╭─# ivan@ubuntu in ~/private/19wu ‹ruby-2.0.0›  
+</span><span class='line'>╰─$ gem list
+</span><span class='line'>
+</span><span class='line'>*** LOCAL GEMS ***
+</span><span class='line'>
+</span><span class='line'>bigdecimal (1.2.0)
+</span><span class='line'>gem-wrappers (1.2.4)
+</span><span class='line'>io-console (0.4.2)
+</span><span class='line'>json (1.7.7)
+</span><span class='line'>minitest (4.3.2)
+</span><span class='line'>psych (2.0.0)
+</span><span class='line'>rake (0.9.6)
+</span><span class='line'>rdoc (4.0.0)
+</span><span class='line'>test-unit (2.0.0.0)
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>五、 卸载Gems</h3>
+
+<p><code>uninstall</code> 命令用于卸载已经安装的gem包。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gem uninstall drip
+</span><span class='line'>Successfully uninstalled drip-0.0.2</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你要卸载一个被其他gem依赖的gem，会要求进行确认：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gem uninstall rbtree
+</span><span class='line'>
+</span><span class='line'>You have requested to uninstall the gem:
+</span><span class='line'>  rbtree-0.4.1
+</span><span class='line'>
+</span><span class='line'>drip-0.0.2 depends on rbtree (&gt;= 0)
+</span><span class='line'>If you remove this gem, these dependencies will not be met.
+</span><span class='line'>Continue with Uninstall? [yN]  n
+</span><span class='line'>ERROR:  While executing gem ... (Gem::DependencyRemovalException)
+</span><span class='line'>    Uninstallation aborted due to dependent gem(s)</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>六、 查看gem文档</h3>
+
+<p><code>ri</code> 命令可以用于查看gem的文档。或者运行 <code>gem server</code> 通过浏览器查看</p>
+
+<h3>七、 Fetching and Unpacking Gems</h3>
+
+<p>如果你仅仅想获取并查看一个gem的内容，可以通过<code>fetch</code>和<code>unpack</code>命令来实现：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>╭─# ivan@ubuntu in ~/private/temp ‹ruby-1.8.7@rails304›  
+</span><span class='line'>╰─$ gem fetch json
+</span><span class='line'>Fetching: json-1.1.5-x86-linux.gem (100%)
+</span><span class='line'>Downloaded json-1.1.5-x86-linux
+</span><span class='line'>
+</span><span class='line'>╭─# ivan@ubuntu in ~/private/temp ‹ruby-1.8.7@rails304›  
+</span><span class='line'>╰─$ ls   
+</span><span class='line'>json-1.1.5-x86-linux.gem
+</span><span class='line'>
+</span><span class='line'>╭─# ivan@ubuntu in ~/private/temp ‹ruby-1.8.7@rails304›  
+</span><span class='line'>╰─$ gem unpack json-1.1.5-x86-linux.gem 
+</span><span class='line'>Unpacked gem: '/home/ivan/private/temp/json-1.1.5-x86-linux'
+</span><span class='line'>
+</span><span class='line'>╭─# ivan@ubuntu in ~/private/temp ‹ruby-1.8.7@rails304›  
+</span><span class='line'>╰─$ ls
+</span><span class='line'>json-1.1.5-x86-linux  json-1.1.5-x86-linux.gem</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上内容参考：</p>
+
+<p>(http://guides.rubygems.org/rubygems-basics/)[http://guides.rubygems.org/rubygems-basics/]</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[正确使用label标签]]></title>
@@ -1706,451 +2017,6 @@ gem: --no-ri --no-rdoc
 </code></pre>
 
 <p>大功告成~</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MongoDB Quick Tips]]></title>
-    <link href="http://duyw.github.io/blog/2013/05/02/mongodb-quick-tips/"/>
-    <updated>2013-05-02T11:04:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/05/02/mongodb-quick-tips</id>
-    <content type="html"><![CDATA[<h3>1. 介绍</h3>
-
-<p>　　一个mongod服务可以有建立多个数据库，每个数据库可以有多张表，这里的表名叫collection，每个collection可以存放多个文档（document），每个文档都以BSON（binary json）的形式存放于硬盘中，因此可以存储比较复杂的数据类型。它是以单文档为单位存储的，你可以任意给一个或一批文档新增或删除字段，而不会对其它文档造成影响，这就是所谓的schema-free，这也是文档型数据库最主要的优点。跟一般的key-value数据库不一样的是，它的value中存储了结构信息，所以你又可以像关系型数据库那样对某些域进行读写、统计等操作。Mongo最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。Mongo还可以解决海量数据的查询效率，根据官方文档，当数据量达到50GB以上数据时，Mongo数据库访问速度是MySQL10 倍以上。</p>
-
-<h4>BSON</h4>
-
-<p>　　BSON是Binary JSON 的简称，是一个JSON文档对象的二进制编码格式。BSON同JSON一样支持往其它文档对象和数组中再插入文档对象和数组，同时扩展了JSON的数据类型。如：BSON有Date类型和BinDate类型。</p>
-
-<p>　　BSON被比作二进制的交换格式，如同Protocol Buffers，但BSON比它更“schema-less”，非常好的灵活性但空间占用稍微大一点。</p>
-
-<p>BSON有以下三个特点：</p>
-
-<p>1． 轻量级</p>
-
-<p>2． 跨平台</p>
-
-<p>3． 效率高</p>
-
-<h4>命名空间</h4>
-
-<p>　　MongoDB存储BSON对象到collections,这一系列的数据库名和collection名被称为一个命名空间。如同：java.util.List;用来管理数据库中的数据。</p>
-
-<h4>索引</h4>
-
-<p>　　mongodb可以对某个字段建立索引，可以建立组合索引、唯一索引，也可以删除索引，建立索引就意味着增加空间开销。默认情况下每个表都会有一个唯一索引：<em>id，如果插入数据时没有指定</em>id，服务会自动生成一个<em>id，为了充分利用已有索引，减少空间开销，最好是自己指定一个unique的key为</em>id，通常用对象的ID比较合适，比如商品的ID。</p>
-
-<!-- more -->
-
-
-<h3>2. 安装</h3>
-
-<p>Linux系统下有两种安装方式:</p>
-
-<h4>第一种：下载二进制包，然后解压到相应目录即可。</h4>
-
-<ol>
-<li><p>直接到<a href="http://www.mongodb.org/downloads">官网</a>下载二进制包，下载以后是一个tgz文件。</p>
-
-<p> <code>curl http://downloads.mongodb.org/linux/mongodb-linux-i686-2.4.3.tgz &gt; mongodb.tgz</code></p></li>
-<li><p>将文件解压到指定目录</p>
-
-<p><code>tar -zxvf mongodb.tgz</code></p>
-
-<p>重命名：</p>
-
-<p><code>cp -R -n  mongodb-linux-????-??-??/ mongodb</code></p></li>
-</ol>
-
-
-<p>在 mongodb/bin 目录下可以看到和MongoDB相关的一些二进制文件包括 mongod 等。</p>
-
-<p>到此为止MongoDB已经安装完成，接下来开始使用MongoDB：</p>
-
-<p>在第一次启动mongdod的时候，需要创建存放数据文件的目录，默认的目录是 <code>/data/db/</code></p>
-
-<p>首先创建这个目录： <code>mkdir -p /data/db</code></p>
-
-<blockquote><p>注意：</p>
-
-<p>要确保运行 mongod 进程的系统用户对改目录拥有读写权限。</p>
-
-<p>如果 mongod 运行在 mongo 用户帐号下，可以使用 <code>chown mongo /data/db</code> 命令来更改该目录的拥有者。</p></blockquote>
-
-<p>至此，我们已经可以运行 mongod ，也可以通过 mongo 命令来链接到数据库，前提是这两个命令要在 MongoDB 的安装目录下的bin目录下执行。</p>
-
-<p>如果要直接使用这两个命令，需要将它们添加到系统的环境变量里面去，方法是在bin目录下执行</p>
-
-<p><code>sudo cp mongo /usr/bin/</code></p>
-
-<p>之后就可以在任意目录使用 mongo 命令了。</p>
-
-<p>将mongodb 加入到开机启动,</p>
-
-<p><code>sudo gedit /etc/rc.local</code></p>
-
-<p>编辑 rc.local 加入</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#add mongonDB service 
-</span><span class='line'>
-</span><span class='line'>rm -rf /data/mongodb_data/* && /usr/local/mongodb/bin/mongod –dbpath=/data/mongodb_data/ –logpath=/data/mongodb_log/mongodb.log –logappend& </span></code></pre></td></tr></table></div></figure>
-
-
-<p>注意.地址可能需要修改。</p>
-
-<h4>第二种：通过命令行安装。</h4>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install mongodb</span></code></pre></td></tr></table></div></figure>
-
-
-<p>该命令会安装以下软件包：</p>
-
-<pre><code>mongodb-clients
-mongodb-dev
-mongodb-server
-mongodb
-</code></pre>
-
-<p>安装完成以后会生成以下文件：</p>
-
-<pre><code>数据文件： /var/lib/mongodb
-日志文件： /var/log/mongodb/mongodb.log
-服务脚本： /etc/init.d/mongodb
-配置文件： /etc/mongodb.conf
-</code></pre>
-
-<p>如果要修改启动选项可以直接修改这个文件。</p>
-
-<p>安装完成以后会在系统中新建一个用户 mongodb，会用这个用户帐号来启动 MongodDB，</p>
-
-<p>MongodDB默认使用27017端口,通过 <code>netstat -tlunp | grep 27017</code> 可以查看到进程。</p>
-
-<p>如果要以其他用户来运行Mongodb，需要修改 /var/lib/mongodb 和 /var/log/mongodb的权限。</p>
-
-<p>可以通过命令 <code>sudo service mongodb start/stop/restart/status</code> 来控制mongod进程。</p>
-
-<h3>3. 使用</h3>
-
-<p>打开终端，输入 mongo 命令，连接到MongoDB数据库：</p>
-
-<pre><code>╭─# ivan@ubuntu in ~/work ‹ruby-1.8.7@rails304›  
-╰─$ mongo
-MongoDB shell version: 2.0.4
-connecting to: test
-&gt; 
-</code></pre>
-
-<h3>简单操作命令：</h3>
-
-<ul>
-<li>进入数据库 admin：</li>
-</ul>
-
-
-<p><code>use admin</code></p>
-
-<ul>
-<li>增加或修改用户密码：</li>
-</ul>
-
-
-<p><code>db.addUser('name','pwd')</code></p>
-
-<ul>
-<li>查看用户列表</li>
-</ul>
-
-
-<p><code>db.system.users.find()</code></p>
-
-<ul>
-<li>用户认证</li>
-</ul>
-
-
-<p><code>db.auth('name','pwd')</code></p>
-
-<ul>
-<li>删除用户</li>
-</ul>
-
-
-<p><code>db.removeUser('name')</code></p>
-
-<ul>
-<li>查看所有用户</li>
-</ul>
-
-
-<p><code>show users</code></p>
-
-<ul>
-<li>查看所有数据库</li>
-</ul>
-
-
-<p><code>show dbs</code></p>
-
-<ul>
-<li>查看所有的 collection</li>
-</ul>
-
-
-<p><code>show collections</code></p>
-
-<ul>
-<li>查看各 collection 的状态</li>
-</ul>
-
-
-<p><code>db.printCollectionStats()</code></p>
-
-<ul>
-<li>查看主从复制状态</li>
-</ul>
-
-
-<p><code>db.printReplicationInfo()</code></p>
-
-<ul>
-<li>修复数据库</li>
-</ul>
-
-
-<p><code>db.repairDatabase()</code></p>
-
-<ul>
-<li>设置记录 profiling，0=off 1=slow 2=all</li>
-</ul>
-
-
-<p><code>db.setProfilingLevel(1)</code></p>
-
-<ul>
-<li>查看profiling</li>
-</ul>
-
-
-<p><code>show profile</code></p>
-
-<ul>
-<li>拷贝数据库</li>
-</ul>
-
-
-<p><code>db.copyDatabase('mail_addr','mail_addr_tmp')</code></p>
-
-<ul>
-<li>删除 collection</li>
-</ul>
-
-
-<p><code>db.mail_addr.drop()</code></p>
-
-<ul>
-<li>删除当前的数据库</li>
-</ul>
-
-
-<p><code>db.dropDatabase()</code></p>
-
-<h3>增删改</h3>
-
-<ul>
-<li>存储嵌套的对象</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.save({'name':'ysz','address':{'city':'beijing','post':100096},'phone':[138,139]})</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>存储数组对象</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.user_addr.save({'Uid':'yushunzhi@sohu.com','Al':['test-1@sohu.com','test-2@sohu.com']})</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>根据query条件修改，如果不存在则插入，允许修改多条记录</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.update({'yy':5},{'$set':{'xx':2}},upsert=true,multi=true)</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>删除yy=5的记录</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.remove({'yy':5})</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>删除所有的记录</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.remove()</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>索引</h3>
-
-<ul>
-<li>增加索引：1(ascending),-1(descending)</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.ensureIndex({firstname: 1, lastname: 1}, {unique: true});</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>索引子对象</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.user_addr.ensureIndex({'Al.Em': 1})</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>查看索引信息</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.getIndexes()
-</span><span class='line'>db.foo.getIndexKeys()</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>根据索引名删除索引</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.user_addr.dropIndex('Al.Em_1')</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>查询</h3>
-
-<ul>
-<li>查找所有</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.find()</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>查找一条记录</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.findOne()</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>根据条件检索10条记录</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.find({'msg':'Hello 1'}).limit(10)</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>sort排序</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.deliver_status.find({'From':'ixigua@sina.com'}).sort({'Dt',-1})
-</span><span class='line'>db.deliver_status.find().sort({'Ct':-1}).limit(1)</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>count操作</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.user_addr.count()</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>distinct操作,查询指定列，去重复</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.distinct('msg')</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>”>=”操作</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.find({"timestamp": {"$gte" : 2}})</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>子对象的查找</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.foo.find({'address.city':'beijing'})</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>管理</h3>
-
-<ul>
-<li>查看collection数据的大小</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.deliver_status.dataSize()</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>查看colleciont状态</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.deliver_status.stats()</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>查询所有索引的大小</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>db.deliver_status.totalIndexSize()</span></code></pre></td></tr></table></div></figure>
-
-
-
 ]]></content>
   </entry>
   

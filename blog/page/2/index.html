@@ -6,24 +6,7 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content="通过delegate方法，在Foo对象中可以直接引用Greeter对象的方法： Ruby代码: 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-class Greeter &lt; ActiveRecord::Base def hello &quot; &hellip;">
+	<meta name="description" content="Reactor 设计模式（也叫反应器模式，或者应答者模式）是一种基于事件驱动的设计模式，这种模式像是一个女仆或者服务员，随时等待你的召唤。 高并发的场景经常使用Reactor模式取代常用的多线程处理模式，以节省系统资源，提高系统的吞吐量。 说到这里到底什么是Reactor模式， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -93,6 +76,72 @@ class Greeter &lt; ActiveRecord::Base def hello &quot; &hellip;">
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/27/reactor-mo-shi/">
+		
+			Reactor 模式</a>
+	</h2>
+	<div class="entry-content">
+		<p>Reactor 设计模式（也叫反应器模式，或者应答者模式）是一种基于事件驱动的设计模式，这种模式像是一个女仆或者服务员，随时等待你的召唤。</p>
+
+<p>高并发的场景经常使用Reactor模式取代常用的多线程处理模式，以节省系统资源，提高系统的吞吐量。</p>
+
+<p>说到这里到底什么是Reactor模式，什么又是多线程模式呢？我们举个栗子：</p>
+
+<p>假设有这么一个场景：你去餐厅吃饭，首先要有服务员将菜单拿给你，你选好以后，服务员帮你完成点餐。</p>
+
+<p>第一种情况：  每有一位乘客光临，就分配一个服务员帮助点餐。</p>
+
+<p>第二种情况：  当乘客来到来以后，服务员会给你菜单，你先点菜。这时服务员去服务其他客人，当你选好以后招呼一下‘服务员’，会有服务员过来帮你点餐。</p>
+
+<p>每个客人好比是一个请求事件，餐厅的服务员好比请求的处理。</p>
+
+<p>第一种情况就是典型的多线程模式，每一个事件到来，都会分配一个线程来处理请求。无疑这样的服务是最好的，每个客人都会觉得自己是vip，于是这家店的口碑越来越好，越来越多的客人来这里用餐，很快老板就发现忙不过来了，多请服务员吧，占地方不说还要多出工钱，成本太大了。</p>
+
+<p>显然第二种情况更好一点，较少的资源服务了较多的客人，这就是Reactor模式，用单线程来干多线程的事，进程和线程的开销是很大的，内存占用高不说，上下文之间的切换也是很慢的。</p>
+
+<p>Reactor模式主要是提高系统的吞吐量，在有限的资源下处理更多的事情。</p>
+
+<p>利用Reactor模式的框架：</p>
+
+<p>Node.js
+Gevent、Twisted、Tornado（Python）
+EventMachine、Rev（Ruby）</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T19:11:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/rails/'>Rails</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/27/reactor-mo-shi//blog/page/2/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">
@@ -835,73 +884,6 @@ gem: --no-ri --no-rdoc
 </div>
 	
 		<div class="comments"><a href="/blog/2013/05/03/install-gem-without-ri-and-rdoc//blog/page/2/index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/05/02/mongodb-quick-tips/">
-		
-			MongoDB Quick Tips</a>
-	</h2>
-	<div class="entry-content">
-		<h3>1. 介绍</h3>
-
-<p>　　一个mongod服务可以有建立多个数据库，每个数据库可以有多张表，这里的表名叫collection，每个collection可以存放多个文档（document），每个文档都以BSON（binary json）的形式存放于硬盘中，因此可以存储比较复杂的数据类型。它是以单文档为单位存储的，你可以任意给一个或一批文档新增或删除字段，而不会对其它文档造成影响，这就是所谓的schema-free，这也是文档型数据库最主要的优点。跟一般的key-value数据库不一样的是，它的value中存储了结构信息，所以你又可以像关系型数据库那样对某些域进行读写、统计等操作。Mongo最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。Mongo还可以解决海量数据的查询效率，根据官方文档，当数据量达到50GB以上数据时，Mongo数据库访问速度是MySQL10 倍以上。</p>
-
-<h4>BSON</h4>
-
-<p>　　BSON是Binary JSON 的简称，是一个JSON文档对象的二进制编码格式。BSON同JSON一样支持往其它文档对象和数组中再插入文档对象和数组，同时扩展了JSON的数据类型。如：BSON有Date类型和BinDate类型。</p>
-
-<p>　　BSON被比作二进制的交换格式，如同Protocol Buffers，但BSON比它更“schema-less”，非常好的灵活性但空间占用稍微大一点。</p>
-
-<p>BSON有以下三个特点：</p>
-
-<p>1． 轻量级</p>
-
-<p>2． 跨平台</p>
-
-<p>3． 效率高</p>
-
-<h4>命名空间</h4>
-
-<p>　　MongoDB存储BSON对象到collections,这一系列的数据库名和collection名被称为一个命名空间。如同：java.util.List;用来管理数据库中的数据。</p>
-
-<h4>索引</h4>
-
-<p>　　mongodb可以对某个字段建立索引，可以建立组合索引、唯一索引，也可以删除索引，建立索引就意味着增加空间开销。默认情况下每个表都会有一个唯一索引：<em>id，如果插入数据时没有指定</em>id，服务会自动生成一个<em>id，为了充分利用已有索引，减少空间开销，最好是自己指定一个unique的key为</em>id，通常用对象的ID比较合适，比如商品的ID。</p>
-
-
-		
-		<a href="/blog/2013/05/02/mongodb-quick-tips/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-02T11:04:00+08:00" pubdate data-updated="true">May 2<span>nd</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/mongodb/'>MongoDB</a>, <a class='category' href='/blog/categories/database/'>数据库</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/05/02/mongodb-quick-tips//blog/page/2/index.html#disqus_thread">Comments</a></div>
 	
 </div></article>
 

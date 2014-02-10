@@ -6,9 +6,7 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content="表单中使用 checkbox 的时候，经常见到这样这样的写法： 1
-&lt;input type=&quot;checkbox&quot;&gt; Click Me! 这种写法选择的时候只能点击复选框，如果要实现点击文字“Click Me!” 也能进行选择操作，应该这么写： 1
-&lt; &hellip;">
+	<meta name="description" content="简介： ruby的软件包称为 &#8216;gem&#8217;, 类似与java的jar包。ruby的gem包用来拓展或修改ruby应用程序的函数，通常将一些可复用的函数打包成gem，作为库与方便与其他开发者共享。有的gem提供了命令行工具来实现 automate tasks ， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -78,6 +76,350 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/02/10/rubygems-bi-ji-zhi-yi/">
+		
+			RubyGems 笔记之一</a>
+	</h2>
+	<div class="entry-content">
+		<h2>简介：</h2>
+
+<hr />
+
+<ol>
+<li><p>ruby的软件包称为 &#8216;gem&#8217;, 类似与java的jar包。ruby的gem包用来拓展或修改ruby应用程序的函数，通常将一些可复用的函数打包成gem，作为库与方便与其他开发者共享。有的gem提供了命令行工具来实现 automate tasks ，提升你的工作效率。</p></li>
+<li><p>RubyGems是用于管理gem工具，可以方便的下载、安装、使用和卸载gem。</p></li>
+<li><p><code>gem</code> 命令用于管理RubyGems。Ruby1.9 以及后来的版本都默认集成了RubyGmes，安装完ruby以后，就可以直接使用 gem 命令。</p></li>
+</ol>
+
+
+<h2>使用</h2>
+
+<hr />
+
+<h3>一、 查找Gems：</h3>
+
+<p><code>search</code> 命令用于查找远程的gem包。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>╭─# ivan@ubuntu in ~/private/19wu ‹ruby-2.0.0@19wu›  
+</span><span class='line'>╰─$ gem searc\^rails  
+</span><span class='line'>
+</span><span class='line'>*** REMOTE GEMS ***
+</span><span class='line'>
+</span><span class='line'>rails (4.0.2)
+</span><span class='line'>rails-3-settings (0.1.1)
+</span><span class='line'>rails-action-args (0.1.1)
+</span><span class='line'>rails-admin (0.0.0)
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>-d</code> 参数可以查看更加详细的信息：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>╭─# ivan@ubuntu in ~/private/19wu ‹ruby-2.0.0@19wu›  
+</span><span class='line'>╰─$ gem search  \^rails\$ -d
+</span><span class='line'>
+</span><span class='line'>*** REMOTE GEMS ***
+</span><span class='line'>
+</span><span class='line'>rails (4.0.2)
+</span><span class='line'>    Author: David Heinemeier Hansson
+</span><span class='line'>    Homepage: http://www.rubyonrails.org
+</span><span class='line'>
+</span><span class='line'>    Full-stack web application framework.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其他参数， 参考 <code>gem search --help</code></p>
+
+<h3>二、 安装Gems</h3>
+
+<p><code>install</code> 命令用于安装gems。</p>
+
+<p>例如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install rails -v= 4.0 --no-rdoc --no-ri</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>三、Requiring code</h3>
+
+<p>RubyGems 修改了Ruby的加载路径，并且控制如何查找require进来的ruby代码。当require一个gem的时候，会将这个gem的路径添加到全局变量<code>$LOAD_PATH</code>中。</p>
+
+<p>在启动irb的时候，通过 <code>-r</code> 参数可以指定要加载的gem：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>╭─# ivan@ubuntu in ~/private/19wu ‹ruby-2.0.0@19wu›  
+</span><span class='line'>╰─$ irb -rpp 
+</span><span class='line'>irb(main):001:0&gt;  pp $LOAD_PATH
+</span><span class='line'>["/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/site_ruby/2.0.0",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/site_ruby/2.0.0/i686-linux",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/site_ruby",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/vendor_ruby/2.0.0",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/vendor_ruby/2.0.0/i686-linux",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/vendor_ruby",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/2.0.0",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/2.0.0/i686-linux"]
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>默认只加载几个必要的标准库，如果要加载指定的gem：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>╭─# ivan@ubuntu in ~/private/19wu ‹ruby-2.0.0@19wu›  
+</span><span class='line'>╰─$ irb -rpp 
+</span><span class='line'>irb(main):001:0&gt; require 'rails'
+</span><span class='line'>=&gt; true
+</span><span class='line'>irb(main):002:0&gt;  pp $LOAD_PATH
+</span><span class='line'>["/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/i18n-0.6.5/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/multi_json-1.7.9/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/tzinfo-0.3.37/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/atomic-1.1.12/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/thread_safe-0.1.2/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/activesupport-4.0.0/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/builder-3.1.4/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/rack-1.5.2/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/rack-test-0.6.2/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/erubis-2.7.0/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/actionpack-4.0.0/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/thor-0.18.1/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/railties-4.0.0/lib",
+</span><span class='line'> "/home/ivan/.rvm/gems/ruby-2.0.0-p353@19wu/gems/json-1.8.0/lib",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/site_ruby/2.0.0",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/site_ruby/2.0.0/i686-linux",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/site_ruby",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/vendor_ruby/2.0.0",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/vendor_ruby/2.0.0/i686-linux",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/vendor_ruby",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/2.0.0",
+</span><span class='line'> "/home/ivan/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/2.0.0/i686-linux"]
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>注意： 如果您使用的是 ruby 1.8 版本，在引入任何gem之前，需要先引入 rubygems： <code>require 'rubygems'</code>，在某gem所在目录的lib目录下，必须存在一个rb文件和一个目录，要求名称和gem的名称一致。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>% tree freewill/
+</span><span class='line'>freewill/
+</span><span class='line'>└── lib/
+</span><span class='line'>    ├── freewill/
+</span><span class='line'>    │   ├── user.rb
+</span><span class='line'>    │   ├── widget.rb
+</span><span class='line'>    │   └── ...
+</span><span class='line'>    └── freewill.rb</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>四、 列举出所有已经安装好的gem</h3>
+
+<p><code>list</code> 命令可以列举出所有已经安装好个gem</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>╭─# ivan@ubuntu in ~/private/19wu ‹ruby-2.0.0›  
+</span><span class='line'>╰─$ gem list
+</span><span class='line'>
+</span><span class='line'>*** LOCAL GEMS ***
+</span><span class='line'>
+</span><span class='line'>bigdecimal (1.2.0)
+</span><span class='line'>gem-wrappers (1.2.4)
+</span><span class='line'>io-console (0.4.2)
+</span><span class='line'>json (1.7.7)
+</span><span class='line'>minitest (4.3.2)
+</span><span class='line'>psych (2.0.0)
+</span><span class='line'>rake (0.9.6)
+</span><span class='line'>rdoc (4.0.0)
+</span><span class='line'>test-unit (2.0.0.0)
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>五、 卸载Gems</h3>
+
+<p><code>uninstall</code> 命令用于卸载已经安装的gem包。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gem uninstall drip
+</span><span class='line'>Successfully uninstalled drip-0.0.2</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你要卸载一个被其他gem依赖的gem，会要求进行确认：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gem uninstall rbtree
+</span><span class='line'>
+</span><span class='line'>You have requested to uninstall the gem:
+</span><span class='line'>  rbtree-0.4.1
+</span><span class='line'>
+</span><span class='line'>drip-0.0.2 depends on rbtree (&gt;= 0)
+</span><span class='line'>If you remove this gem, these dependencies will not be met.
+</span><span class='line'>Continue with Uninstall? [yN]  n
+</span><span class='line'>ERROR:  While executing gem ... (Gem::DependencyRemovalException)
+</span><span class='line'>    Uninstallation aborted due to dependent gem(s)</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>六、 查看gem文档</h3>
+
+<p><code>ri</code> 命令可以用于查看gem的文档。或者运行 <code>gem server</code> 通过浏览器查看</p>
+
+<h3>七、 Fetching and Unpacking Gems</h3>
+
+<p>如果你仅仅想获取并查看一个gem的内容，可以通过<code>fetch</code>和<code>unpack</code>命令来实现：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>╭─# ivan@ubuntu in ~/private/temp ‹ruby-1.8.7@rails304›  
+</span><span class='line'>╰─$ gem fetch json
+</span><span class='line'>Fetching: json-1.1.5-x86-linux.gem (100%)
+</span><span class='line'>Downloaded json-1.1.5-x86-linux
+</span><span class='line'>
+</span><span class='line'>╭─# ivan@ubuntu in ~/private/temp ‹ruby-1.8.7@rails304›  
+</span><span class='line'>╰─$ ls   
+</span><span class='line'>json-1.1.5-x86-linux.gem
+</span><span class='line'>
+</span><span class='line'>╭─# ivan@ubuntu in ~/private/temp ‹ruby-1.8.7@rails304›  
+</span><span class='line'>╰─$ gem unpack json-1.1.5-x86-linux.gem 
+</span><span class='line'>Unpacked gem: '/home/ivan/private/temp/json-1.1.5-x86-linux'
+</span><span class='line'>
+</span><span class='line'>╭─# ivan@ubuntu in ~/private/temp ‹ruby-1.8.7@rails304›  
+</span><span class='line'>╰─$ ls
+</span><span class='line'>json-1.1.5-x86-linux  json-1.1.5-x86-linux.gem</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上内容参考：</p>
+
+<p>(http://guides.rubygems.org/rubygems-basics/)[http://guides.rubygems.org/rubygems-basics/]</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-10T18:46:00+08:00" pubdate data-updated="true">Feb 10<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gem/'>Gem</a>, <a class='category' href='/blog/categories/rubygems/'>RubyGems</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/02/10/rubygems-bi-ji-zhi-yi//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">
@@ -1182,72 +1524,6 @@ git commit -m "finish my gem"
 </div>
 	
 		<div class="comments"><a href="/blog/2014/01/27/ruby-de-die-dai-qi//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/01/27/reactor-mo-shi/">
-		
-			Reactor 模式</a>
-	</h2>
-	<div class="entry-content">
-		<p>Reactor 设计模式（也叫反应器模式，或者应答者模式）是一种基于事件驱动的设计模式，这种模式像是一个女仆或者服务员，随时等待你的召唤。</p>
-
-<p>高并发的场景经常使用Reactor模式取代常用的多线程处理模式，以节省系统资源，提高系统的吞吐量。</p>
-
-<p>说到这里到底什么是Reactor模式，什么又是多线程模式呢？我们举个栗子：</p>
-
-<p>假设有这么一个场景：你去餐厅吃饭，首先要有服务员将菜单拿给你，你选好以后，服务员帮你完成点餐。</p>
-
-<p>第一种情况：  每有一位乘客光临，就分配一个服务员帮助点餐。</p>
-
-<p>第二种情况：  当乘客来到来以后，服务员会给你菜单，你先点菜。这时服务员去服务其他客人，当你选好以后招呼一下‘服务员’，会有服务员过来帮你点餐。</p>
-
-<p>每个客人好比是一个请求事件，餐厅的服务员好比请求的处理。</p>
-
-<p>第一种情况就是典型的多线程模式，每一个事件到来，都会分配一个线程来处理请求。无疑这样的服务是最好的，每个客人都会觉得自己是vip，于是这家店的口碑越来越好，越来越多的客人来这里用餐，很快老板就发现忙不过来了，多请服务员吧，占地方不说还要多出工钱，成本太大了。</p>
-
-<p>显然第二种情况更好一点，较少的资源服务了较多的客人，这就是Reactor模式，用单线程来干多线程的事，进程和线程的开销是很大的，内存占用高不说，上下文之间的切换也是很慢的。</p>
-
-<p>Reactor模式主要是提高系统的吞吐量，在有限的资源下处理更多的事情。</p>
-
-<p>利用Reactor模式的框架：</p>
-
-<p>Node.js
-Gevent、Twisted、Tornado（Python）
-EventMachine、Rev（Ruby）</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-27T19:11:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/rails/'>Rails</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2014/01/27/reactor-mo-shi//index.html#disqus_thread">Comments</a></div>
 	
 </div></article>
 
