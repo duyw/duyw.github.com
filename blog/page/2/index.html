@@ -6,7 +6,11 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content="Reactor 设计模式（也叫反应器模式，或者应答者模式）是一种基于事件驱动的设计模式，这种模式像是一个女仆或者服务员，随时等待你的召唤。 高并发的场景经常使用Reactor模式取代常用的多线程处理模式，以节省系统资源，提高系统的吞吐量。 说到这里到底什么是Reactor模式， &hellip;">
+	<meta name="description" content="ruby中针对集合（数组、哈希）的迭代器有 each map collect inject，下面将逐一介绍 1 each用法 each方法是最简单也最常用的，它会连续访问集合的所有元素然后传值给bloc执行，比如： 1
+2
+3
+[1,2,3,4,5].each do |a| puts a
+end &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -76,6 +80,119 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/01/27/ruby-de-die-dai-qi/">
+		
+			Ruby 的迭代器</a>
+	</h2>
+	<div class="entry-content">
+		<p>ruby中针对集合（数组、哈希）的迭代器有 each map collect inject，下面将逐一介绍</p>
+
+<h3>1 each用法</h3>
+
+<p>  each方法是最简单也最常用的，它会连续访问集合的所有元素然后传值给bloc执行，比如：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">a</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行结果：</p>
+
+<pre><code> 1
+ 2
+ 3
+ 4
+ 5
+</code></pre>
+
+<h3>2 reverse_each 用法：</h3>
+
+<p> 对比each，从字面上理解reverse_each就是逆序迭代，例如</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span>
+</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">reverse_each</span> <span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">v</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行结果</p>
+
+<pre><code>3
+2
+1
+</code></pre>
+
+<p>a.reverse_each 和 a.reverse.each 有什么区别呢？  功能是一样的，但是效率不同, reverse_each的效率更高</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">001</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="n">now</span> <span class="o">=</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">;</span> <span class="nb">Array</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">30000000</span><span class="p">)</span> <span class="p">{</span><span class="nb">rand</span><span class="p">}</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="n">x</span><span class="o">*</span><span class="mi">2</span><span class="p">};</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">-</span><span class="n">now</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">15</span><span class="o">.</span><span class="mi">705195</span>
+</span><span class='line'><span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">002</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="n">now</span> <span class="o">=</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">;</span> <span class="nb">Array</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">30000000</span><span class="p">)</span> <span class="p">{</span><span class="nb">rand</span><span class="p">}</span><span class="o">.</span><span class="n">reverse_each</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="n">x</span><span class="o">*</span><span class="mi">2</span><span class="p">};</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">-</span><span class="n">now</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">12</span><span class="o">.</span><span class="mi">956333</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3 map用法</h3>
+
+<p>  map也很常用,它从集合中获得各个元素传递给block，block返回的结果生成新的集合，比如：</p>
+
+<p>  <code>[1,2,3,4,5].map{ |a|  a + 1 }  -&gt;  [2, 3, 4, 5, 6]</code></p>
+
+<p>  再比如：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:age</span> <span class="o">=&gt;</span> <span class="mi">20</span><span class="p">)</span>
+</span><span class='line'><span class="n">users</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="p">}</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s1">&#39;zhangsan&#39;</span><span class="p">,</span><span class="s1">&#39;lisi&#39;</span><span class="p">,</span><span class="s1">&#39;wangwu&#39;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>  这个例子可以简写成： <code>users.map(&amp;:name)</code>  ,其运行结果也是一样的</p>
+
+
+		
+		<a href="/blog/2014/01/27/ruby-de-die-dai-qi/" class="more-link">Continue reading &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T19:19:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ruby/'>Ruby</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/01/27/ruby-de-die-dai-qi//blog/page/2/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">
@@ -821,69 +938,6 @@ COMMAND</p>
 </div>
 	
 		<div class="comments"><a href="/blog/2014/01/26/bo-ke-hen-jiu-mei-you-geng-xin-liao//blog/page/2/index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/05/03/install-gem-without-ri-and-rdoc/">
-		
-			Install Gem Without Ri and Rdoc</a>
-	</h2>
-	<div class="entry-content">
-		<p>用 <code>gem install XXX</code> 安装 Gem 包的同时会安装 ri 和 rdoc，但这两个东西一般用不到，另外还严重影响安装速度，介于这两个原因我们一般都会这么做：</p>
-
-<p><code>gem install rails --no-ri --no-rdoc</code></p>
-
-<p>但是每个 Gem 包安装都这么做就太麻烦了，我们可以直接修改配置让 Gem 默认不安装 ri 和 rdoc：</p>
-
-<p>打开 ~/.gemrc   （如果没有这个文件可以自己手动创建）</p>
-
-<p>在文件最后加入 <code>gem: --no-ri --no-rdoc</code> ：</p>
-
-<pre><code>---
-:backtrace: false
-:benchmark: false
-:bulk_threshold: 1000
-:sources:
-- http://ruby.taobao.org
-:update_sources: true
-:verbose: true
-gem: --no-ri --no-rdoc
-</code></pre>
-
-<p>大功告成~</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-03T09:23:00+08:00" pubdate data-updated="true">May 3<span>rd</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/gem/'>Gem</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/05/03/install-gem-without-ri-and-rdoc//blog/page/2/index.html#disqus_thread">Comments</a></div>
 	
 </div></article>
 

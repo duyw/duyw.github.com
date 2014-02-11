@@ -6,7 +6,7 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content="1. 介绍 　　一个mongod服务可以有建立多个数据库，每个数据库可以有多张表，这里的表名叫collection，每个collection可以存放多个文档（document），每个文档都以BSON（binary json）的形式存放于硬盘中，因此可以存储比较复杂的数据类型。 &hellip;">
+	<meta name="description" content="用 gem install XXX 安装 Gem 包的同时会安装 ri 和 rdoc，但这两个东西一般用不到，另外还严重影响安装速度，介于这两个原因我们一般都会这么做： gem install rails --no-ri --no-rdoc 但是每个 Gem 包安装都这么做就太麻烦了， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -76,6 +76,69 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2013/05/03/install-gem-without-ri-and-rdoc/">
+		
+			Install Gem Without Ri and Rdoc</a>
+	</h2>
+	<div class="entry-content">
+		<p>用 <code>gem install XXX</code> 安装 Gem 包的同时会安装 ri 和 rdoc，但这两个东西一般用不到，另外还严重影响安装速度，介于这两个原因我们一般都会这么做：</p>
+
+<p><code>gem install rails --no-ri --no-rdoc</code></p>
+
+<p>但是每个 Gem 包安装都这么做就太麻烦了，我们可以直接修改配置让 Gem 默认不安装 ri 和 rdoc：</p>
+
+<p>打开 ~/.gemrc   （如果没有这个文件可以自己手动创建）</p>
+
+<p>在文件最后加入 <code>gem: --no-ri --no-rdoc</code> ：</p>
+
+<pre><code>---
+:backtrace: false
+:benchmark: false
+:bulk_threshold: 1000
+:sources:
+- http://ruby.taobao.org
+:update_sources: true
+:verbose: true
+gem: --no-ri --no-rdoc
+</code></pre>
+
+<p>大功告成~</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-03T09:23:00+08:00" pubdate data-updated="true">May 3<span>rd</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gem/'>Gem</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2013/05/03/install-gem-without-ri-and-rdoc//blog/page/3/index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">
@@ -860,77 +923,6 @@ postgresql-server-dev-9.1
 </div>
 	
 		<div class="comments"><a href="/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04//blog/page/3/index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/02/28/octopress-simple-guide/">
-		
-			Octopress Simple Guide</a>
-	</h2>
-	<div class="entry-content">
-		<p>Octopress的搭建过程如下：</p>
-
-<h3>1 配置本地Octopress</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git davidpan.github.com
-</span><span class='line'>cd davidpan.github.com 
-</span><span class='line'>gem install bundler 
-</span><span class='line'>bundle install 
-</span><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>2 关联到 GitHub</h3>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages
-</span><span class='line'>
-</span><span class='line'># 输入git源：git://github.com/duyw/duyw.github.com.git
-</span><span class='line'># 命令执行之后 会生成一个 _deploy 目录，该目录本身也是一个git的仓库</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-
-		
-		<a href="/blog/2013/02/28/octopress-simple-guide/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-28T18:15:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/octopress/'>Octopress</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2013/02/28/octopress-simple-guide//blog/page/3/index.html#disqus_thread">Comments</a></div>
 	
 </div></article>
 

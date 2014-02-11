@@ -6,7 +6,7 @@
 	<title>杜永文 博客</title>
 	<meta name="author" content="Du Yongwen">
 	
-	<meta name="description" content="简介： ruby的软件包称为 &#8216;gem&#8217;, 类似与java的jar包。ruby的gem包用来拓展或修改ruby应用程序的函数，通常将一些可复用的函数打包成gem，作为库与方便与其他开发者共享。有的gem提供了命令行工具来实现 automate tasks ， &hellip;">
+	<meta name="description" content="gem的结构 1 每一个gem都要有名称、版本、运行环境。以rake 0.8.7 为例，其名称&#8217;rake&#8217;,版本&#8217;1.8.7&#8217;,运行平台是ruby，意味着可以运行在任何ruby平台上。 2 运行环境是基于CPU架构、操作系统之上， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="/atom.xml" rel="alternate" title="杜永文 博客" type="application/atom+xml">
@@ -76,6 +76,127 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/02/10/rubygems-bi-ji-zhi-er/">
+		
+			RubyGems 笔记之二</a>
+	</h2>
+	<div class="entry-content">
+		<h3>gem的结构</h3>
+
+<p>1  每一个gem都要有名称、版本、运行环境。以rake 0.8.7 为例，其名称&#8217;rake&#8217;,版本&#8217;1.8.7&#8217;,运行平台是ruby，意味着可以运行在任何ruby平台上。</p>
+
+<p>2 运行环境是基于CPU架构、操作系统之上，有时候还会受限于操作系统的版本。</p>
+
+<p>3 在gem中包含以下组件
+  代码：（包括测试和辅助程序）
+  文档
+  gemspec（gem的自述文件）</p>
+
+<p>每一个gem包的代码结构组织都遵循统一的标准</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>% tree freewill
+</span><span class='line'>freewill/
+</span><span class='line'>├── bin/
+</span><span class='line'>│   └── freewill
+</span><span class='line'>├── lib/
+</span><span class='line'>│   └── freewill.rb
+</span><span class='line'>├── test/
+</span><span class='line'>│   └── test_freewill.rb
+</span><span class='line'>├── README
+</span><span class='line'>├── Rakefile
+</span><span class='line'>└── freewill.gemspec</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如上所示，一个gem包含的主要组件有：</p>
+
+<p><code>lib</code>目录：包含gem的代码</p>
+
+<p><code>test</code>目录或<code>spec</code>目录，包含测试代码，取决于开发者用的是哪个测试框架。</p>
+
+<p><code>Rakefile</code>文件：rake程序使用该文件进行自动化测试，生成代码或者执行其他任务。</p>
+
+<p><code>bin</code>目录：当gem安装好以后，bin目录将添加到用户的环境变量中去。</p>
+
+<p>文档通常在<code>README</code>中或者在代码的注释里面。当gem安装完成的时候，文档也会为你自动生成好，大部分gem包含RDoc文档，也有用YARD的。</p>
+
+<p><code>gemspec</code>文件，该文件的内容包含了文档相关的信息。</p>
+
+<h3>The Gemspec</h3>
+
+<p>gemspec文件包含了文档的名称、作者、版本等相关的信息，例如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>% cat freewill.gemspec
+</span><span class='line'>Gem::Specification.new do |s|
+</span><span class='line'>  s.name        = 'freewill'
+</span><span class='line'>  s.version     = '1.0.0'
+</span><span class='line'>  s.summary     = "Freewill!"
+</span><span class='line'>  s.description = "I will choose Freewill!"
+</span><span class='line'>  s.authors     = ["Nick Quaranto"]
+</span><span class='line'>  s.email       = 'nick@quaran.to'
+</span><span class='line'>  s.homepage    = 'http://example.com/freewill'
+</span><span class='line'>  s.files       = ["lib/freewill.rb", ...]
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>更多gemspec相关内容参看<a href="http://guides.rubygems.org/specification-reference/">http://guides.rubygems.org/specification-reference/</a></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-10T20:13:00+08:00" pubdate data-updated="true">Feb 10<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gem/'>Gem</a>, <a class='category' href='/blog/categories/rubygems/'>RubyGems</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/2014/02/10/rubygems-bi-ji-zhi-er//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">
@@ -388,7 +509,7 @@
 
 <p>以上内容参考：</p>
 
-<p>(http://guides.rubygems.org/rubygems-basics/)[http://guides.rubygems.org/rubygems-basics/]</p>
+<p><a href="http://guides.rubygems.org/rubygems-basics/">http://guides.rubygems.org/rubygems-basics/</a></p>
 
 		
 		
@@ -1411,119 +1532,6 @@ git commit -m "finish my gem"
 </div>
 	
 		<div class="comments"><a href="/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%24//index.html#disqus_thread">Comments</a></div>
-	
-</div></article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/01/27/ruby-de-die-dai-qi/">
-		
-			Ruby 的迭代器</a>
-	</h2>
-	<div class="entry-content">
-		<p>ruby中针对集合（数组、哈希）的迭代器有 each map collect inject，下面将逐一介绍</p>
-
-<h3>1 each用法</h3>
-
-<p>  each方法是最简单也最常用的，它会连续访问集合的所有元素然后传值给bloc执行，比如：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="n">a</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>运行结果：</p>
-
-<pre><code> 1
- 2
- 3
- 4
- 5
-</code></pre>
-
-<h3>2 reverse_each 用法：</h3>
-
-<p> 对比each，从字面上理解reverse_each就是逆序迭代，例如</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span>
-</span><span class='line'><span class="n">a</span><span class="o">.</span><span class="n">reverse_each</span> <span class="p">{</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">v</span> <span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>运行结果</p>
-
-<pre><code>3
-2
-1
-</code></pre>
-
-<p>a.reverse_each 和 a.reverse.each 有什么区别呢？  功能是一样的，但是效率不同, reverse_each的效率更高</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">001</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="n">now</span> <span class="o">=</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">;</span> <span class="nb">Array</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">30000000</span><span class="p">)</span> <span class="p">{</span><span class="nb">rand</span><span class="p">}</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="n">x</span><span class="o">*</span><span class="mi">2</span><span class="p">};</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">-</span><span class="n">now</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="mi">15</span><span class="o">.</span><span class="mi">705195</span>
-</span><span class='line'><span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">002</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="n">now</span> <span class="o">=</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">;</span> <span class="nb">Array</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">30000000</span><span class="p">)</span> <span class="p">{</span><span class="nb">rand</span><span class="p">}</span><span class="o">.</span><span class="n">reverse_each</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span><span class="n">x</span><span class="o">*</span><span class="mi">2</span><span class="p">};</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">-</span><span class="n">now</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="mi">12</span><span class="o">.</span><span class="mi">956333</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>3 map用法</h3>
-
-<p>  map也很常用,它从集合中获得各个元素传递给block，block返回的结果生成新的集合，比如：</p>
-
-<p>  <code>[1,2,3,4,5].map{ |a|  a + 1 }  -&gt;  [2, 3, 4, 5, 6]</code></p>
-
-<p>  再比如：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">:age</span> <span class="o">=&gt;</span> <span class="mi">20</span><span class="p">)</span>
-</span><span class='line'><span class="n">users</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="p">}</span> <span class="o">-&gt;</span> <span class="o">[</span><span class="s1">&#39;zhangsan&#39;</span><span class="p">,</span><span class="s1">&#39;lisi&#39;</span><span class="p">,</span><span class="s1">&#39;wangwu&#39;</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>  这个例子可以简写成： <code>users.map(&amp;:name)</code>  ,其运行结果也是一样的</p>
-
-
-		
-		<a href="/blog/2014/01/27/ruby-de-die-dai-qi/" class="more-link">Continue reading &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-27T19:19:00+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/ruby/'>Ruby</a>
-
-
-</div>
-	
-		<div class="comments"><a href="/blog/2014/01/27/ruby-de-die-dai-qi//index.html#disqus_thread">Comments</a></div>
 	
 </div></article>
 

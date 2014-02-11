@@ -4,7 +4,7 @@
   <title><![CDATA[Category: RubyGems | 杜永文 博客]]></title>
   <link href="http://duyw.github.io/blog/categories/rubygems/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-02-10T18:51:08+08:00</updated>
+  <updated>2014-02-11T22:02:35+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -12,6 +12,73 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[RubyGems 笔记之二]]></title>
+    <link href="http://duyw.github.io/blog/2014/02/10/rubygems-bi-ji-zhi-er/"/>
+    <updated>2014-02-10T20:13:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/02/10/rubygems-bi-ji-zhi-er</id>
+    <content type="html"><![CDATA[<h3>gem的结构</h3>
+
+<p>1  每一个gem都要有名称、版本、运行环境。以rake 0.8.7 为例，其名称'rake',版本'1.8.7',运行平台是ruby，意味着可以运行在任何ruby平台上。</p>
+
+<p>2 运行环境是基于CPU架构、操作系统之上，有时候还会受限于操作系统的版本。</p>
+
+<p>3 在gem中包含以下组件
+  代码：（包括测试和辅助程序）
+  文档
+  gemspec（gem的自述文件）</p>
+
+<p>每一个gem包的代码结构组织都遵循统一的标准
+<code>
+% tree freewill
+freewill/
+├── bin/
+│   └── freewill
+├── lib/
+│   └── freewill.rb
+├── test/
+│   └── test_freewill.rb
+├── README
+├── Rakefile
+└── freewill.gemspec
+</code></p>
+
+<p>如上所示，一个gem包含的主要组件有：</p>
+
+<p><code>lib</code>目录：包含gem的代码</p>
+
+<p><code>test</code>目录或<code>spec</code>目录，包含测试代码，取决于开发者用的是哪个测试框架。</p>
+
+<p><code>Rakefile</code>文件：rake程序使用该文件进行自动化测试，生成代码或者执行其他任务。</p>
+
+<p><code>bin</code>目录：当gem安装好以后，bin目录将添加到用户的环境变量中去。</p>
+
+<p>文档通常在<code>README</code>中或者在代码的注释里面。当gem安装完成的时候，文档也会为你自动生成好，大部分gem包含RDoc文档，也有用YARD的。</p>
+
+<p><code>gemspec</code>文件，该文件的内容包含了文档相关的信息。</p>
+
+<h3>The Gemspec</h3>
+
+<p>gemspec文件包含了文档的名称、作者、版本等相关的信息，例如：</p>
+
+<p><code>
+% cat freewill.gemspec
+Gem::Specification.new do |s|
+  s.name        = 'freewill'
+  s.version     = '1.0.0'
+  s.summary     = "Freewill!"
+  s.description = "I will choose Freewill!"
+  s.authors     = ["Nick Quaranto"]
+  s.email       = 'nick@quaran.to'
+  s.homepage    = 'http://example.com/freewill'
+  s.files       = ["lib/freewill.rb", ...]
+end
+</code></p>
+
+<p>更多gemspec相关内容参看<a href="http://guides.rubygems.org/specification-reference/">http://guides.rubygems.org/specification-reference/</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[RubyGems 笔记之一]]></title>
@@ -228,7 +295,7 @@ json-1.1.5-x86-linux  json-1.1.5-x86-linux.gem
 
 <p>以上内容参考：</p>
 
-<p>(http://guides.rubygems.org/rubygems-basics/)[http://guides.rubygems.org/rubygems-basics/]</p>
+<p><a href="http://guides.rubygems.org/rubygems-basics/">http://guides.rubygems.org/rubygems-basics/</a></p>
 ]]></content>
   </entry>
   
