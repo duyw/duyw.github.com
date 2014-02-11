@@ -212,5 +212,5 @@ json-1.1.5-x86-linux  json-1.1.5-x86-linux.gem
 
 以上内容参考：
 
-(http://guides.rubygems.org/rubygems-basics/)[http://guides.rubygems.org/rubygems-basics/]
+[http://guides.rubygems.org/rubygems-basics/](http://guides.rubygems.org/rubygems-basics/)
 
