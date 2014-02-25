@@ -4,7 +4,7 @@
   <title><![CDATA[杜永文 博客]]></title>
   <link href="http://duyw.github.io/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-02-11T22:02:35+08:00</updated>
+  <updated>2014-02-25T14:45:53+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -1111,6 +1111,74 @@ WW     一年里的周数(1-53)(第一周从该年的第一天开始)
 <p>2 拼接多条记录的值</p>
 
 <p><code>select array_to_string( array(select nickname from users where id &lt; 100), ';')</code>:</p>
+
+<p>3 string_agg
+聚合函数，用于将字段拼接成字符串,相当于对string进行sum
+例如：  users表有如下纪录：</p>
+
+<table>
+<thead>
+<tr>
+<th> id  </th>
+<th> area_name   </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>  1  </td>
+<td>    北京    </td>
+</tr>
+<tr>
+<td>  1  </td>
+<td>    河南    </td>
+</tr>
+<tr>
+<td>  2  </td>
+<td>    河南    </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>select id, string_agg(area_name, &#8216;;&#8217;) as area_names
+from users group by id</p>
+
+<p>结果：</p>
+
+<table>
+<thead>
+<tr>
+<th> id  </th>
+<th> area_name   </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>  1  </td>
+<td>  北京;河南    </td>
+</tr>
+<tr>
+<td>  2  </td>
+<td>  河南   </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>再例如：
+select parent_area_code,</p>
+
+<pre><code>   string_agg(name,';'),
+   string_agg(name || '_' || area_code , ';')
+</code></pre>
+
+<p>from locations where parent_area_code is not null
+group by parent_area_code</p>
+
+<p>4 array_agg  列转数组
+上例也可以用 array_agg + array_to_string 间接实现：
+select id, array_to_string(array_agg(area_name), &#8216;;&#8217;) as area_names
+from users group by id</p>
 ]]></content>
   </entry>
   
@@ -1387,9 +1455,9 @@ WW     一年里的周数(1-53)(第一周从该年的第一天开始)
   
   <entry>
     <title type="html"><![CDATA[ruby 小技巧之 $:]]></title>
-    <link href="http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%24/"/>
+    <link href="http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%2524/"/>
     <updated>2014-01-28T12:25:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-$</id>
+    <id>http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%24</id>
     <content type="html"><![CDATA[<p>在一些gem里面经常会有这样一句代码：</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
