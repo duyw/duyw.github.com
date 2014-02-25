@@ -4,7 +4,7 @@
   <title><![CDATA[杜永文 博客]]></title>
   <link href="http://duyw.github.io/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-02-25T14:45:53+08:00</updated>
+  <updated>2014-02-25T16:17:14+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -1110,7 +1110,10 @@ WW     一年里的周数(1-53)(第一周从该年的第一天开始)
 
 <p>2 拼接多条记录的值</p>
 
-<p><code>select array_to_string( array(select nickname from users where id &lt; 100), ';')</code>:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">array_to_string</span><span class="p">(</span> <span class="nb">array</span><span class="p">(</span><span class="k">select</span> <span class="n">nickname</span> <span class="k">from</span> <span class="n">users</span> <span class="k">where</span> <span class="n">id</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">),</span> <span class="s1">&#39;;&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>3 string_agg
 聚合函数，用于将字段拼接成字符串,相当于对string进行sum
@@ -1140,8 +1143,12 @@ WW     一年里的周数(1-53)(第一周从该年的第一天开始)
 </table>
 
 
-<p>select id, string_agg(area_name, &#8216;;&#8217;) as area_names
-from users group by id</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">id</span><span class="p">,</span> <span class="n">string_agg</span><span class="p">(</span><span class="n">area_name</span><span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">area_names</span>
+</span><span class='line'><span class="k">from</span> <span class="n">users</span> <span class="k">group</span> <span class="k">by</span> <span class="n">id</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>结果：</p>
 
@@ -1165,20 +1172,33 @@ from users group by id</p>
 </table>
 
 
-<p>再例如：
-select parent_area_code,</p>
+<p>再例如：</p>
 
-<pre><code>   string_agg(name,';'),
-   string_agg(name || '_' || area_code , ';')
-</code></pre>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">parent_area_code</span><span class="p">,</span>
+</span><span class='line'>       <span class="n">string_agg</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="s1">&#39;;&#39;</span><span class="p">),</span>
+</span><span class='line'>       <span class="n">string_agg</span><span class="p">(</span><span class="n">name</span> <span class="o">||</span> <span class="s1">&#39;_&#39;</span> <span class="o">||</span> <span class="n">area_code</span> <span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">from</span> <span class="n">locations</span> <span class="k">where</span> <span class="n">parent_area_code</span> <span class="k">is</span> <span class="k">not</span> <span class="k">null</span>
+</span><span class='line'><span class="k">group</span> <span class="k">by</span> <span class="n">parent_area_code</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>from locations where parent_area_code is not null
-group by parent_area_code</p>
 
-<p>4 array_agg  列转数组
-上例也可以用 array_agg + array_to_string 间接实现：
-select id, array_to_string(array_agg(area_name), &#8216;;&#8217;) as area_names
-from users group by id</p>
+<p>4 array_agg  列转数组</p>
+
+<p>上例也可以用 array_agg + array_to_string 间接实现：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">id</span><span class="p">,</span> <span class="n">array_to_string</span><span class="p">(</span><span class="n">array_agg</span><span class="p">(</span><span class="n">area_name</span><span class="p">),</span> <span class="s1">&#39;;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">area_names</span>
+</span><span class='line'><span class="k">from</span> <span class="n">users</span> <span class="k">group</span> <span class="k">by</span> <span class="n">id</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
 ]]></content>
   </entry>
   
@@ -1458,6 +1478,32 @@ from users group by id</p>
     <link href="http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%2524/"/>
     <updated>2014-01-28T12:25:00+08:00</updated>
     <id>http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%24</id>
+    <content type="html"><![CDATA[<p>在一些gem里面经常会有这样一句代码：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vg">$:</span><span class="o">.</span><span class="n">unshift</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="bp">__FILE__</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这句话是干什么用的呢？</p>
+
+<p><code>$:</code> 就是ruby的一个全局变量，也叫<code>$LOAD_PATH</code>，功能就是java中的classpath，用来加载类库的，当你require某个文件时，ruby就会从这个变量的值去查找，找不到会报LoadError。这个值其实就是一个包含了类库绝对路径的数组。</p>
+
+<p><code>__FILE__</code>这个变量代表文件自己的文件名，在foo.rb中<code>puts __FILE__</code>，结果就是foo.rb。</p>
+
+<p>File.expand_path可以把路径转换成绝对路径，假设有这样一个文件/Users/kenshin/foo.rb，里面有<code>File.expand_path('..', __FILE__)</code>，返回的结果就是/Users/kenshin。</p>
+
+<p>unshift是数组的一个方法，功能就是把指定的值加到数组的最前面，<code>[3,4].unshift(1,2) =&gt; [1,2,3,4]</code></p>
+
+<p>所以这段代码的意思就是把当前文件所在的目录加到ruby的loadpath的最前面，在require文件时，ruby就会先从当前目录下去查找了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ruby 小技巧之 $:]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%24/"/>
+    <updated>2014-01-28T12:25:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-$</id>
     <content type="html"><![CDATA[<p>在一些gem里面经常会有这样一句代码：</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -2130,19 +2176,6 @@ S 进程状态。D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止
 %MEM
 TIME+<br/>
 COMMAND</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[博客很久没有更新了]]></title>
-    <link href="http://duyw.github.io/blog/2014/01/26/bo-ke-hen-jiu-mei-you-geng-xin-liao/"/>
-    <updated>2014-01-26T22:50:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2014/01/26/bo-ke-hen-jiu-mei-you-geng-xin-liao</id>
-    <content type="html"><![CDATA[<p>的确很久没有更新了，回顾2013年，从来没有感觉时间过的如此之快。</p>
-
-<p>我只记得来广联达面试的时候我穿的是羽绒服，再次穿上羽绒服的时候猛然发现一个夏天已经过去了。再后来，不知不觉又到了过年回家抢火车票的时候。</p>
-
-<p>一整年几乎都是在加班与忙碌中度过，难得在家的时候也不得清闲，要帮忙照顾小宝。这一年虽然累，但也算累的充实，工作不忙的时候我也经常会去公司学习，积攒了不少东西，平时为了图方便都记录在为知笔记中，刚好假期中有时间，打算整理到博客中，一是为了回顾学习，二是为了以后方便查询，三是希望能帮助到别人。</p>
 ]]></content>
   </entry>
   

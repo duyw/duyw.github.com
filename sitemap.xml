@@ -127,6 +127,10 @@
         <lastmod>2014-01-29T19:37:47+08:00</lastmod>
     </url>
     <url>
+        <loc>http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%24/</loc>
+        <lastmod>2014-02-25T16:12:10+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%2524/</loc>
         <lastmod>2014-01-28T12:30:15+08:00</lastmod>
     </url>
@@ -142,11 +146,11 @@
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2014/01/28/postgresql-zi-duan-fen-ge-fen-zu/</loc>
-        <lastmod>2014-01-30T00:20:05+08:00</lastmod>
+        <lastmod>2014-02-25T16:12:20+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2014/01/29/postgresql-chang-yong-han-shu/</loc>
-        <lastmod>2014-02-25T14:36:04+08:00</lastmod>
+        <lastmod>2014-02-25T16:17:13+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/blog/2014/01/29/ru-he-zhi-zuo-gembao/</loc>
@@ -170,7 +174,7 @@
     </url>
     <url>
         <loc>http://duyw.github.io/blog/archives/</loc>
-        <lastmod>2014-02-25T14:36:04+08:00</lastmod>
+        <lastmod>2014-02-25T16:17:13+08:00</lastmod>
     </url>
     <url>
         <loc>http://duyw.github.io/about/</loc>
@@ -182,6 +186,6 @@
     </url>
     <url>
         <loc>http://duyw.github.io/</loc>
-        <lastmod>2014-02-25T14:36:04+08:00</lastmod>
+        <lastmod>2014-02-25T16:17:13+08:00</lastmod>
     </url>
 </urlset>

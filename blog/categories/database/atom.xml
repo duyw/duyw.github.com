@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 数据库 | 杜永文 博客]]></title>
   <link href="http://duyw.github.io/blog/categories/database/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-02-25T14:45:53+08:00</updated>
+  <updated>2014-02-25T16:17:14+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -304,7 +304,9 @@ WW     一年里的周数(1-53)(第一周从该年的第一天开始)
 
 <p>2 拼接多条记录的值</p>
 
-<p><code>select array_to_string( array(select nickname from users where id &lt; 100), ';')</code>:</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">array_to_string</span><span class="p">(</span> <span class="nb">array</span><span class="p">(</span><span class="k">select</span> <span class="n">nickname</span> <span class="k">from</span> <span class="n">users</span> <span class="k">where</span> <span class="n">id</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="mi">100</span><span class="p">),</span> <span class="s1">&#39;;&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>3 string_agg
 聚合函数，用于将字段拼接成字符串,相当于对string进行sum
@@ -334,8 +336,11 @@ WW     一年里的周数(1-53)(第一周从该年的第一天开始)
 </table>
 
 
-<p>select id, string_agg(area_name, ';') as area_names
-from users group by id</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">id</span><span class="p">,</span> <span class="n">string_agg</span><span class="p">(</span><span class="n">area_name</span><span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">area_names</span>
+</span><span class='line'><span class="k">from</span> <span class="n">users</span> <span class="k">group</span> <span class="k">by</span> <span class="n">id</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>结果：</p>
 
@@ -360,19 +365,32 @@ from users group by id</p>
 
 
 <p>再例如：
-select parent_area_code,</p>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">parent_area_code</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>   <span class="n">string_agg</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="s1">&#39;;&#39;</span><span class="p">),</span>
+</span><span class='line'>   <span class="n">string_agg</span><span class="p">(</span><span class="n">name</span> <span class="o">||</span> <span class="s1">&#39;_&#39;</span> <span class="o">||</span> <span class="n">area_code</span> <span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">from</span> <span class="n">locations</span> <span class="k">where</span> <span class="n">parent_area_code</span> <span class="k">is</span> <span class="k">not</span> <span class="k">null</span>
+</span><span class='line'><span class="k">group</span> <span class="k">by</span> <span class="n">parent_area_code</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<pre><code>   string_agg(name,';'),
-   string_agg(name || '_' || area_code , ';')
-</code></pre>
+<p>4 array_agg  列转数组</p>
 
-<p>from locations where parent_area_code is not null
-group by parent_area_code</p>
-
-<p>4 array_agg  列转数组
-上例也可以用 array_agg + array_to_string 间接实现：
-select id, array_to_string(array_agg(area_name), ';') as area_names
-from users group by id</p>
+<p>上例也可以用 array_agg + array_to_string 间接实现：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">id</span><span class="p">,</span> <span class="n">array_to_string</span><span class="p">(</span><span class="n">array_agg</span><span class="p">(</span><span class="n">area_name</span><span class="p">),</span> <span class="s1">&#39;;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">area_names</span>
+</span><span class='line'><span class="k">from</span> <span class="n">users</span> <span class="k">group</span> <span class="k">by</span> <span class="n">id</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | 杜永文 博客]]></title>
   <link href="http://duyw.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://duyw.github.io/"/>
-  <updated>2014-02-25T14:45:53+08:00</updated>
+  <updated>2014-02-25T16:17:14+08:00</updated>
   <id>http://duyw.github.io/</id>
   <author>
     <name><![CDATA[Du Yongwen]]></name>
@@ -252,6 +252,31 @@ spec.files         = `git ls-files`.split($/)
   </entry>
   
   <entry>
+    <title type="html"><![CDATA[ruby 小技巧之 $:]]></title>
+    <link href="http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-%24/"/>
+    <updated>2014-01-28T12:25:00+08:00</updated>
+    <id>http://duyw.github.io/blog/2014/01/28/ruby-xiao-ji-qiao-zhi-$</id>
+    <content type="html"><![CDATA[<p>在一些gem里面经常会有这样一句代码：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vg">$:</span><span class="o">.</span><span class="n">unshift</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="no">FILE</span><span class="o">&lt;</span><span class="sr">/strong&gt;)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>这句话是干什么用的呢？</p>
+
+<p><code>$:</code> 就是ruby的一个全局变量，也叫<code>$LOAD_PATH</code>，功能就是java中的classpath，用来加载类库的，当你require某个文件时，ruby就会从这个变量的值去查找，找不到会报LoadError。这个值其实就是一个包含了类库绝对路径的数组。</p>
+
+<p><code>__FILE__</code>这个变量代表文件自己的文件名，在foo.rb中<code>puts __FILE__</code>，结果就是foo.rb。</p>
+
+<p>File.expand_path可以把路径转换成绝对路径，假设有这样一个文件/Users/kenshin/foo.rb，里面有<code>File.expand_path('..', __FILE__)</code>，返回的结果就是/Users/kenshin。</p>
+
+<p>unshift是数组的一个方法，功能就是把指定的值加到数组的最前面，<code>[3,4].unshift(1,2) =&gt; [1,2,3,4]</code></p>
+
+<p>所以这段代码的意思就是把当前文件所在的目录加到ruby的loadpath的最前面，在require文件时，ruby就会先从当前目录下去查找了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[ruby 的迭代器]]></title>
     <link href="http://duyw.github.io/blog/2014/01/27/ruby-de-die-dai-qi/"/>
     <updated>2014-01-27T19:19:00+08:00</updated>
@@ -463,201 +488,6 @@ spec.files         = `git ls-files`.split($/)
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">any?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">}</span>   <span class="c1">#=&gt; true</span>
 </span><span class='line'><span class="sx">%w{ant bear cat}</span><span class="o">.</span><span class="n">any?</span> <span class="p">{</span><span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">}</span>   <span class="c1">#=&gt; true</span>
 </span><span class='line'><span class="o">[</span> <span class="kp">nil</span><span class="p">,</span> <span class="kp">true</span><span class="p">,</span> <span class="mi">99</span> <span class="o">].</span><span class="n">any?</span>                            <span class="c1">#=&gt; true</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[A simple Script for installing RoR on Ubuntu12.04]]></title>
-    <link href="http://duyw.github.io/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04/"/>
-    <updated>2013-03-04T11:48:00+08:00</updated>
-    <id>http://duyw.github.io/blog/2013/03/04/a-simple-script-for-installing-ror-on-ubuntu12-dot-04</id>
-    <content type="html"><![CDATA[<p>This is a usful script,I found it here: <a href="http://blog.sudobits.com/2012/05/02/how-to-install-ruby-on-rails-in-ubuntu-12-04-lts/">Sudobits 博客</a></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>rails-installer.sh </span><a href='https://github.com/rkjha/RailsOnUbuntu/blob/master/rails-installer.sh'>链接到github </a></figcaption> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;A simple Script <span class="k">for </span>installing Rails on Ubuntu 12.04 LTS / 12.10&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;It will also install the dependencies required as well as the RVM&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Author: Ramesh Jha <span class="o">(</span>ramesh@rameshjha.com<span class="o">)</span>,<span class="o">(</span>http://blog.sudobits.com<span class="o">)</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;License: MIT&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;RUBY_VERSION<span class="o">=</span><span class="s2">&quot;1.9.3&quot;</span>
-</span><span class='line'><span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&quot;$HOME/install.log&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;Rails Installer started&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Installing Dependencies&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;.......Updating package cache.....&quot;</span>
-</span><span class='line'>sudo apt-get update &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;......Done..........&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;..........Installing git..........&quot;</span>
-</span><span class='line'>sudo apt-get -y install git &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;..........Done....................&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;Installing Curl&quot;</span>
-</span><span class='line'>sudo apt-get -y install curl &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;...........Done...................&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Install RVM <span class="o">(</span>Ruby Version Manager<span class="o">)</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;.....Installing RVM..............&quot;</span>
-</span><span class='line'>curl -L get.rvm.io | bash -s stable &gt;&gt;<span class="nv">$LOG_FILE</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;fallback <span class="k">for </span>the above <span class="nb">command</span> <span class="o">(</span>in <span class="k">case </span>of certificates errors<span class="o">)</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;if <span class="o">(</span><span class="nv">$?</span> !<span class="o">=</span>0<span class="o">)</span>&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;then&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;curl -kL get.rvm.io | bash -s stable&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;fi&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;............DONE..........&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;......Loading RVM..........&quot;</span>
-</span><span class='line'><span class="nb">source</span> ~/.rvm/scripts/rvm &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;...........Done...........&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Install Additional Dependencies&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;sudo apt-get -y install build-essential openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Install nodejs from the PPA&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;sudo apt-add-repository -y ppa:chris-lea/node.js
-</span><span class='line'>sudo apt-get update
-</span><span class='line'>sudo apt-get -y install nodejs&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Install Latest version of Ruby&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;........Installing Ruby v $RUBY_VERSION ...&quot;</span>
-</span><span class='line'>rvm install <span class="nv">$RUBY_VERSION</span> &gt;&gt;<span class="nv">$LOG_FILE</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;==&gt; Done.........&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;If you want to install another version of ruby e.g 1.8.7&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Then use the command &#39;rvm install 1.8.7&#39; &quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Select and Set latest version of ruby as the default so that&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;You won<span class="s1">&#39;t have to select each time you start a terminal&lt;/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;p&gt;echo &quot;.......Setting the default version of Ruby...&quot;</span>
-</span><span class='line'><span class="s1">rvm --default use $RUBY_VERSION &gt;&gt;$LOG_FILE</span>
-</span><span class='line'><span class="s1">echo &quot;==&gt; Done.........&quot;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">&lt;p&gt;echo &quot;Now, You are using Ruby $RUBY_VERSION by default&quot;</span>
-</span><span class='line'><span class="s1">echo &quot;if you want to change that then use &#39;</span>rvm --default &lt;ruby_version&gt;<span class="err">&#39;</span> <span class="s2">&quot;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">&lt;h1&gt;Install Latest version of Rails&lt;/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">&lt;p&gt;echo &quot;</span>..........Installing Rails gem................<span class="s2">&quot;</span>
-</span><span class='line'><span class="s2">gem install rails &gt;&gt;$LOG_FILE</span>
-</span><span class='line'><span class="s2">echo &quot;</span>.........Done<span class="s2">&quot;&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">&lt;p&gt;echo &quot;</span><span class="c">######################################&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;###### Installation Completed ########&quot;</span>
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;######################################&quot;</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;echo <span class="s2">&quot;if something went wrong then checkout the log file $LOG_FILE&quot;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
