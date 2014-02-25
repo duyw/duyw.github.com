@@ -268,4 +268,46 @@ select date_trunc('hour', timestamp '2014-01-28 23:40:14.761216+08');
 
 2 拼接多条记录的值
 
-`select array_to_string( array(select nickname from users where id < 100), ';')`:
+{% codeblock lang:sql %}
+select array_to_string( array(select nickname from users where id < 100), ';')
+{% endcodeblock %}
+
+
+3 string_agg 
+聚合函数，用于将字段拼接成字符串,相当于对string进行sum
+例如：  users表有如下纪录：
+
+ id  | area_name   
+-----|-----------
+  1  |    北京    
+  1  |    河南    
+  2  |    河南    
+{% codeblock lang:sql %}
+select id, string_agg(area_name, ';') as area_names
+from users group by id
+{% endcodeblock %}
+
+结果：
+
+ id  | area_name   
+-----|-----------
+  1  |  北京;河南    
+  2  |  河南   
+
+再例如：
+{% codeblock lang:sql %}
+select parent_area_code, 
+       string_agg(name,';'),
+       string_agg(name || '_' || area_code , ';')
+from locations where parent_area_code is not null
+group by parent_area_code
+{% endcodeblock %}
+
+4 array_agg  列转数组
+
+上例也可以用 array_agg + array_to_string 间接实现：
+{% codeblock lang:sql %}
+select id, array_to_string(array_agg(area_name), ';') as area_names
+from users group by id
+{% endcodeblock %}
+
